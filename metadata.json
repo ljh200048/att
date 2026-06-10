@@ -1,0 +1,6 @@
+{
+  "name": "닥터마틴 공식 온라인 스토어",
+  "description": "닥터마틴 코리아 공식 온라인 스토어 컨셉 목업입니다. 시그니처 옐로우 하이라이트 스타일링, MID SEASON SALE 메인 배너 슬라이더, KEY ITEMS 서클 그리드, 마일즈/보스 II 샌들 세일 슬라이드쇼, STYLE EDIT 커뮤니티 착샷 이미지 업로드 모듈, 디테일한 상품 상세 피팅 가이드 및 실시간 주문 트래커가 작동합니다.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
