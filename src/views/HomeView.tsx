@@ -21,6 +21,13 @@ interface HomeViewProps {
 
 export default function HomeView({ products, onNavigate, currentUser }: HomeViewProps) {
   
+  // Split products for display (Acrylic / Eco keyring list requested in prompt)
+  const keyrings = products.filter(p => p.category === 'keyring');
+  const wappens = products.filter(p => p.category === 'wappen');
+
+  const firstWappen = wappens[0] || products.find(p => p.id === 'love-everywhere-patch') || products[0];
+  const secondWappen = wappens[1] || products.find(p => p.id === 'retro-arcade-wappen') || products[1];
+
   // Slide indicator state for Hero section
   const [heroSlide, setHeroSlide] = useState(0);
 
@@ -30,31 +37,87 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
       title: 'A PLACE OF att.',
       sub: '놀라움이 가득한 장소, 일상 속 특별한 패션과 취향을 붙이는 룩을 지향합니다.',
       visual: (
-        <div className="absolute inset-0 flex items-center justify-center bg-stone-50 overflow-hidden">
-          {/* Stylized Modern Silhouette Fashion Model Art Frame (Wonderplace Look) */}
-          <div className="relative w-full h-full flex items-center justify-around px-12 md:px-24">
-            {/* Outline decorative typography */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
-              <span className="font-sans font-black text-[22vw] leading-none tracking-widest text-black">ATT.</span>
-            </div>
-            {/* Left Model Dummy Frame */}
-            <div className="hidden sm:flex flex-col items-center relative transform -rotate-1 hover:rotate-0 transition-transform duration-500">
-              <div className="w-56 h-80 bg-stone-200 border border-stone-300 relative flex flex-col justify-center items-center p-6 rounded shadow-sm text-center">
-                <div className="absolute inset-2 border border-stone-300/30"></div>
-                <span className="bg-black text-white text-[9px] font-mono font-bold px-2.5 py-1 tracking-wider uppercase mb-3">att. SELECTION</span>
-                <p className="text-[13px] font-bold text-stone-950 leading-tight">MTR Wool Trench Coat</p>
-                <p className="text-[11px] font-mono text-stone-500 font-bold mt-1">₩ 189,000</p>
+        <div className="absolute inset-0 flex items-center justify-end bg-stone-50 overflow-hidden">
+          {/* Outline decorative typography */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
+            <span className="font-sans font-black text-[22vw] leading-none tracking-widest text-black">ATT.</span>
+          </div>
+          
+          {/* Right positioned Wappen Cards Container */}
+          <div className="relative z-10 flex gap-4 md:gap-6 pr-6 sm:pr-12 md:pr-24 lg:pr-32 xl:pr-48 pl-4 max-w-full overflow-x-auto items-center">
+            {/* First Wappen Card */}
+            {firstWappen && (
+              <div 
+                onClick={() => onNavigate('detail', firstWappen.id)}
+                className="cursor-pointer w-40 sm:w-44 md:w-52 bg-white border-2 border-black p-4 relative flex flex-col justify-between rounded-lg shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] hover:shadow-[6px_6px_0px_rgba(0,0,0,1)] transition-all duration-300"
+              >
+                <div>
+                  <span className="bg-[#39FF14] text-black text-[8px] font-mono font-black px-2 py-0.5 tracking-wider uppercase mb-3 inline-block">
+                    {firstWappen.category === 'wappen' ? 'att. WAPPEN' : 'att. SELECTION'}
+                  </span>
+                  
+                  {/* Square Image Area */}
+                  <div className="aspect-square w-full bg-stone-50 border border-stone-200/50 rounded flex items-center justify-center overflow-hidden mb-3 p-1.5">
+                    {firstWappen.images && firstWappen.images[0] ? (
+                      <img 
+                        src={firstWappen.images[0]} 
+                        alt={firstWappen.name} 
+                        className="w-full h-full object-contain pointer-events-none" 
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-stone-200 rounded-full animate-pulse" />
+                    )}
+                  </div>
+                  
+                  <p className="text-[11px] md:text-[12px] font-black text-stone-900 leading-tight line-clamp-2">
+                    {firstWappen.name}
+                  </p>
+                </div>
+                
+                <div className="mt-3 pt-2 border-t border-stone-100 flex items-center justify-between">
+                  <span className="text-[9px] font-bold text-stone-400 font-mono">1:1 CUSTOM</span>
+                  <span className="text-[10px] font-black text-[#FF1493]">VIEW ↗</span>
+                </div>
               </div>
-            </div>
-            {/* Right Model Dummy Frame */}
-            <div className="flex flex-col items-center relative transform rotate-1 hover:rotate-0 transition-transform duration-500">
-              <div className="w-60 h-84 bg-stone-150 border border-stone-250 relative flex flex-col justify-center items-center p-6 rounded shadow-sm text-center">
-                <div className="absolute inset-2 border border-stone-300/30"></div>
-                <span className="bg-stone-900 text-white text-[9px] font-mono font-bold px-2.5 py-1 tracking-wider uppercase mb-3">att. LIFESTYLE</span>
-                <p className="text-[13px] font-bold text-stone-950 leading-tight">Y2K Leather Hobo Bag</p>
-                <p className="text-[11px] font-mono text-stone-500 font-bold mt-1">₩ 74,000</p>
+            )}
+
+            {/* Second Wappen Card - hidden on tiny mobile, shown on sm+ */}
+            {secondWappen && (
+              <div 
+                onClick={() => onNavigate('detail', secondWappen.id)}
+                className="hidden sm:flex cursor-pointer w-40 sm:w-44 md:w-52 bg-white border-2 border-black p-4 relative flex-col justify-between rounded-lg shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] hover:shadow-[6px_6px_0px_rgba(0,0,0,1)] transition-all duration-300"
+              >
+                <div>
+                  <span className="bg-black text-[#39FF14] text-[8px] font-mono font-black px-2 py-0.5 tracking-wider uppercase mb-3 inline-block">
+                    {secondWappen.category === 'wappen' ? 'att. WAPPEN' : 'att. SELECTION'}
+                  </span>
+                  
+                  {/* Square Image Area */}
+                  <div className="aspect-square w-full bg-stone-50 border border-stone-200/50 rounded flex items-center justify-center overflow-hidden mb-3 p-1.5">
+                    {secondWappen.images && secondWappen.images[0] ? (
+                      <img 
+                        src={secondWappen.images[0]} 
+                        alt={secondWappen.name} 
+                        className="w-full h-full object-contain pointer-events-none" 
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-stone-200 rounded-full animate-pulse" />
+                    )}
+                  </div>
+                  
+                  <p className="text-[11px] md:text-[12px] font-black text-stone-900 leading-tight line-clamp-2">
+                    {secondWappen.name}
+                  </p>
+                </div>
+                
+                <div className="mt-3 pt-2 border-t border-stone-100 flex items-center justify-between">
+                  <span className="text-[9px] font-bold text-stone-400 font-mono">1:1 CUSTOM</span>
+                  <span className="text-[10px] font-black text-[#FF1493]">VIEW ↗</span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       )
@@ -92,10 +155,6 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
   const handlePrevHero = () => {
     setHeroSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
-
-  // Split products for display (Acrylic / Eco keyring list requested in prompt)
-  const keyrings = products.filter(p => p.category === 'keyring');
-  const wappens = products.filter(p => p.category === 'wappen');
 
   return (
     <div id="home-view-container" className="flex flex-col gap-24 md:gap-36 pb-20 select-none bg-white">
