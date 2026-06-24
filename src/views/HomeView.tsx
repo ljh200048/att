@@ -308,27 +308,27 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
             우리와 함께 창의적인 영감을 나눌 열정 가득한 인재들을 언제나 기다리고 있습니다.
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 text-xs font-bold text-stone-800">
-            <div className="bg-white border border-stone-200 p-4 hover:border-black transition-colors rounded">
-              <Briefcase className="w-5 h-5 text-stone-500 mb-2" />
-              <p className="font-bold text-stone-900">FASHION MD</p>
-              <p className="text-[10px] text-stone-400 mt-1">신입/경력 수시 채용</p>
-            </div>
-            <div className="bg-white border border-stone-200 p-4 hover:border-black transition-colors rounded">
-              <Layers className="w-5 h-5 text-stone-500 mb-2" />
-              <p className="font-bold text-stone-900">CREATIVE DESIGN</p>
-              <p className="text-[10px] text-stone-400 mt-1">액세서리/어패럴 가이더</p>
-            </div>
-            <div className="bg-white border border-stone-200 p-4 hover:border-black transition-colors rounded">
-              <Sparkles className="w-5 h-5 text-stone-500 mb-2" />
-              <p className="font-bold text-stone-900">MARKETING CREW</p>
-              <p className="text-[10px] text-stone-400 mt-1">브랜드 브랜딩 기획</p>
-            </div>
-            <div className="bg-white border border-stone-200 p-4 hover:border-black transition-colors rounded">
-              <MapPin className="w-5 h-5 text-stone-500 mb-2" />
-              <p className="font-bold text-stone-900">RETAIL STORE</p>
-              <p className="text-[10px] text-stone-400 mt-1">성수 오프라인 크루</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 text-xs font-bold text-stone-800 max-w-2xl mx-auto w-full">
+            <a 
+              href="mailto:collaboration@att-wappen.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white border border-stone-200 p-5 hover:border-black hover:scale-[1.02] active:scale-[0.98] transition-all rounded-lg block group text-center md:text-left"
+            >
+              <Sparkles className="w-5 h-5 text-stone-500 mb-2 group-hover:text-black transition-colors mx-auto md:mx-0" />
+              <p className="font-bold text-stone-900 group-hover:text-black transition-colors">MARKETING CREW</p>
+              <p className="text-[10px] text-stone-400 mt-1 font-semibold">브랜드 협업 제안 문의하기 ↗</p>
+            </a>
+            <a 
+              href="https://www.instagram.com/att_attached?igsh=MTNnczE4a25rdzlweg==" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white border border-stone-200 p-5 hover:border-black hover:scale-[1.02] active:scale-[0.98] transition-all rounded-lg block group text-center md:text-left"
+            >
+              <MapPin className="w-5 h-5 text-stone-500 mb-2 group-hover:text-black transition-colors mx-auto md:mx-0" />
+              <p className="font-bold text-stone-900 group-hover:text-black transition-colors">RETAIL STORE</p>
+              <p className="text-[10px] text-stone-400 mt-1 font-semibold">성수 오프라인 인스타그램 ↗</p>
+            </a>
           </div>
         </div>
       </section>
