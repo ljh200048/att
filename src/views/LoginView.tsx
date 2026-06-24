@@ -21,21 +21,12 @@ export default function LoginView({ onLoginSuccess, onNavigate }: LoginViewProps
 
   // Interactive Social OAuth Signup Modal States
   const [showGoogleModal, setShowGoogleModal] = useState<boolean>(false);
-  const [showKakaoModal, setShowKakaoModal] = useState<boolean>(false);
 
   // Google Signup/Login Configuration State
   const [googleName, setGoogleName] = useState<string>('');
   const [googleEmail, setGoogleEmail] = useState<string>('');
   const [googleSuccessAlert, setGoogleSuccessAlert] = useState<boolean>(false);
   const [registeredGoogleEmail, setRegisteredGoogleEmail] = useState<string>('');
-
-  // Kakao Signup/Login Configuration State
-  const [kakaoNickname, setKakaoNickname] = useState<string>('');
-  const [kakaoEmail, setKakaoEmail] = useState<string>('');
-  const [kakaoPhone, setKakaoPhone] = useState<string>('010-1234-5678');
-  const [kakaoAgreeAll, setKakaoAgreeAll] = useState<boolean>(true);
-  const [kakaoSuccessAlert, setKakaoSuccessAlert] = useState<boolean>(false);
-  const [registeredKakaoNickname, setRegisteredKakaoNickname] = useState<string>('');
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -97,43 +88,7 @@ export default function LoginView({ onLoginSuccess, onNavigate }: LoginViewProps
     onNavigate('mypage');
   };
 
-  const handleKakaoSignupSubmit = () => {
-    if (!kakaoNickname || !kakaoEmail) {
-      alert('카카오 간편 가입을 위해 닉네임과 이메일을 기입해 주세요!');
-      return;
-    }
 
-    if (!kakaoEmail.includes('@') || !kakaoEmail.includes('.')) {
-      alert('올바른 이메일 주소 형식(@, 점 포함)을 정확히 입력해 주세요!');
-      return;
-    }
-
-    if (!kakaoAgreeAll) {
-      alert('가입 동의 항목에 필수로 동의해 주셔야 카카오 간편가입이 완료됩니다.');
-      return;
-    }
-
-    setRegisteredKakaoNickname(kakaoNickname);
-    setKakaoSuccessAlert(true);
-  };
-
-  const handleConfirmKakaoSuccess = () => {
-    const registeredUser: User = {
-      id: `kakao_${Date.now().toString().slice(-6)}`,
-      email: kakaoEmail,
-      name: registeredKakaoNickname || kakaoEmail.split('@')[0],
-      role: 'customer'
-    };
-
-    onLoginSuccess(registeredUser);
-    setKakaoSuccessAlert(false);
-    setShowKakaoModal(false);
-    // Reset fields
-    setKakaoNickname('');
-    setKakaoEmail('');
-    setKakaoPhone('010-1234-5678');
-    onNavigate('mypage');
-  };
 
 
   return (
@@ -249,22 +204,14 @@ export default function LoginView({ onLoginSuccess, onNavigate }: LoginViewProps
         </div>
 
         {/* Social Buttons */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-3">
           <button
             type="button"
             onClick={() => setShowGoogleModal(true)}
-            className="cursor-pointer rounded-xl border border-stone-200/80 bg-white hover:bg-stone-50 py-2.5 text-xs font-bold text-stone-700 flex items-center justify-center gap-1.5 transition-colors"
+            className="cursor-pointer rounded-xl border border-stone-200/80 bg-white hover:bg-stone-50 py-3 text-xs font-bold text-stone-700 flex items-center justify-center gap-1.5 transition-colors"
           >
             <Chrome className="w-4 h-4 text-red-500" />
             <span>Google 가입/로그인</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setShowKakaoModal(true)}
-            className="cursor-pointer rounded-xl border border-stone-200/80 bg-[#FEE500] hover:bg-[#FEE500]/90 py-2.5 text-xs font-bold text-stone-900 flex items-center justify-center gap-1.5 transition-colors"
-          >
-            <span className="text-amber-900 font-black text-xs">💬</span>
-            <span>카카오 가입/로그인</span>
           </button>
         </div>
 
@@ -395,151 +342,7 @@ export default function LoginView({ onLoginSuccess, onNavigate }: LoginViewProps
         </div>
       )}
 
-      {/* 2. KAKAO INTERACTIVE SIGNUP OAUTH MODAL */}
-      {showKakaoModal && (
-        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-sm w-full overflow-hidden shadow-2xl border border-stone-105 flex flex-col relative text-left">
-            
-            {/* Close button with 'X' always visible to allow immediate exit at any stage */}
-            <button 
-              onClick={() => setShowKakaoModal(false)}
-              className="absolute top-4 right-4 p-1.5 bg-black/5 hover:bg-black/10 rounded-full text-stone-800 hover:text-stone-950 cursor-pointer transition-all z-20"
-              type="button"
-            >
-              <X className="w-4 h-4" />
-            </button>
 
-            {kakaoSuccessAlert ? (
-              <div className="p-6 flex flex-col gap-4 text-center items-center animate-fade-in">
-                {/* Yellow Speech bubble icon representing KakaoTalk Notification */}
-                <div className="w-14 h-14 rounded-full bg-[#FEE500] border-2 border-amber-400 text-stone-900 flex items-center justify-center shadow-sm relative">
-                  <span className="text-2xl font-bold">💬</span>
-                  <span className="absolute -bottom-1 -right-1 bg-red-500 text-white rounded-full text-[9px] font-bold px-1 py-0.2 animate-bounce">1</span>
-                </div>
-
-                <div className="space-y-1">
-                  <h4 className="text-base font-black text-stone-850">카카오톡 가입 및 자동 연동 완료 💛</h4>
-                  <p className="text-xs text-stone-500 font-semibold leading-relaxed">
-                    입력하신 연락처 <span className="text-amber-800 font-bold underline font-mono">{kakaoPhone}</span> 계정으로 
-                    <span className="text-amber-900 font-bold"> "Wacky Willy 공식 가입 환영 알림톡"</span> 및 <span className="text-stone-900 font-extrabold font-mono">3,000원 즉시할인 웰컴 쿠폰 번호</span>가 완벽히 수신되었습니다!
-                  </p>
-                </div>
-
-                {/* Simulated KakaoTalk notification box */}
-                <div className="bg-stone-50 border border-stone-200 p-4 rounded-2xl w-full text-left text-[11px] leading-relaxed font-semibold text-stone-750">
-                  <div className="flex items-center gap-1 mb-1 border-b border-stone-150 pb-1 text-amber-900 font-extrabold text-xs">
-                    <span>💬 카카오 알림톡 - Wacky Willy 어태치 스튜디오</span>
-                  </div>
-                  <p className="text-stone-800"><span className="font-bold">[{registeredKakaoNickname}]</span> 회원님의 가입 성사 완료!</p>
-                  <p className="mt-1">• 가입 특전: <span className="text-rose-500 font-bold">실시간 카카오톡 시안 확인 지원</span></p>
-                  <p className="text-stone-600">• 안내: 앞으로 제작하시는 모든 커스텀 키링 시안과 진행률 피드백이 이 카카오톡 채널로 가입과 동시에 즉시 전송됩니다!</p>
-                  <p className="text-[10px] text-stone-400 mt-1 font-normal">* 알림톡 하단 가입 상세 보기를 누르면 마이페이지로 즉시 진입이 가능합니다.</p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleConfirmKakaoSuccess}
-                  className="cursor-pointer w-full bg-[#FEE500] hover:bg-[#FEE500]/90 text-stone-900 font-extrabold py-3.5 rounded-full text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
-                >
-                  <UserCheck className="w-4 h-4 text-amber-950" />
-                  <span>알림톡 확인 및 쇼핑 즉시시작</span>
-                </button>
-              </div>
-            ) : (
-              <>
-                {/* Kakao brand theme colored head bar */}
-                <div className="bg-[#FEE500] p-5 pb-6 flex flex-col gap-1.5 relative text-stone-900">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-lg">💬</span>
-                    <span className="text-[10px] tracking-wider font-extrabold text-stone-700 block uppercase font-mono">KAKAO EASY REGISTRATION</span>
-                  </div>
-                  <h3 className="text-lg font-black tracking-tight">카카오 1초 간편가입</h3>
-                  <p className="text-xs text-amber-950 font-bold opacity-80 leading-relaxed">
-                    와키윌리(Wacky Willy) 전용 쇼핑 채널에서 제공하는 실시간 웰컴 알림톡 및 제작 시안 전송 서비스를 신청합니다.
-                  </p>
-                </div>
-
-                {/* Content Body */}
-                <div className="p-6 flex flex-col gap-4">
-                  
-                  {/* Form Custom Inputs for customizable signup */}
-                  <div className="flex flex-col gap-3.5">
-                    <div className="flex flex-col gap-1">
-                      <label className="text-xs font-bold text-stone-605 flex items-center gap-1">
-                        <span>👤 카카오톡 프로필 닉네임 *</span>
-                      </label>
-                      <input 
-                        type="text"
-                        required
-                        value={kakaoNickname}
-                        onChange={(e) => setKakaoNickname(e.target.value)}
-                        placeholder="이름 또는 닉네임 기재 (예: 헤이_와키윌리)"
-                        className="w-full text-xs text-stone-850 px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:bg-white focus:border-amber-400 font-semibold"
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <label className="text-xs font-bold text-stone-605 flex items-center gap-1">
-                        <span>✉️ 카카오 연동 이메일 주소 *</span>
-                      </label>
-                      <input 
-                        type="email"
-                        required
-                        value={kakaoEmail}
-                        onChange={(e) => setKakaoEmail(e.target.value)}
-                        placeholder="이메일 입력 (예: kakao@gmail.com)"
-                        className="w-full text-xs text-stone-850 px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:bg-white focus:border-amber-400 font-semibold font-mono"
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <label className="text-xs font-bold text-stone-605 flex items-center gap-1">
-                        <span>📱 휴대폰 번호 (알림톡/시안 직접 받기용) *</span>
-                      </label>
-                      <input 
-                        type="text"
-                        required
-                        value={kakaoPhone}
-                        onChange={(e) => setKakaoPhone(e.target.value)}
-                        placeholder="예: 010-1234-5678"
-                        className="w-full text-xs text-stone-850 px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:bg-white focus:border-amber-400 font-semibold font-mono"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Checkboxes parameters */}
-                  <div className="flex flex-col gap-2 border-t border-stone-100 pt-3">
-                    <label className="flex items-start gap-2 cursor-pointer p-1">
-                      <input
-                        type="checkbox"
-                        checked={kakaoAgreeAll}
-                        onChange={(e) => setKakaoAgreeAll(e.target.checked)}
-                        className="rounded text-amber-500 focus:ring-amber-400 h-4 w-4 mt-0.5 cursor-pointer accent-amber-500"
-                      />
-                      <div className="text-[11px] text-stone-600 leading-normal font-semibold">
-                        <p className="font-extrabold text-stone-800">[필수] 카카오톡 시안 받기 및 알림톡 수신 동의</p>
-                        <p className="text-[10px] text-stone-400 text-left">회원가입 승인 결과, 키링 시안 확인 및 구매 혜택 알림 발송에 동의합니다.</p>
-                      </div>
-                    </label>
-                  </div>
-
-                  {/* Button */}
-                  <button
-                    type="button"
-                    onClick={handleKakaoSignupSubmit}
-                    className="cursor-pointer w-full bg-[#FEE500] hover:bg-[#FEE500]/90 text-[#191919] font-black py-3.5 rounded-2xl text-xs flex items-center justify-center gap-1 px-4 tracking-wide shadow-2xs mt-1"
-                  >
-                    <span>동의하고 1초만에 회원가입 완료</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-
-                </div>
-              </>
-            )}
-
-          </div>
-        </div>
-      )}
 
     </div>
   );
