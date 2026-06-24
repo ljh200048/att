@@ -10,7 +10,7 @@ interface ShopViewProps {
   onSetCategory: (cat: string) => void;
 }
 
-type SortType = 'popular' | 'priceAsc' | 'priceDesc' | 'rating';
+type SortType = 'popular' | 'newest' | 'priceAsc' | 'priceDesc' | 'rating';
 
 export default function ShopView({ products, onNavigate, category, onSetCategory }: ShopViewProps) {
   const searchQuery = ''; // we can keep it local for ease of typing inside this screen
@@ -35,6 +35,11 @@ export default function ShopView({ products, onNavigate, category, onSetCategory
   // Sorting products
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
+      case 'newest': {
+        const indexA = products.findIndex(p => p.id === a.id);
+        const indexB = products.findIndex(p => p.id === b.id);
+        return indexA - indexB;
+      }
       case 'priceAsc':
         return a.price - b.price;
       case 'priceDesc':
@@ -100,10 +105,11 @@ export default function ShopView({ products, onNavigate, category, onSetCategory
               onChange={(e) => setSortBy(e.target.value as SortType)}
               className="text-xs bg-[#FFFDF0] border-2 border-black text-black px-3.5 py-2.5 rounded-none cursor-pointer focus:outline-none font-black shadow-[2px_2px_0px_rgba(0,0,0,1)]"
             >
-              <option value="popular">★ 인기 상품순</option>
-              <option value="priceAsc">₩ 가격 낮은순</option>
-              <option value="priceDesc">₩ 가격 높은순</option>
-              <option value="rating">❤ 평점 최고순</option>
+              <option value="popular">인기순</option>
+              <option value="newest">최신순</option>
+              <option value="priceAsc">가격 낮은순</option>
+              <option value="priceDesc">가격 높은순</option>
+              <option value="rating">평점 최고순</option>
             </select>
           </div>
 

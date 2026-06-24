@@ -327,7 +327,7 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
             >
               <MapPin className="w-5 h-5 text-stone-500 mb-2 group-hover:text-black transition-colors mx-auto md:mx-0" />
               <p className="font-bold text-stone-900 group-hover:text-black transition-colors">RETAIL STORE</p>
-              <p className="text-[10px] text-stone-400 mt-1 font-semibold">성수 오프라인 인스타그램 ↗</p>
+              <p className="text-[10px] text-stone-400 mt-1 font-semibold">att 인스타그램 ↗</p>
             </a>
           </div>
         </div>
