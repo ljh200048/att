@@ -26,7 +26,7 @@ export default function Navbar({
   };
 
   const menuItems = [
-    { en: 'COMPANY', kr: '회사소개', view: 'home', scrollTarget: 'about-section' },
+    { en: 'About Us', kr: '회사소개', view: 'home', scrollTarget: 'about-section' },
     { en: 'RECRUIT', kr: '인재채용', view: 'home', scrollTarget: 'recruit-section' },
     { en: 'BRAND', kr: '브랜드', view: 'home', scrollTarget: 'brand-section' },
     { en: 'SHOP', kr: '스토어', view: 'shop', category: 'all' },

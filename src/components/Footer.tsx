@@ -65,7 +65,7 @@ export default function Footer({ onNavigate }: FooterProps) {
 
           {/* Column 4: Representative and Corporate Info */}
           <div className="flex flex-col space-y-4">
-            <h4 className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">COMPANY INFO</h4>
+            <h4 className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">ABOUT US</h4>
             <div className="space-y-3 text-stone-300">
               <div>
                 <span className="text-[9px] text-stone-500 block font-bold">LEGAL AGREEMENTS</span>

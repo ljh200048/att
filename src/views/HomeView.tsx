@@ -230,7 +230,7 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
           <h1 className="text-3xl md:text-5xl font-extrabold text-black tracking-tight leading-none uppercase">
             NO.1<br />
             <span className="text-stone-900 font-medium text-lg sm:text-xl md:text-2xl tracking-normal block mt-2.5">
-              패션 라이프 스타일 편집숍
+              커스텀 패치 편집샵
             </span>
             <span className="tracking-[0.1em] font-black text-2xl md:text-3xl mt-1 block">
               ATT.
@@ -239,7 +239,7 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
 
           <div className="mt-8 border-l border-stone-400 pl-4 max-w-sm">
             <h4 className="text-[11px] font-mono font-bold tracking-widest text-stone-900 uppercase">
-              A PLACE OF WONDER
+              ATTACH
             </h4>
             <p className="text-[11px] text-stone-500 leading-relaxed font-semibold mt-2">
               att.(어태치)는 놀라움이 가득한 장소 라는 슬로건으로 다양한 패션+라이프를 제안하며 차별화된 룩과 독창적 정체성을 지향하는 패션 편집 플랫폼입니다.
@@ -284,7 +284,7 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
         
         {/* Giant Watermark outline typography in background (Image 3) */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none opacity-[0.02] text-center w-full z-0 whitespace-nowrap">
-          <p className="font-sans font-black text-[12vw] tracking-[0.1em] text-black">A PLACE OF WONDER</p>
+          <p className="font-sans font-black text-[12vw] tracking-[0.1em] text-black">ATTACH</p>
           <p className="font-sans font-black text-[12vw] tracking-[0.1em] text-black">A PLACE OF ATT</p>
         </div>
 
