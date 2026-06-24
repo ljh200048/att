@@ -18,6 +18,7 @@ import InquiryView from './views/InquiryView';
 import LoginView from './views/LoginView';
 import MyPageView from './views/MyPageView';
 import AdminView from './views/AdminView';
+import EventView from './views/EventView';
 
 // Types & Data
 import { Product, CartItem, Order, CustomOrder, Inquiry, Review, User, OrderStatus } from './types';
@@ -444,6 +445,9 @@ export default function App() {
       
       case 'intro':
         return <IntroView />;
+      
+      case 'event':
+        return <EventView />;
       
       case 'inquiry':
         return (
