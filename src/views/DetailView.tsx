@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ShoppingBag, Heart, Check, PlaneTakeoff, RefreshCcw, Info, Star, HelpCircle, Layers, ShieldAlert } from 'lucide-react';
-import { Product, CartItem } from '../types';
+import { Product, CartItem, User } from '../types';
 
 interface DetailViewProps {
   product: Product;
   onNavigate: (view: string, productId?: string, category?: string) => void;
   onAddToCart: (item: Omit<CartItem, 'id'>) => void;
   onBuyNow: (item: Omit<CartItem, 'id'>) => void;
+  currentUser: User | null;
+  onUpdateProduct: (product: Product) => void;
 }
 
 export default function DetailView({
@@ -14,6 +16,8 @@ export default function DetailView({
   onNavigate,
   onAddToCart,
   onBuyNow,
+  currentUser,
+  onUpdateProduct,
 }: DetailViewProps) {
   const isWappen = product.category === 'wappen';
   
@@ -118,6 +122,82 @@ export default function DetailView({
                 ⚙ att. HANDMADE LAB. :: 100% 수작업 맞춤형 일러스트 기공
               </p>
             </div>
+
+            {/* Admin-only Image Modification tool */}
+            {currentUser && currentUser.role === 'admin' && (
+              <div className="bg-amber-50 border-4 border-black p-5 mt-4 shadow-[4px_4px_0px_rgba(0,0,0,1)] text-left flex flex-col gap-3">
+                <div className="flex items-center gap-1.5 border-b-2 border-black pb-1.5">
+                  <span className="text-xs">🛠️</span>
+                  <span className="text-xs font-black text-black uppercase tracking-wider">관리자 전용: 상품 대표 이미지 교체</span>
+                </div>
+                
+                <p className="text-[10px] text-stone-600 font-bold leading-normal">
+                  * 현재 로그인된 계정은 관리자 권한을 보유하고 있습니다. 상품 실물 촬영 파일을 업로드하거나, 외부 이미지 URL 주소를 직접 입력하여 실시간으로 변경을 적용할 수 있습니다.
+                </p>
+
+                <div className="flex flex-col gap-2">
+                  {/* File Upload Option */}
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-black text-black">방법 1: 컴퓨터에서 이미지 파일 업로드</span>
+                    <label className="cursor-pointer flex items-center justify-center gap-1.5 bg-white hover:bg-stone-50 text-black font-black text-xs py-2.5 px-4 border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all text-center">
+                      <span>📁 이미지 파일 선택하기</span>
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        onChange={(e) => {
+                          const files = e.target.files;
+                          if (files && files[0]) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              onUpdateProduct({
+                                ...product,
+                                images: [reader.result as string]
+                              });
+                              alert('상품 이미지 파일이 성공적으로 교체 저장되었습니다! 🎉');
+                            };
+                            reader.readAsDataURL(files[0]);
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+
+                  {/* Divider line */}
+                  <div className="flex items-center gap-2 py-1">
+                    <span className="h-[1px] bg-black/10 flex-1"></span>
+                    <span className="text-[9px] font-black text-stone-400">OR</span>
+                    <span className="h-[1px] bg-black/10 flex-1"></span>
+                  </div>
+
+                  {/* URL Input Option */}
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-black text-black">방법 2: 외부 이미지 URL 직접 입력</span>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text"
+                        placeholder="https://example.com/image.png ..."
+                        value={product.images[0] || ''}
+                        onChange={(e) => {
+                          onUpdateProduct({
+                            ...product,
+                            images: e.target.value ? [e.target.value] : []
+                          });
+                        }}
+                        className="flex-1 text-xs p-2 border-2 border-black bg-white font-mono text-stone-800 focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => alert('입력하신 이미지 URL이 실시간 반영되었습니다! ✓')}
+                        className="bg-black text-white hover:bg-stone-900 font-black text-xs px-4 py-2 border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] cursor-pointer"
+                      >
+                        적용
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

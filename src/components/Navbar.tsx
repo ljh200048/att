@@ -66,14 +66,16 @@ export default function Navbar({
           )}
 
           {/* Admin toggle if customer is admin */}
-          <button
-            onClick={() => onNavigate('admin')}
-            className={`cursor-pointer text-[10px] font-semibold tracking-wider hover:text-black uppercase flex items-center gap-1 ${
-              currentView === 'admin' ? 'text-black font-extrabold' : 'text-stone-400'
-            }`}
-          >
-            ADMIN
-          </button>
+          {currentUser?.role === 'admin' && (
+            <button
+              onClick={() => onNavigate('admin')}
+              className={`cursor-pointer text-[10px] font-semibold tracking-wider hover:text-black uppercase flex items-center gap-1 ${
+                currentView === 'admin' ? 'text-black font-extrabold' : 'text-stone-400'
+              }`}
+            >
+              ADMIN
+            </button>
+          )}
         </div>
       </div>
 

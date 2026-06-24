@@ -29,7 +29,7 @@ const MOCK_USER: User = {
   email: 'lch200048@gmail.com',
   name: '홍길동',
   instagramId: '@att_gildong',
-  role: 'customer'
+  role: 'admin'
 };
 
 const INITIAL_REVIEWS: Review[] = [
@@ -245,7 +245,7 @@ export default function App() {
   // Unified Navigation Handler (Scroll-To-Top on View shift)
   const handleNavigate = (view: string, productId?: string, category?: string) => {
     if (view === 'admin' && (!currentUser || currentUser.role !== 'admin')) {
-      alert('🔒 이미지 일체 기공 등록 및 상품 관리는 관리자 계정(admin@att.com)으로 로그인 시에만 가능합니다.');
+      alert('🔒 이미지 일체 기공 등록 및 상품 관리는 관리자 계정(admin@att.com 또는 lch200048@gmail.com)으로 로그인 시에만 가능합니다.');
       setCurrentView('login');
       return;
     }
@@ -425,6 +425,8 @@ export default function App() {
             onNavigate={handleNavigate} 
             onAddToCart={handleAddToCart}
             onBuyNow={handleBuyNow}
+            currentUser={currentUser}
+            onUpdateProduct={handleUpdateProduct}
           />
         );
       

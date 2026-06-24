@@ -47,7 +47,7 @@ export default function LoginView({ onLoginSuccess, onNavigate }: LoginViewProps
       email,
       name: isSignUp ? name : email.split('@')[0],
       instagramId: instagramId || undefined,
-      role: email === 'admin@att.com' ? 'admin' : 'customer'
+      role: (email === 'admin@att.com' || email === 'lch200048@gmail.com') ? 'admin' : 'customer'
     };
 
     onLoginSuccess(registeredUser);
@@ -76,7 +76,7 @@ export default function LoginView({ onLoginSuccess, onNavigate }: LoginViewProps
       id: `google_${Date.now().toString().slice(-6)}`,
       email: registeredGoogleEmail,
       name: googleName || registeredGoogleEmail.split('@')[0],
-      role: 'customer'
+      role: (registeredGoogleEmail === 'admin@att.com' || registeredGoogleEmail === 'lch200048@gmail.com') ? 'admin' : 'customer'
     };
 
     onLoginSuccess(registeredUser);
@@ -213,6 +213,53 @@ export default function LoginView({ onLoginSuccess, onNavigate }: LoginViewProps
             <Chrome className="w-4 h-4 text-red-500" />
             <span>Google 가입/로그인</span>
           </button>
+
+          {/* Admin Access Section */}
+          <div className="bg-amber-50 border-2 border-black rounded-2xl p-4 flex flex-col gap-2.5 shadow-[2px_2px_0px_rgba(0,0,0,1)] text-left">
+            <div className="flex items-center gap-1.5 text-stone-900">
+              <ShieldCheck className="w-4 h-4 text-amber-600" />
+              <span className="text-xs font-black uppercase tracking-wider">관리자 계정 바로 접속 (Admin)</span>
+            </div>
+            <p className="text-[10px] text-stone-500 font-semibold leading-relaxed">
+              관리자 계정으로 즉시 로그인하여 상품 대표 이미지 교체 및 기공 등록을 진행할 수 있습니다.
+            </p>
+            <div className="grid grid-cols-2 gap-2 mt-0.5">
+              <button
+                type="button"
+                onClick={() => {
+                  const adminUser: User = {
+                    id: 'admin_direct_1',
+                    email: 'admin@att.com',
+                    name: '관리자',
+                    role: 'admin'
+                  };
+                  onLoginSuccess(adminUser);
+                  alert('기본 관리자 계정(admin@att.com)으로 즉시 로그인되었습니다! 🛠️');
+                  onNavigate('admin');
+                }}
+                className="cursor-pointer bg-amber-500 hover:bg-amber-600 text-stone-950 font-black py-2.5 rounded-xl text-[11px] transition-all text-center flex items-center justify-center border-2 border-black shadow-[1px_1px_0px_rgba(0,0,0,1)]"
+              >
+                기본 관리자
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const adminUser: User = {
+                    id: 'admin_direct_2',
+                    email: 'lch200048@gmail.com',
+                    name: '이찬하',
+                    role: 'admin'
+                  };
+                  onLoginSuccess(adminUser);
+                  alert('지정된 관리자 계정(lch200048@gmail.com)으로 즉시 로그인되었습니다! 🛠️');
+                  onNavigate('admin');
+                }}
+                className="cursor-pointer bg-stone-900 hover:bg-stone-950 text-white font-black py-2.5 rounded-xl text-[11px] transition-all text-center flex items-center justify-center border-2 border-black shadow-[1px_1px_0px_rgba(0,0,0,1)]"
+              >
+                이찬하 관리자
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Form Toggle Switch Footer */}
@@ -299,7 +346,7 @@ export default function LoginView({ onLoginSuccess, onNavigate }: LoginViewProps
                       required
                       value={googleName}
                       onChange={(e) => setGoogleName(e.target.value)}
-                      placeholder="이름 또는 닉네임 입력 (예: 이찬하)"
+                      placeholder="이름 또는 닉네임 입력 (예: 홍길동)"
                       className="w-full text-xs text-stone-850 px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:bg-white focus:border-red-400 font-semibold"
                     />
                   </div>
