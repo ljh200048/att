@@ -17,9 +17,23 @@ interface HomeViewProps {
   products: Product[];
   onNavigate: (view: string, productId?: string, category?: string) => void;
   currentUser?: User | null;
+  aboutBgImage?: string;
+  slide2BgImage?: string;
+  slide1BgImage?: string;
+  customBannerBgImage?: string;
+  recruitBgImage?: string;
 }
 
-export default function HomeView({ products, onNavigate, currentUser }: HomeViewProps) {
+export default function HomeView({ 
+  products, 
+  onNavigate, 
+  currentUser, 
+  aboutBgImage, 
+  slide2BgImage,
+  slide1BgImage,
+  customBannerBgImage,
+  recruitBgImage
+}: HomeViewProps) {
   
   // Split products for display (Acrylic / Eco keyring list requested in prompt)
   const keyrings = products.filter(p => p.category === 'keyring');
@@ -31,16 +45,26 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
   // Slide indicator state for Hero section
   const [heroSlide, setHeroSlide] = useState(0);
 
+  const isDarkBg = heroSlide === 1 || (heroSlide === 0 && !!slide1BgImage);
+
   // Hero carousel sliders
   const slides = [
     {
       title: 'A PLACE OF att.',
       sub: '놀라움이 가득한 장소, 일상 속 특별한 패션과 취향을 붙이는 룩을 지향합니다.',
       visual: (
-        <div className="absolute inset-0 flex items-center justify-end bg-stone-50 overflow-hidden">
+        <div 
+          style={slide1BgImage ? { backgroundImage: `url(${slide1BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
+          className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
+            slide1BgImage ? '' : 'bg-stone-50'
+          }`}
+        >
+          {slide1BgImage && (
+            <div className="absolute inset-0 bg-black/60 z-0 pointer-events-none" />
+          )}
           {/* Outline decorative typography */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
-            <span className="font-sans font-black text-[22vw] leading-none tracking-widest text-black">ATT.</span>
+            <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide1BgImage ? 'text-white' : 'text-black'}`}>ATT.</span>
           </div>
           
           {/* Right positioned Wappen Cards Container */}
@@ -126,23 +150,105 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
       title: 'SEASON ESSENTIAL',
       sub: '트렌디한 감성과 고밀도 가치를 선사하는 독창적인 데일리 패션 라인업',
       visual: (
-        <div className="absolute inset-0 bg-stone-100 flex items-center justify-center overflow-hidden">
-          <div className="relative w-full h-full flex items-center justify-center px-10">
-            <div className="text-center max-w-xl">
-              <span className="text-[11px] font-mono text-stone-500 font-bold tracking-[0.3em] block mb-4 uppercase">NEW RELEASE</span>
-              <h3 className="text-2xl md:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight uppercase">
-                FALL WINTER CAPSULE<br />EDITORIAL LOOK
-              </h3>
-              <p className="text-xs font-semibold text-stone-500 mt-4 leading-relaxed max-w-md mx-auto">
-                가장 정교한 디테일과 편안함을 선사하는 FW 캐주얼 레이어드를 지금 확인해 보세요.
-              </p>
-              <button 
-                onClick={() => onNavigate('shop')}
-                className="mt-6 border border-stone-800 text-stone-900 hover:bg-stone-900 hover:text-white px-6 py-2.5 text-xs font-bold tracking-widest transition-all uppercase"
-              >
-                GO STORES —
-              </button>
+        <div 
+          style={slide2BgImage ? { backgroundImage: `url(${slide2BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
+          className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
+            slide2BgImage ? '' : 'bg-neutral-950 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:16px_16px]'
+          }`}
+        >
+          {/* Dark Overlay for text contrast */}
+          <div className={`absolute inset-0 z-0 pointer-events-none transition-colors ${
+            slide2BgImage ? 'bg-black/70' : 'bg-black/55'
+          }`} />
+
+          {/* B&W Street collage/patch graphics fallback when no custom background */}
+          {!slide2BgImage && (
+            <div className="absolute inset-0 pointer-events-none select-none opacity-25 z-0">
+              <div className="absolute -top-10 -left-10 w-96 h-20 bg-white/5 rotate-[35deg] border-y border-white/10" />
+              <div className="absolute -bottom-10 -right-10 w-96 h-24 bg-white/5 rotate-[35deg] border-y border-white/10" />
+              
+              {/* Big bold retro street collage words */}
+              <div className="absolute top-10 left-12 text-white/5 font-sans font-black text-[7vw] tracking-wider uppercase">
+                STREET
+              </div>
+              <div className="absolute bottom-10 left-24 text-white/5 font-sans font-black text-[6vw] tracking-wider uppercase">
+                COLLAGE
+              </div>
+
+              {/* Decorative boxes as raw street sticker bases */}
+              <div className="absolute top-1/4 left-1/4 w-32 h-16 border border-white/10 rotate-[-12deg] bg-white/[0.01]" />
+              <div className="absolute bottom-1/3 left-1/3 w-24 h-24 border border-dashed border-white/10 rotate-[15deg]" />
+              <div className="absolute top-1/3 right-1/4 w-40 h-40 rounded-full border border-dashed border-white/5 animate-[spin_40s_linear_infinite]" />
             </div>
+          )}
+
+          {/* Outline decorative typography in background */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.05]">
+            <span className="font-sans font-black text-[22vw] leading-none tracking-widest text-white/10">CUSTOM</span>
+          </div>
+
+          <div className="relative z-10 flex flex-col md:flex-row gap-4 md:gap-6 pr-6 sm:pr-12 md:pr-24 lg:pr-32 xl:pr-48 pl-4 items-center">
+            
+            {/* Promotion & Action card */}
+            <div className="w-64 sm:w-72 bg-white border-2 border-black p-5 relative flex flex-col justify-between rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] text-left">
+              <div>
+                <span className="bg-[#FF1493] text-white text-[9px] font-mono font-black px-2 py-0.5 tracking-wider uppercase mb-3 inline-block">
+                  WAPPEN EXPERIENCE
+                </span>
+                
+                <h3 className="text-xl font-black text-stone-900 leading-tight uppercase">
+                  WAPPEN CUSTOM LOOK
+                </h3>
+                
+                <p className="text-[11px] font-semibold text-stone-500 mt-2 leading-relaxed">
+                  나만의 스트릿 무드를 담은 특별한 커스텀 패치! 새로 론칭된 다양한 그래픽 와펜들을 직접 매치해보고 나만의 룩을 창조해보세요.
+                </p>
+              </div>
+
+              <div className="mt-5">
+                <button 
+                  onClick={() => onNavigate('shop', undefined, 'wappen')}
+                  className="w-full bg-black text-[#39FF14] hover:bg-[#39FF14] hover:text-black font-black text-xs py-3 px-4 border-2 border-black tracking-widest text-center transition-all duration-300 shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none uppercase cursor-pointer"
+                >
+                  체험 이벤트 보기
+                </button>
+              </div>
+            </div>
+
+            {/* Wappen Cards Showcase with Square Images, NO prices, only names/categories */}
+            <div className="hidden lg:flex flex-col gap-3">
+              {wappens.slice(0, 2).map((wappen) => (
+                <div 
+                  key={wappen.id}
+                  onClick={() => onNavigate('detail', wappen.id)}
+                  className="cursor-pointer w-48 bg-[#FFFDF0] border-2 border-black p-3 rounded-lg shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-3"
+                >
+                  {/* Square Image Area */}
+                  <div className="w-14 h-14 bg-white border border-stone-200 rounded flex items-center justify-center overflow-hidden shrink-0 p-1">
+                    {wappen.images && wappen.images[0] ? (
+                      <img 
+                        src={wappen.images[0]} 
+                        alt={wappen.name} 
+                        className="w-full h-full object-contain pointer-events-none" 
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="w-6 h-6 bg-stone-200 rounded-full" />
+                    )}
+                  </div>
+                  
+                  <div className="min-w-0">
+                    <span className="text-[8px] bg-[#39FF14] text-black font-mono font-black px-1.5 py-0.5 tracking-wider uppercase inline-block mb-1">
+                      {wappen.category.toUpperCase()}
+                    </span>
+                    <p className="text-[10px] md:text-[11px] font-black text-stone-900 leading-tight truncate">
+                      {wappen.name}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
           </div>
         </div>
       )
@@ -163,27 +269,31 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
       <section id="hero-slider-section" className="w-full relative h-[500px] md:h-[620px] bg-white overflow-hidden border-b border-stone-100">
         
         {/* Floating Vertical Slide Indicator */}
-        <div className="absolute left-6 md:left-10 top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col space-y-6 text-stone-400 font-mono text-[11px] font-bold">
-          <button onClick={() => setHeroSlide(0)} className={`transition-all text-left flex items-center gap-2 ${heroSlide === 0 ? 'text-black font-extrabold translate-x-1' : 'hover:text-black'}`}>
+        <div className={`absolute left-6 md:left-10 top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col space-y-6 font-mono text-[11px] font-bold transition-colors duration-300 ${isDarkBg ? 'text-stone-400' : 'text-stone-400'}`}>
+          <button onClick={() => setHeroSlide(0)} className={`transition-all text-left flex items-center gap-2 ${heroSlide === 0 ? (isDarkBg ? 'text-white font-extrabold translate-x-1' : 'text-black font-extrabold translate-x-1') : (isDarkBg ? 'hover:text-white text-stone-500' : 'hover:text-black')}`}>
             <span>— 01</span>
           </button>
-          <button onClick={() => setHeroSlide(1)} className={`transition-all text-left flex items-center gap-2 ${heroSlide === 1 ? 'text-black font-extrabold translate-x-1' : 'hover:text-black'}`}>
+          <button onClick={() => setHeroSlide(1)} className={`transition-all text-left flex items-center gap-2 ${heroSlide === 1 ? (isDarkBg ? 'text-white font-extrabold translate-x-1' : 'text-black font-extrabold translate-x-1') : (isDarkBg ? 'hover:text-white text-stone-500' : 'hover:text-black')}`}>
             <span>— 02</span>
           </button>
         </div>
 
         {/* Floating Vertical Social links on bottom-left */}
-        <div className="absolute left-6 md:left-10 bottom-8 z-20 hidden md:flex flex-col space-y-3 font-mono text-[10px] font-bold text-stone-500 uppercase tracking-widest">
-          <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-black transition-colors rotate-90 origin-left mt-8 block">facebook</a>
-          <a href="https://www.instagram.com/att_attached/" target="_blank" rel="noreferrer" className="hover:text-black transition-colors rotate-90 origin-left mt-10 block">instagram</a>
-          <a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-black transition-colors rotate-90 origin-left mt-8 block font-semibold">youtube</a>
+        <div className={`absolute left-6 md:left-10 bottom-8 z-20 hidden md:flex flex-col space-y-3 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${isDarkBg ? 'text-stone-400' : 'text-stone-500'}`}>
+          <a href="https://facebook.com" target="_blank" rel="noreferrer" className={`transition-colors rotate-90 origin-left mt-8 block ${isDarkBg ? 'hover:text-white' : 'hover:text-black'}`}>facebook</a>
+          <a href="https://www.instagram.com/att_attached/" target="_blank" rel="noreferrer" className={`transition-colors rotate-90 origin-left mt-10 block ${isDarkBg ? 'hover:text-white' : 'hover:text-black'}`}>instagram</a>
+          <a href="https://youtube.com" target="_blank" rel="noreferrer" className={`transition-colors rotate-90 origin-left mt-8 block font-semibold ${isDarkBg ? 'hover:text-white' : 'hover:text-black'}`}>youtube</a>
         </div>
 
         {/* Floating Large Title Text over Slider (Image 1) */}
-        <div className="absolute left-6 md:left-32 top-16 md:top-20 z-10 text-left max-w-xl pointer-events-none">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-black tracking-tight leading-none uppercase">
+        <div className={`absolute left-6 md:left-32 top-16 md:top-20 z-10 text-left max-w-xl pointer-events-none transition-colors duration-300 ${
+          isDarkBg ? 'text-white' : 'text-black'
+        }`}>
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-none uppercase">
             NO.1<br />
-            <span className="text-stone-900 font-medium text-lg sm:text-xl md:text-2xl tracking-normal block mt-2.5">
+            <span className={`font-medium text-lg sm:text-xl md:text-2xl tracking-normal block mt-2.5 transition-colors ${
+              isDarkBg ? 'text-white/90' : 'text-stone-900'
+            }`}>
               커스텀 패치 편집샵
             </span>
             <span className="tracking-[0.1em] font-black text-2xl md:text-3xl mt-1 block">
@@ -191,11 +301,17 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
             </span>
           </h1>
 
-          <div className="mt-8 border-l border-stone-400 pl-4 max-w-sm">
-            <h4 className="text-[11px] font-mono font-bold tracking-widest text-stone-900 uppercase">
+          <div className={`mt-8 border-l pl-4 max-w-sm transition-colors ${
+            isDarkBg ? 'border-white/30' : 'border-stone-400'
+          }`}>
+            <h4 className={`text-[11px] font-mono font-bold tracking-widest uppercase transition-colors ${
+              isDarkBg ? 'text-white' : 'text-stone-900'
+            }`}>
               ATTACH
             </h4>
-            <p className="text-[11px] text-stone-500 leading-relaxed font-semibold mt-2">
+            <p className={`text-[11px] leading-relaxed font-semibold mt-2 transition-colors ${
+              isDarkBg ? 'text-stone-300' : 'text-stone-500'
+            }`}>
               att.(어태치)는 놀라움이 가득한 장소 라는 슬로건으로 다양한 패션+라이프를 제안하며 차별화된 룩과 독창적 정체성을 지향하는 패션 편집 플랫폼입니다.
             </p>
           </div>
@@ -233,65 +349,116 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
 
       </section>
 
-      {/* 2. ABOUT SECTION: MAKE FUN PLACE (Image 2 & 3) */}
-      <section id="about-section" className="w-full max-w-7xl mx-auto px-6 md:px-12 text-left relative overflow-hidden">
-        
-        {/* Giant Watermark outline typography in background (Image 3) */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none opacity-[0.02] text-center w-full z-0 whitespace-nowrap">
-          <p className="font-sans font-black text-[12vw] tracking-[0.1em] text-black">ATTACH</p>
-          <p className="font-sans font-black text-[12vw] tracking-[0.1em] text-black">A PLACE OF ATT</p>
+      {/* 2. ABOUT SECTION: STREET CULTURE PLAYGROUND (Image 2 & 3) */}
+      <section 
+        id="about-section" 
+        style={aboutBgImage ? { backgroundImage: `url(${aboutBgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
+        className={`w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-16 py-16 md:py-24 rounded-2xl border-4 border-black shadow-[8px_8px_0px_rgba(0,0,0,1)] text-left relative overflow-hidden transition-all duration-300 ${
+          aboutBgImage ? '' : 'bg-stone-950 bg-[radial-gradient(rgba(255,20,147,0.15)_1px,transparent_1px)] [background-size:20px_20px]'
+        }`}
+      >
+        {/* Semi-transparent black overlay for legibility */}
+        <div className={`absolute inset-0 z-0 pointer-events-none transition-colors ${
+          aboutBgImage ? 'bg-black/75' : 'bg-black/50'
+        }`} />
+
+        {/* Decorative Grid Lines / Cyber Street Elements (when no image) */}
+        {!aboutBgImage && (
+          <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#39FF14] to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF1493] to-transparent" />
+            <div className="absolute top-1/4 left-10 w-24 h-24 border border-dashed border-[#39FF14] rounded-full animate-[spin_20s_linear_infinite]" />
+            <div className="absolute bottom-1/4 right-10 w-32 h-32 border border-dashed border-[#FF1493] rounded-full animate-[spin_30s_linear_infinite]" />
+          </div>
+        )}
+
+        {/* Giant Watermark outline typography in background */}
+        <div className="absolute bottom-4 right-6 select-none pointer-events-none opacity-[0.04] text-right z-0 hidden md:block">
+          <p className="font-sans font-black text-[10vw] tracking-tighter leading-none text-white">STREET</p>
+          <p className="font-sans font-black text-[10vw] tracking-tighter leading-none text-white">PLAYGROUND</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 text-white">
           
           {/* Left Text Block */}
           <div className="lg:col-span-6 space-y-6">
-            <span className="text-[10px] font-mono tracking-[0.3em] font-black text-stone-400 block uppercase">
-              ABOUT
-            </span>
-            <h2 className="text-3xl md:text-5xl font-black text-black leading-tight tracking-[0.02em] uppercase">
-              MAKE FUN PLACE<br />
-              <span className="font-sans font-medium text-stone-400">ATT. PLACE</span>
+            <div className="inline-flex items-center gap-2">
+              <span className="bg-[#39FF14] text-black text-[10px] font-mono font-black px-2.5 py-1 uppercase tracking-widest rounded-sm">
+                STREET ARCHIVE
+              </span>
+              <span className="text-[10px] font-mono tracking-[0.2em] font-black text-stone-400 uppercase">
+                EST. 2026
+              </span>
+            </div>
+            
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-[0.01em] uppercase">
+              STICK YOUR VIBE,<br />
+              <span className="text-[#FF1493]">RULE THE STREET!</span>
             </h2>
-            <p className="text-xs sm:text-sm font-semibold text-stone-600 leading-relaxed max-w-xl">
-              국내외 'UP & COMING' 브랜드, 'FRESH & UNIQUE' 신진 디자이너 레이블, 'TRENDY & SEASONAL ESSENTIAL' 패션 제품 등... 다양하고 특별한 라인업을 통해 차별화된 패션을 지향합니다.
+            
+            <p className="text-xs sm:text-sm font-semibold text-stone-300 leading-relaxed max-w-xl">
+              어태치(att.)는 나만의 서브컬처적 취향과 힙한 영감을 일상 속 의류, 가방, 아웃도어 기물에 거침없이 붙여 표현하는 국내 유일의 1:1 스트릿 커스텀 와펜 플랫폼입니다. 정형화된 일상에 자신만의 아트웍 패치를 더해 룩을 수선해 보세요!
             </p>
+            
             <div className="pt-2">
               <button 
                 onClick={() => onNavigate('shop')}
-                className="group border border-stone-850 text-stone-900 hover:bg-black hover:text-white font-bold text-xs tracking-widest px-6 py-3.5 transition-all flex items-center gap-2 uppercase"
+                className="group bg-[#39FF14] text-black hover:bg-white hover:text-black font-black text-xs tracking-widest px-8 py-4 transition-all duration-300 flex items-center gap-2 uppercase border-2 border-black shadow-[4px_4px_0px_rgba(255,20,147,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
               >
-                <span>MORE —</span>
+                <span>GET THE PATCHES ↗</span>
               </button>
             </div>
           </div>
 
-          {/* Right Floating Overlapping Circles Block (Image 2 & 3) */}
-          <div className="lg:col-span-6 flex justify-center items-center h-[280px] sm:h-[350px] relative">
+          {/* Right Street Culture Bento Badges Grid (Completely responsive and non-overlapping!) */}
+          <div className="lg:col-span-6 grid grid-cols-2 gap-4 w-full">
             
-            {/* Circle 1: TRENDY (with outline border diamond) */}
-            <div className="absolute top-4 left-6 sm:left-12 w-32 h-32 rounded-full bg-stone-100 hover:bg-stone-200 border border-dashed border-stone-400 flex flex-col items-center justify-center p-3 text-center transition-all duration-300 hover:scale-105 shadow-sm z-20">
-              <span className="text-[10px] font-mono font-bold text-stone-400">01</span>
-              <span className="text-xs font-black tracking-wider text-stone-950 mt-1">TRENDY</span>
+            {/* Patch Card 1 */}
+            <div className="bg-stone-900/80 backdrop-blur-xs border-2 border-stone-850 p-4 rounded-xl flex flex-col justify-between h-36 hover:border-[#39FF14] transition-all group shadow-md">
+              <div className="flex justify-between items-start">
+                <span className="text-[10px] font-mono text-[#39FF14] font-black bg-[#39FF14]/10 px-2 py-0.5 rounded">01 / STICK</span>
+                <span className="w-2 h-2 rounded-full bg-[#39FF14] group-hover:animate-ping" />
+              </div>
+              <div>
+                <p className="text-sm font-black text-white uppercase tracking-wider group-hover:text-[#39FF14] transition-colors">WAPPEN PLAY</p>
+                <p className="text-[10px] text-stone-400 mt-1 font-semibold">의류, 가구 등 어디든 커스텀 부착</p>
+              </div>
             </div>
 
-            {/* Circle 2: FRESH (solid black) */}
-            <div className="absolute top-16 right-6 sm:right-12 w-36 h-36 rounded-full bg-black flex flex-col items-center justify-center p-4 text-center transition-all duration-300 hover:scale-105 shadow-md z-30 text-white">
-              <span className="text-[10px] font-mono text-stone-400 font-bold">02</span>
-              <span className="text-sm font-black tracking-widest mt-1">FRESH</span>
-              <span className="text-[9px] text-stone-500 font-mono mt-1">UNIQUE ATTS</span>
+            {/* Patch Card 2 */}
+            <div className="bg-stone-900/80 backdrop-blur-xs border-2 border-stone-850 p-4 rounded-xl flex flex-col justify-between h-36 hover:border-[#FF1493] transition-all group shadow-md">
+              <div className="flex justify-between items-start">
+                <span className="text-[10px] font-mono text-[#FF1493] font-black bg-[#FF1493]/10 px-2 py-0.5 rounded">02 / GRAPHIC</span>
+                <span className="w-2 h-2 rounded-full bg-[#FF1493] group-hover:animate-ping" />
+              </div>
+              <div>
+                <p className="text-sm font-black text-white uppercase tracking-wider group-hover:text-[#FF1493] transition-colors">HIP DESIGNS</p>
+                <p className="text-[10px] text-stone-400 mt-1 font-semibold">서브컬처 감성의 수제 그래픽 아트</p>
+              </div>
             </div>
 
-            {/* Circle 3: ESSENTIAL (half-layered black) */}
-            <div className="absolute bottom-4 left-16 sm:left-32 w-32 h-32 rounded-full bg-stone-900 text-stone-100 flex flex-col items-center justify-center p-3 text-center transition-all duration-300 hover:scale-105 shadow-md z-40">
-              <span className="text-[10px] font-mono text-stone-400 font-bold">03</span>
-              <span className="text-xs font-black tracking-widest mt-1">ESSENTIAL</span>
+            {/* Patch Card 3 */}
+            <div className="bg-stone-900/80 backdrop-blur-xs border-2 border-stone-850 p-4 rounded-xl flex flex-col justify-between h-36 hover:border-[#39FF14] transition-all group shadow-md">
+              <div className="flex justify-between items-start">
+                <span className="text-[10px] font-mono text-[#39FF14] font-black bg-[#39FF14]/10 px-2 py-0.5 rounded">03 / CREATOR</span>
+                <span className="w-2 h-2 rounded-full bg-[#39FF14] group-hover:animate-ping" />
+              </div>
+              <div>
+                <p className="text-sm font-black text-white uppercase tracking-wider group-hover:text-[#39FF14] transition-colors">1:1 DIRECT</p>
+                <p className="text-[10px] text-stone-400 mt-1 font-semibold">커스텀 도안과 완벽한 밀착 소통</p>
+              </div>
             </div>
 
-            {/* Circle 4: UNIQUE (translucent gray) */}
-            <div className="absolute bottom-8 right-12 sm:right-24 w-28 h-28 rounded-full bg-stone-50 border border-stone-200 text-stone-800 flex flex-col items-center justify-center p-3 text-center transition-all duration-300 hover:scale-105 shadow-sm z-10">
-              <span className="text-[10px] font-mono text-stone-400">04</span>
-              <span className="text-xs font-bold mt-1">UNIQUE</span>
+            {/* Patch Card 4 */}
+            <div className="bg-stone-900/80 backdrop-blur-xs border-2 border-stone-850 p-4 rounded-xl flex flex-col justify-between h-36 hover:border-[#FF1493] transition-all group shadow-md">
+              <div className="flex justify-between items-start">
+                <span className="text-[10px] font-mono text-[#FF1493] font-black bg-[#FF1493]/10 px-2 py-0.5 rounded">04 / CREW</span>
+                <span className="w-2 h-2 rounded-full bg-[#FF1493] group-hover:animate-ping" />
+              </div>
+              <div>
+                <p className="text-sm font-black text-white uppercase tracking-wider group-hover:text-[#FF1493] transition-colors">att. ARCHIVE</p>
+                <p className="text-[10px] text-stone-400 mt-1 font-semibold">무한한 믹스매치 컬렉션 기획</p>
+              </div>
             </div>
 
           </div>
@@ -337,15 +504,27 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
         </div>
 
         {/* 1:1 Custom Request Banner */}
-        <div className="mt-12 bg-stone-50 border border-stone-200 p-8 text-center flex flex-col md:flex-row items-center justify-between gap-6 rounded-lg">
-          <div className="text-left space-y-1">
-            <span className="bg-black text-white text-[8px] font-mono font-bold px-2 py-0.5 rounded uppercase tracking-widest">att. SERVICE</span>
-            <h4 className="text-base font-extrabold text-stone-900 mt-1">1:1 맞춤형 나만의 아크릴 굿즈 제작 서비스</h4>
-            <p className="text-[11px] font-medium text-stone-500">인스타그램 가이드 상담을 통해 동아리나 개인 특별 각인 맞춤형 디자인을 요청하세요.</p>
+        <div 
+          style={customBannerBgImage ? { backgroundImage: `url(${customBannerBgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
+          className={`mt-12 p-8 text-center flex flex-col md:flex-row items-center justify-between gap-6 rounded-lg relative overflow-hidden transition-all duration-300 ${
+            customBannerBgImage ? 'border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)]' : 'bg-stone-50 border border-stone-200'
+          }`}
+        >
+          {customBannerBgImage && (
+            <div className="absolute inset-0 bg-black/60 z-0 pointer-events-none" />
+          )}
+          <div className="text-left space-y-1 relative z-10">
+            <span className={`text-[8px] font-mono font-bold px-2 py-0.5 rounded uppercase tracking-widest ${
+              customBannerBgImage ? 'bg-[#39FF14] text-black font-black' : 'bg-black text-white'
+            }`}>att. SERVICE</span>
+            <h4 className={`text-base font-extrabold mt-1 ${customBannerBgImage ? 'text-white' : 'text-stone-900'}`}>1:1 맞춤형 나만의 아크릴 굿즈 제작 서비스</h4>
+            <p className={`text-[11px] font-medium ${customBannerBgImage ? 'text-stone-200' : 'text-stone-500'}`}>인스타그램 가이드 상담을 통해 동아리나 개인 특별 각인 맞춤형 디자인을 요청하세요.</p>
           </div>
           <button 
             onClick={() => onNavigate('custom')}
-            className="bg-black hover:bg-stone-800 text-white font-bold text-xs tracking-widest px-6 py-3.5 transition-colors uppercase whitespace-nowrap"
+            className={`font-bold text-xs tracking-widest px-6 py-3.5 transition-all uppercase whitespace-nowrap relative z-10 border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer ${
+              customBannerBgImage ? 'bg-[#39FF14] text-black hover:bg-white hover:text-black' : 'bg-black text-white hover:bg-stone-800'
+            }`}
           >
             커스텀 오더 신청하기 —
           </button>
@@ -354,15 +533,30 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
       </section>
 
       {/* 5. RECRUIT SECTION (Interactive Careers Module matching Image 1 menu) */}
-      <section id="recruit-section" className="w-full max-w-7xl mx-auto px-6 md:px-12 text-left bg-stone-50 border border-stone-200 py-16 rounded-xl">
-        <div className="max-w-3xl space-y-6">
-          <span className="text-[10px] font-mono tracking-[0.3em] font-black text-stone-400 block uppercase">
+      <section 
+        id="recruit-section" 
+        style={recruitBgImage ? { backgroundImage: `url(${recruitBgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
+        className={`w-full max-w-7xl mx-auto px-6 md:px-12 text-left py-16 rounded-xl relative overflow-hidden transition-all duration-300 ${
+          recruitBgImage ? 'border-2 border-black shadow-[6px_6px_0px_rgba(0,0,0,1)]' : 'bg-stone-50 border border-stone-200'
+        }`}
+      >
+        {recruitBgImage && (
+          <div className="absolute inset-0 bg-black/60 z-0 pointer-events-none" />
+        )}
+        <div className="max-w-3xl space-y-6 relative z-10">
+          <span className={`text-[10px] font-mono tracking-[0.3em] font-black block uppercase ${
+            recruitBgImage ? 'text-[#39FF14]' : 'text-stone-400'
+          }`}>
             RECRUIT
           </span>
-          <h2 className="text-3xl md:text-5xl font-black text-stone-950 tracking-tight uppercase leading-none">
+          <h2 className={`text-3xl md:text-5xl font-black tracking-tight uppercase leading-none ${
+            recruitBgImage ? 'text-white' : 'text-stone-900'
+          }`}>
             GO FORWARD WITH ATT.
           </h2>
-          <p className="text-xs sm:text-sm font-semibold text-stone-600 leading-relaxed">
+          <p className={`text-xs sm:text-sm font-semibold leading-relaxed ${
+            recruitBgImage ? 'text-stone-200' : 'text-stone-600'
+          }`}>
             att.(어태치)는 새로운 시각으로 트렌드를 제안하며 지속 가능한 패션 가치를 탐구하는 라이프스타일 셀렉샵입니다. 
             우리와 함께 창의적인 영감을 나눌 열정 가득한 인재들을 언제나 기다리고 있습니다.
           </p>
@@ -372,21 +566,29 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
               href="mailto:collaboration@att-wappen.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-white border border-stone-200 p-5 hover:border-black hover:scale-[1.02] active:scale-[0.98] transition-all rounded-lg block group text-center md:text-left"
+              className={`border p-5 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-lg block group text-center md:text-left ${
+                recruitBgImage ? 'bg-black/60 border-stone-700 text-white hover:border-white' : 'bg-white border-stone-200 text-stone-850 hover:border-black'
+              }`}
             >
-              <Sparkles className="w-5 h-5 text-stone-500 mb-2 group-hover:text-black transition-colors mx-auto md:mx-0" />
-              <p className="font-bold text-stone-900 group-hover:text-black transition-colors">MARKETING CREW</p>
-              <p className="text-[10px] text-stone-400 mt-1 font-semibold">브랜드 협업 제안 문의하기 ↗</p>
+              <Sparkles className={`w-5 h-5 mb-2 group-hover:text-black transition-colors mx-auto md:mx-0 ${
+                recruitBgImage ? 'text-stone-400 group-hover:text-[#39FF14]' : 'text-stone-500'
+              }`} />
+              <p className={`font-bold group-hover:text-black transition-colors ${recruitBgImage ? 'text-[#39FF14]' : 'text-stone-900'}`}>MARKETING CREW</p>
+              <p className={`text-[10px] mt-1 font-semibold ${recruitBgImage ? 'text-stone-300' : 'text-stone-400'}`}>브랜드 협업 제안 문의하기 ↗</p>
             </a>
             <a 
               href="https://www.instagram.com/att_attached?igsh=MTNnczE4a25rdzlweg==" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-white border border-stone-200 p-5 hover:border-black hover:scale-[1.02] active:scale-[0.98] transition-all rounded-lg block group text-center md:text-left"
+              className={`border p-5 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-lg block group text-center md:text-left ${
+                recruitBgImage ? 'bg-black/60 border-stone-700 text-white hover:border-white' : 'bg-white border-stone-200 text-stone-850 hover:border-black'
+              }`}
             >
-              <MapPin className="w-5 h-5 text-stone-500 mb-2 group-hover:text-black transition-colors mx-auto md:mx-0" />
-              <p className="font-bold text-stone-900 group-hover:text-black transition-colors">RETAIL STORE</p>
-              <p className="text-[10px] text-stone-400 mt-1 font-semibold">att 인스타그램 ↗</p>
+              <MapPin className={`w-5 h-5 mb-2 group-hover:text-black transition-colors mx-auto md:mx-0 ${
+                recruitBgImage ? 'text-stone-400 group-hover:text-[#39FF14]' : 'text-stone-500'
+              }`} />
+              <p className={`font-bold group-hover:text-black transition-colors ${recruitBgImage ? 'text-[#39FF14]' : 'text-stone-900'}`}>RETAIL STORE</p>
+              <p className={`text-[10px] mt-1 font-semibold ${recruitBgImage ? 'text-stone-300' : 'text-stone-400'}`}>att 인스타그램 ↗</p>
             </a>
           </div>
         </div>

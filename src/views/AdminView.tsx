@@ -22,6 +22,16 @@ interface AdminViewProps {
   onAnswerInquiry: (inquiryId: string, reply: string) => void;
   onDeleteReview: (reviewId: string) => void;
   currentUser: User | null;
+  aboutBgImage?: string;
+  onUpdateAboutBgImage?: (url: string) => void;
+  slide2BgImage?: string;
+  onUpdateSlide2BgImage?: (url: string) => void;
+  slide1BgImage?: string;
+  onUpdateSlide1BgImage?: (url: string) => void;
+  customBannerBgImage?: string;
+  onUpdateCustomBannerBgImage?: (url: string) => void;
+  recruitBgImage?: string;
+  onUpdateRecruitBgImage?: (url: string) => void;
 }
 
 export default function AdminView({
@@ -38,6 +48,16 @@ export default function AdminView({
   onAnswerInquiry,
   onDeleteReview,
   currentUser,
+  aboutBgImage = '',
+  onUpdateAboutBgImage,
+  slide2BgImage = '',
+  onUpdateSlide2BgImage,
+  slide1BgImage = '',
+  onUpdateSlide1BgImage,
+  customBannerBgImage = '',
+  onUpdateCustomBannerBgImage,
+  recruitBgImage = '',
+  onUpdateRecruitBgImage,
 }: AdminViewProps) {
   if (!currentUser || currentUser.role !== 'admin') {
     return (
@@ -202,7 +222,7 @@ export default function AdminView({
         
         {/* TABS 1: Catalog Manager (CREATE AND EDIT PRODUCTS!) */}
         {adminTab === 'catalog' && (
-          <div id="catalog-control" className="flex flex-col gap-6">
+          <div id="catalog-control" className="flex flex-col gap-6 text-left">
             
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-stone-800 uppercase tracking-widest">🛍️ 기성 스토어 키링 카탈로그 수정</h3>
@@ -215,6 +235,343 @@ export default function AdminView({
                   <span>신규 키링 등록 추가</span>
                 </button>
               )}
+            </div>
+
+            {/* MAIN VIEW IMAGES CUSTOMIZATION DASHBOARD */}
+            <div className="bg-[#FFFDF0] border-2 border-black p-5 rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] animate-fade-in space-y-4">
+              <div>
+                <span className="bg-[#FF1493] text-white text-[9px] font-mono font-black px-2 py-0.5 tracking-wider rounded uppercase">
+                  VISUALS & IMAGES STUDIO
+                </span>
+                <h3 className="text-sm font-black text-stone-900 mt-1">🎨 메인 홈화면 모든 영역 배경 이미지 커스텀 관리</h3>
+                <p className="text-[11px] text-stone-500 font-semibold leading-relaxed">
+                  원하는 이미지 파일을 업로드하여 홈화면의 주요 영역 배경을 자유롭게 교체하고 실시간으로 반영할 수 있습니다.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                {/* 1. HERO SLIDE 1 BG */}
+                <div className="bg-white border border-stone-200 rounded-lg p-3 flex flex-col justify-between gap-3 text-left">
+                  <div>
+                    <span className="text-[8px] bg-black text-[#39FF14] px-1.5 py-0.5 font-mono font-bold tracking-wider rounded uppercase">
+                      SLIDE 01
+                    </span>
+                    <h4 className="text-xs font-black text-stone-900 mt-1">슬라이드 1번 배경 (A PLACE OF att.)</h4>
+                    <p className="text-[10px] text-stone-400 font-semibold leading-normal mt-0.5">
+                      첫 번째 메인 배너 슬라이드의 배경 이미지입니다.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 mt-1">
+                    {slide1BgImage ? (
+                      <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
+                        <img src={slide1BgImage} alt="SLIDE 1 BG" className="w-full h-full object-cover" />
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateSlide1BgImage?.('')}
+                          className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
+                        >
+                          <Trash className="w-2.5 h-2.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded border border-dashed border-stone-300 bg-stone-50 text-[9px] text-stone-400 font-bold flex items-center justify-center shrink-0">
+                        기본 회색
+                      </div>
+                    )}
+
+                    <div className="flex-1 flex flex-col gap-1">
+                      <input 
+                        type="file" 
+                        id="slide1-bg-admin-upload" 
+                        accept="image/*" 
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const r = new FileReader();
+                            r.onloadend = () => onUpdateSlide1BgImage?.(r.result as string);
+                            r.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                      <label 
+                        htmlFor="slide1-bg-admin-upload"
+                        className="cursor-pointer bg-black text-[#39FF14] hover:bg-[#39FF14] hover:text-black font-black text-[10px] py-1.5 px-3 border border-black rounded text-center transition-all duration-200 block"
+                      >
+                        업로드
+                      </label>
+                      {slide1BgImage && (
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateSlide1BgImage?.('')}
+                          className="text-[9px] text-rose-500 font-bold hover:underline text-center"
+                        >
+                          기본 복원
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. HERO SLIDE 2 BG */}
+                <div className="bg-white border border-stone-200 rounded-lg p-3 flex flex-col justify-between gap-3 text-left">
+                  <div>
+                    <span className="text-[8px] bg-black text-[#39FF14] px-1.5 py-0.5 font-mono font-bold tracking-wider rounded uppercase">
+                      SLIDE 02
+                    </span>
+                    <h4 className="text-xs font-black text-stone-900 mt-1">슬라이드 2번 배경 (WAPPEN CUSTOM LOOK)</h4>
+                    <p className="text-[10px] text-stone-400 font-semibold leading-normal mt-0.5">
+                      체험 이벤트 소개용 두 번째 배너 배경 이미지입니다.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 mt-1">
+                    {slide2BgImage ? (
+                      <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
+                        <img src={slide2BgImage} alt="SLIDE 2 BG" className="w-full h-full object-cover" />
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateSlide2BgImage?.('')}
+                          className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
+                        >
+                          <Trash className="w-2.5 h-2.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded border border-dashed border-stone-300 bg-stone-50 text-[9px] text-stone-400 font-bold flex items-center justify-center shrink-0">
+                        기본 그래픽
+                      </div>
+                    )}
+
+                    <div className="flex-1 flex flex-col gap-1">
+                      <input 
+                        type="file" 
+                        id="slide2-bg-admin-upload" 
+                        accept="image/*" 
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const r = new FileReader();
+                            r.onloadend = () => onUpdateSlide2BgImage?.(r.result as string);
+                            r.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                      <label 
+                        htmlFor="slide2-bg-admin-upload"
+                        className="cursor-pointer bg-black text-[#39FF14] hover:bg-[#39FF14] hover:text-black font-black text-[10px] py-1.5 px-3 border border-black rounded text-center transition-all duration-200 block"
+                      >
+                        업로드
+                      </label>
+                      {slide2BgImage && (
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateSlide2BgImage?.('')}
+                          className="text-[9px] text-rose-500 font-bold hover:underline text-center"
+                        >
+                          기본 복원
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. ABOUT SECTION BG */}
+                <div className="bg-white border border-stone-200 rounded-lg p-3 flex flex-col justify-between gap-3 text-left">
+                  <div>
+                    <span className="text-[8px] bg-black text-[#39FF14] px-1.5 py-0.5 font-mono font-bold tracking-wider rounded uppercase">
+                      ABOUT BG
+                    </span>
+                    <h4 className="text-xs font-black text-stone-900 mt-1">ABOUT 섹션 배경 (STICK YOUR VIBE)</h4>
+                    <p className="text-[10px] text-stone-400 font-semibold leading-normal mt-0.5">
+                      브랜드 아이덴티티 및 장점을 소개하는 중간 섹션입니다.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 mt-1">
+                    {aboutBgImage ? (
+                      <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
+                        <img src={aboutBgImage} alt="ABOUT BG" className="w-full h-full object-cover" />
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateAboutBgImage?.('')}
+                          className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
+                        >
+                          <Trash className="w-2.5 h-2.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded border border-dashed border-stone-300 bg-stone-50 text-[9px] text-stone-400 font-bold flex items-center justify-center shrink-0">
+                        기본 그래픽
+                      </div>
+                    )}
+
+                    <div className="flex-1 flex flex-col gap-1">
+                      <input 
+                        type="file" 
+                        id="about-bg-admin-upload" 
+                        accept="image/*" 
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const r = new FileReader();
+                            r.onloadend = () => onUpdateAboutBgImage?.(r.result as string);
+                            r.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                      <label 
+                        htmlFor="about-bg-admin-upload"
+                        className="cursor-pointer bg-black text-[#39FF14] hover:bg-[#39FF14] hover:text-black font-black text-[10px] py-1.5 px-3 border border-black rounded text-center transition-all duration-200 block"
+                      >
+                        업로드
+                      </label>
+                      {aboutBgImage && (
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateAboutBgImage?.('')}
+                          className="text-[9px] text-rose-500 font-bold hover:underline text-center"
+                        >
+                          기본 복원
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4. CUSTOM ORDER BANNER BG */}
+                <div className="bg-white border border-stone-200 rounded-lg p-3 flex flex-col justify-between gap-3 text-left">
+                  <div>
+                    <span className="text-[8px] bg-black text-[#39FF14] px-1.5 py-0.5 font-mono font-bold tracking-wider rounded uppercase">
+                      SERVICE BANNER
+                    </span>
+                    <h4 className="text-xs font-black text-stone-900 mt-1">1:1 아크릴 맞춤 제작 배너 배경</h4>
+                    <p className="text-[10px] text-stone-400 font-semibold leading-normal mt-0.5">
+                      스토어 하단의 1:1 커스텀 오더 신청 유도 배너입니다.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 mt-1">
+                    {customBannerBgImage ? (
+                      <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
+                        <img src={customBannerBgImage} alt="CUSTOM BANNER BG" className="w-full h-full object-cover" />
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateCustomBannerBgImage?.('')}
+                          className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
+                        >
+                          <Trash className="w-2.5 h-2.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded border border-dashed border-stone-300 bg-stone-50 text-[9px] text-stone-400 font-bold flex items-center justify-center shrink-0">
+                        기본 회색
+                      </div>
+                    )}
+
+                    <div className="flex-1 flex flex-col gap-1">
+                      <input 
+                        type="file" 
+                        id="custom-banner-bg-admin-upload" 
+                        accept="image/*" 
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const r = new FileReader();
+                            r.onloadend = () => onUpdateCustomBannerBgImage?.(r.result as string);
+                            r.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                      <label 
+                        htmlFor="custom-banner-bg-admin-upload"
+                        className="cursor-pointer bg-black text-[#39FF14] hover:bg-[#39FF14] hover:text-black font-black text-[10px] py-1.5 px-3 border border-black rounded text-center transition-all duration-200 block"
+                      >
+                        업로드
+                      </label>
+                      {customBannerBgImage && (
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateCustomBannerBgImage?.('')}
+                          className="text-[9px] text-rose-500 font-bold hover:underline text-center"
+                        >
+                          기본 복원
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 5. RECRUIT BG */}
+                <div className="bg-white border border-stone-200 rounded-lg p-3 flex flex-col justify-between gap-3 text-left">
+                  <div>
+                    <span className="text-[8px] bg-black text-[#39FF14] px-1.5 py-0.5 font-mono font-bold tracking-wider rounded uppercase">
+                      RECRUIT BG
+                    </span>
+                    <h4 className="text-xs font-black text-stone-900 mt-1">인재 채용 / RECRUIT 섹션 배경</h4>
+                    <p className="text-[10px] text-stone-400 font-semibold leading-normal mt-0.5">
+                      협업 제안 및 브랜드 가치 소개 채용 섹션 배경입니다.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 mt-1">
+                    {recruitBgImage ? (
+                      <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
+                        <img src={recruitBgImage} alt="RECRUIT BG" className="w-full h-full object-cover" />
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateRecruitBgImage?.('')}
+                          className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
+                        >
+                          <Trash className="w-2.5 h-2.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded border border-dashed border-stone-300 bg-stone-50 text-[9px] text-stone-400 font-bold flex items-center justify-center shrink-0">
+                        기본 회색
+                      </div>
+                    )}
+
+                    <div className="flex-1 flex flex-col gap-1">
+                      <input 
+                        type="file" 
+                        id="recruit-bg-admin-upload" 
+                        accept="image/*" 
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const r = new FileReader();
+                            r.onloadend = () => onUpdateRecruitBgImage?.(r.result as string);
+                            r.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                      <label 
+                        htmlFor="recruit-bg-admin-upload"
+                        className="cursor-pointer bg-black text-[#39FF14] hover:bg-[#39FF14] hover:text-black font-black text-[10px] py-1.5 px-3 border border-black rounded text-center transition-all duration-200 block"
+                      >
+                        업로드
+                      </label>
+                      {recruitBgImage && (
+                        <button 
+                          type="button"
+                          onClick={() => onUpdateRecruitBgImage?.('')}
+                          className="text-[9px] text-rose-500 font-bold hover:underline text-center"
+                        >
+                          기본 복원
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
 
             {/* Editing and creating Form */}
