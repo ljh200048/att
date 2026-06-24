@@ -1,6 +1,6 @@
 {
-  "name": "닥터마틴 공식 온라인 스토어",
-  "description": "닥터마틴 코리아 공식 온라인 스토어 컨셉 목업입니다. 시그니처 옐로우 하이라이트 스타일링, MID SEASON SALE 메인 배너 슬라이더, KEY ITEMS 서클 그리드, 마일즈/보스 II 샌들 세일 슬라이드쇼, STYLE EDIT 커뮤니티 착샷 이미지 업로드 모듈, 디테일한 상품 상세 피팅 가이드 및 실시간 주문 트래커가 작동합니다.",
+  "name": "att (어태치)",
+  "description": "어태치(att) 공식 온라인 힙스터 커스텀 스토어입니다. 고밀도 시그니처 아크릴 키링과 영롱한 올드스쿨 컴퓨터 수제 자수 와펜 패치를 붙여 나만의 독특하고 힙한 스타일을 마음껏 빌드해보세요. 1:1 커스텀 주문서 제작부터 실시간 주문 상태 조회, 관리자 콘솔 전경이 함께 제공됩니다.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

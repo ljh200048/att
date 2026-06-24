@@ -362,7 +362,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     discountRate: 29,
     description: '어태치(att)만의 힙하고 유니크한 취향을 붙이는 핫핑크 고밀도 아크릴 하트 키링입니다. 투명하고 선명한 마감광택과 탄탄한 볼체인 마운트로 옷, 파우치, 헤드폰 케이스 백참 등 최상의 코디력을 선사합니다.',
     category: 'keyring',
-    images: ['https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80'],
+    images: [pinkHeartKeyringSvg],
     colors: ['핫핑크', '라임그린', '네온블루'],
     options: ['실버 볼체인형', '핑크 컬러볼체인 추가 (+500원)', '키치 하트 고리 추가 (+1000원)'],
     size: '가로 4.5cm x 세로 5cm (체인 총길이 약 10cm)',
@@ -381,7 +381,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     discountRate: 23,
     description: 'Instagram 피드의 선풍적인 인기를 끌었던 바로 그 모델! 도톰하게 직조 가공한 화이트 직물 스트랩에 입체적인 아크릴 로고 단독 마운트를 얹어 Y2K 감성의 힙하고 깔끔한 뒤축 코디력을 완성합니다. D-링 금장/은장 고리 기본 커스텀 사양.',
     category: 'keyring',
-    images: ['https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=600&q=80'],
+    images: [customStrapWhiteSWSvg],
     colors: ['오프화이트', '매트블랙', '라임그린'],
     options: ['정규 실버 서지컬 클래스형', '골드 하이클래스 버클 마운트 추가 (+1500원)', '키홀더 이니셜 추가각인 (+1000원)'],
     size: '스트랩 가로 2.5cm x 총길이 14.5cm (기성 마운트 최적화)',
@@ -400,7 +400,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     discountRate: 23,
     description: '힙스터들의 최애 조합! 블랙 탄탄 코튼 하이드 스트랩에 한땀씩 고품격 수작업 컴퓨터 자수로 직조한 올드 카우 어코스틱기타 자수 와펜과 sky-blue 비행기 패치, 그리고 A와 G 두터운 자수 이니셜이 세트로 배치되어 강렬한 개성을 연출합니다.',
     category: 'keyring',
-    images: ['https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80'],
+    images: [customStrapBlackGuitarSvg],
     colors: ['딥블랙 스트랩', '밀크화이트 스트랩', '베이비핑크 스트랩'],
     options: ['앤틱골드 크로스버클 패키지 (기본)', '랍스터 원터치 카라비너 세트 (+1000원)'],
     size: '가로 3cm x 길이 15cm (자수 전면 마운트 스케일)',
@@ -419,7 +419,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     discountRate: 21,
     description: 'Instagram 실시간 문의 주문 폭발 모델! 매끄럽고 부드러운 화이트 웹벨트 기본 바탕 위에 핫핑크 글리터 동글 이니셜 벨트핀 D, O, M 3종과 Y2K 감성 물씬 풍기는 골드 스케이트보드 슬라이드 와펜이 조화를 이룹니다.',
     category: 'keyring',
-    images: ['https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80'],
+    images: [customStrapWhiteDOMSvg],
     colors: ['크림화이트', '펑키스트릿블랙', '라벤더퍼플'],
     options: ['안심 골드 스냅 결속형', '랍스터 금장 스틸 버클 연장형 (+1000원)'],
     size: '가로 2.8cm x 총길이 15.2cm 부품 포함',
@@ -438,7 +438,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     discountRate: 22,
     description: '음악 애호가들과 스트리트 패션 매니아들의 원조 최애템! 고중량 블랙 웨빙 끈 위에 네온 핑크 아날로그 헤드폰 와펜과 H, U 글자 자수, 구름모양 패치가 함께 스티칭되어 무선 헤드폰 케이스나 백팩에 부착하면 환상적인 피팅을 가미합니다.',
     category: 'keyring',
-    images: ['https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=600&q=80'],
+    images: [headphonesCloudStrapBlackSvg],
     colors: ['스트릿블랙', '아이보리크림', '코즈믹네이비'],
     options: ['골드 카라비너 D-링 (기본)', '키치 오성 별고리 교체 (+500원)', '1:1 이니셜 2자 맞춤변경 특권 (+1500원)'],
     size: '전체 폭 3cm x 총길이 15.8cm 최적 결속',
@@ -457,7 +457,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     discountRate: 23,
     description: '인스타 피드 1열 메인을 장식한 하이-레벨 키링! 칠흑 같은 딥블랙 고급 스트랩 끈에 핫핑크 "G", "V", 그리고 라임그린 "M" 사각형 이니셜 패치에 네온 우주 비행 접시 디스크 와펜을 결합시켜 독보적인 감각을 뿜어냅니다.',
     category: 'keyring',
-    images: ['https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=600&q=80'],
+    images: [gvmNeonDiskStrapBlackSvg],
     colors: ['딥스트릿 블랙', '사이버 핫핑크', '라임 크리스탈'],
     options: ['골드 버클 마운터', '원터치 서지컬 원형 스마트링 (+1000원)', '가죽 스트랩 스트랩 연장 기공 (+1550원)'],
     size: '가로 2.5cm x 길이 15cm 테일 피팅',
@@ -476,7 +476,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     discountRate: 25,
     description: 'Instagram 피드에서 가장 시선을 끌었던 시그니처 와펜 패치! 파도 소리를 닮은 물결 무늬 보드 위에 Chunky Black 원사 자수로 "LOVE ♥ EVERYWHERE" 레터링과 볼륨 하트를 정성스럽게 수제 직조 장식하였습니다. 옷핀, 다리미 고온 압착 지원.',
     category: 'wappen',
-    images: ['https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=600&q=80'],
+    images: [loveEverywhereWappenSvg],
     colors: ['오프화이트 바디', '사이버블랙 바디', '핫네온 라임 바디'],
     options: ['다리미 고정용 핫멜트식 (기본)', '다목적 하이-본딩 스마트 스티커형', '옷 장착용 후면 옷핀 2볼 추가 가공 (+800원)'],
     size: '가로 8.5cm x 세로 4.8cm 볼륨 물결식',
@@ -495,7 +495,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     discountRate: 24,
     description: '올드스쿨 힙합 컬렉터를 위한 종합 와펜팩! 고해상도 자수 공정으로 한치의 흐트러짐 없이 연출한 미니어처 아케이드 오락기 와펜, 핑크 스케이트 보드, 달콤한 이중 체리 패치가 한 세트로 묶여 파격 혜택 가치로 구성된 실속 자수 와펜 패키지입니다.',
     category: 'wappen',
-    images: ['https://images.unsplash.com/photo-1531525645387-7f14be1bdbbd?auto=format&fit=crop&w=600&q=80'],
+    images: [retroGameSkateWappenSvg],
     colors: ['오리지널 네온 믹스', '레트로 흑백 솔리드'],
     options: ['다리미 열접착 필름타입', '에코백용 수제 옷핀 가공 패키지 (+1000원)', '100% 완전 직봉용 무융합 원초타입'],
     size: '오락기: 5.5cm x 7.5cm / 보드: 7cm x 2cm',
@@ -522,31 +522,31 @@ export function getProductPreviewConfig(productId: string, selectColor?: string,
 
 // Global functions for state management in mock backend
 export function getProducts(): Product[] {
-  const stored = localStorage.getItem('att_products2');
+  const stored = localStorage.getItem('att_products3');
   if (!stored) {
-    localStorage.setItem('att_products2', JSON.stringify(DEFAULT_PRODUCTS));
+    localStorage.setItem('att_products3', JSON.stringify(DEFAULT_PRODUCTS));
     return DEFAULT_PRODUCTS;
   }
   try {
     const list = JSON.parse(stored);
     // If list does not contain 'pink-heart-keyring', force-refresh to DEFAULT_PRODUCTS!
     if (list.length === 0 || !list.some((p: any) => p.id === 'pink-heart-keyring')) {
-      localStorage.setItem('att_products2', JSON.stringify(DEFAULT_PRODUCTS));
+      localStorage.setItem('att_products3', JSON.stringify(DEFAULT_PRODUCTS));
       return DEFAULT_PRODUCTS;
     }
 
-    // MIGRATION: If any product still has svg data url format, let's override with the new beautiful real photos!
+    // Ensure all products have images and they are not empty
     let changed = false;
     const updatedList = list.map((p: any) => {
       const defaultProd = DEFAULT_PRODUCTS.find((d: any) => d.id === p.id);
-      if (defaultProd && (!p.images || p.images.length === 0 || p.images[0].startsWith('data:image/svg+xml'))) {
+      if (defaultProd && (!p.images || p.images.length === 0)) {
         changed = true;
         return { ...p, images: defaultProd.images };
       }
       return p;
     });
     if (changed) {
-      localStorage.setItem('att_products2', JSON.stringify(updatedList));
+      localStorage.setItem('att_products3', JSON.stringify(updatedList));
       return updatedList;
     }
 
@@ -557,5 +557,5 @@ export function getProducts(): Product[] {
 }
 
 export function saveProducts(products: Product[]) {
-  localStorage.setItem('att_products2', JSON.stringify(products));
+  localStorage.setItem('att_products3', JSON.stringify(products));
 }

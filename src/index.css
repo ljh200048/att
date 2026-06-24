@@ -15,25 +15,25 @@
 
 @layer base {
   body {
-    background-color: var(--color-brand-cream);
+    background-color: #ffffff;
     color: #000000;
     font-family: var(--font-sans);
   }
 }
 
-/* Custom scrollbar to keep layout cute */
+/* Custom scrollbar to keep layout clean and modern */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-brand-cream);
+  background: #ffffff;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-brand-pink-dark);
+  background: #cbd5e1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #E0003A;
+  background: #94a3b8;
 }
 
 /* Glitter animation */
