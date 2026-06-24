@@ -59,9 +59,6 @@ export default function HomeView({
             slide1BgImage ? '' : 'bg-stone-50'
           }`}
         >
-          {slide1BgImage && (
-            <div className="absolute inset-0 bg-black/60 z-0 pointer-events-none" />
-          )}
           {/* Outline decorative typography */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
             <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide1BgImage ? 'text-white' : 'text-black'}`}>ATT.</span>
@@ -284,7 +281,7 @@ export default function HomeView({
         {/* Floating Large Title Text over Slider (Image 1) */}
         <div 
           className={`absolute left-6 md:left-32 top-16 md:top-20 z-10 text-left max-w-xl pointer-events-none transition-all duration-300 rounded-xl ${
-            heroSlide === 1 && slide2BgImage
+            (heroSlide === 1 && slide2BgImage) || (heroSlide === 0 && slide1BgImage)
               ? 'bg-black/25 p-6 backdrop-blur-[2px] border border-white/10 shadow-lg'
               : 'p-0 bg-transparent'
           } ${
