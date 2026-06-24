@@ -359,10 +359,10 @@ export default function HomeView({
           aboutBgImage ? '' : 'bg-stone-950 bg-[radial-gradient(rgba(255,20,147,0.15)_1px,transparent_1px)] [background-size:20px_20px]'
         }`}
       >
-        {/* Semi-transparent black overlay for legibility */}
-        <div className={`absolute inset-0 z-0 pointer-events-none transition-colors ${
-          aboutBgImage ? 'bg-black/75' : 'bg-black/50'
-        }`} />
+        {/* Semi-transparent black overlay for legibility only when no background image */}
+        {!aboutBgImage && (
+          <div className="absolute inset-0 z-0 pointer-events-none bg-black/50 transition-colors" />
+        )}
 
         {/* Decorative Grid Lines / Cyber Street Elements (when no image) */}
         {!aboutBgImage && (
@@ -382,8 +382,17 @@ export default function HomeView({
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 text-white">
           
-          {/* Left Text Block */}
-          <div className="lg:col-span-6 space-y-6">
+          {/* Left Text Block with transparent readable dark overlay when background image is present */}
+          <div 
+            className={`lg:col-span-6 space-y-6 transition-all duration-300 rounded-2xl ${
+              aboutBgImage 
+                ? 'bg-black/25 p-6 sm:p-8 backdrop-blur-[2px] border border-white/10 shadow-lg' 
+                : 'p-0 bg-transparent'
+            }`}
+            style={{
+              textShadow: aboutBgImage ? '0 2px 8px rgba(0,0,0,0.5)' : 'none'
+            }}
+          >
             <div className="inline-flex items-center gap-2">
               <span className="bg-[#39FF14] text-black text-[10px] font-mono font-black px-2.5 py-1 uppercase tracking-widest rounded-sm">
                 STREET ARCHIVE
