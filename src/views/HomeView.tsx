@@ -142,22 +142,20 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
             </div>
             {/* Left Model Dummy Frame */}
             <div className="hidden sm:flex flex-col items-center relative transform -rotate-1 hover:rotate-0 transition-transform duration-500">
-              <div className="w-56 h-80 bg-stone-200 border border-stone-300 relative flex flex-col justify-end p-4 rounded shadow-sm">
+              <div className="w-56 h-80 bg-stone-200 border border-stone-300 relative flex flex-col justify-center items-center p-6 rounded shadow-sm text-center">
                 <div className="absolute inset-2 border border-stone-300/30"></div>
-                <div className="absolute top-8 left-12 w-32 h-32 rounded-full bg-stone-300/50 flex items-center justify-center text-4xl">🧥</div>
-                <span className="bg-black text-white text-[9px] font-mono font-bold px-2 py-0.5 tracking-wider uppercase self-start mb-2">att. SELECTION</span>
-                <p className="text-[12px] font-bold text-stone-950 leading-tight">MTR Wool Trench Coat</p>
-                <p className="text-[10px] font-mono text-stone-500 font-bold mt-0.5">₩ 189,000</p>
+                <span className="bg-black text-white text-[9px] font-mono font-bold px-2.5 py-1 tracking-wider uppercase mb-3">att. SELECTION</span>
+                <p className="text-[13px] font-bold text-stone-950 leading-tight">MTR Wool Trench Coat</p>
+                <p className="text-[11px] font-mono text-stone-500 font-bold mt-1">₩ 189,000</p>
               </div>
             </div>
             {/* Right Model Dummy Frame */}
             <div className="flex flex-col items-center relative transform rotate-1 hover:rotate-0 transition-transform duration-500">
-              <div className="w-60 h-84 bg-stone-150 border border-stone-250 relative flex flex-col justify-end p-5 rounded shadow-sm">
+              <div className="w-60 h-84 bg-stone-150 border border-stone-250 relative flex flex-col justify-center items-center p-6 rounded shadow-sm text-center">
                 <div className="absolute inset-2 border border-stone-300/30"></div>
-                <div className="absolute top-10 left-14 w-32 h-32 rounded-full bg-stone-300/50 flex items-center justify-center text-4xl">👜</div>
-                <span className="bg-stone-900 text-white text-[9px] font-mono font-bold px-2 py-0.5 tracking-wider uppercase self-start mb-2">att. LIFESTYLE</span>
-                <p className="text-[12px] font-bold text-stone-950 leading-tight">Y2K Leather Hobo Bag</p>
-                <p className="text-[10px] font-mono text-stone-500 font-bold mt-0.5">₩ 74,000</p>
+                <span className="bg-stone-900 text-white text-[9px] font-mono font-bold px-2.5 py-1 tracking-wider uppercase mb-3">att. LIFESTYLE</span>
+                <p className="text-[13px] font-bold text-stone-950 leading-tight">Y2K Leather Hobo Bag</p>
+                <p className="text-[11px] font-mono text-stone-500 font-bold mt-1">₩ 74,000</p>
               </div>
             </div>
           </div>
@@ -607,7 +605,7 @@ export default function HomeView({ products, onNavigate, currentUser }: HomeView
               
               {/* Seongsu Station Box */}
               <div className="absolute top-8 left-[35%] bg-[#39FF14]/20 border-2 border-dashed border-[#39FF14] text-stone-900 font-bold text-[10px] p-2 rotate-[-5deg] rounded">
-                🚃 성수역 (Seongsu Line 2)
+                성수역 (Seongsu Line 2)
               </div>
 
               {/* Ttukseom Station Box */}
