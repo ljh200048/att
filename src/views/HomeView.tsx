@@ -156,10 +156,6 @@ export default function HomeView({
             slide2BgImage ? '' : 'bg-neutral-950 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:16px_16px]'
           }`}
         >
-          {/* Dark Overlay for text contrast */}
-          <div className={`absolute inset-0 z-0 pointer-events-none transition-colors ${
-            slide2BgImage ? 'bg-black/70' : 'bg-black/55'
-          }`} />
 
           {/* B&W Street collage/patch graphics fallback when no custom background */}
           {!slide2BgImage && (
@@ -286,9 +282,18 @@ export default function HomeView({
         </div>
 
         {/* Floating Large Title Text over Slider (Image 1) */}
-        <div className={`absolute left-6 md:left-32 top-16 md:top-20 z-10 text-left max-w-xl pointer-events-none transition-colors duration-300 ${
-          isDarkBg ? 'text-white' : 'text-black'
-        }`}>
+        <div 
+          className={`absolute left-6 md:left-32 top-16 md:top-20 z-10 text-left max-w-xl pointer-events-none transition-all duration-300 rounded-xl ${
+            heroSlide === 1 && slide2BgImage
+              ? 'bg-black/25 p-6 backdrop-blur-[2px] border border-white/10 shadow-lg'
+              : 'p-0 bg-transparent'
+          } ${
+            isDarkBg ? 'text-white' : 'text-black'
+          }`}
+          style={{
+            textShadow: isDarkBg ? '0 2px 8px rgba(0,0,0,0.5)' : 'none'
+          }}
+        >
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-none uppercase">
             NO.1<br />
             <span className={`font-medium text-lg sm:text-xl md:text-2xl tracking-normal block mt-2.5 transition-colors ${
