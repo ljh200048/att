@@ -191,72 +191,17 @@ export default function EventView() {
         {/* LEFT COLUMN: EVENTS CONTAINER (8/12) */}
         <div className="lg:col-span-8 space-y-12">
           
-          {/* EVENT 1: WELCOME DISCOUNT COUPON */}
-          <div className="bg-white border-2 border-black p-6 md:p-8 relative overflow-hidden shadow-[4px_4px_0px_rgba(0,0,0,1)] rounded-lg">
-            {/* Decal badge */}
-            <div className="absolute top-0 right-0 bg-[#FF1493] text-white text-[9px] font-black px-4 py-1 uppercase tracking-widest rotate-0">
-              DOWNLOAD
-            </div>
-
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6">
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="bg-black text-[#39FF14] text-[9.5px] font-mono font-bold px-2 py-0.5 uppercase tracking-wider">
-                    EVENT 01
-                  </span>
-                  <span className="text-[11px] font-bold text-stone-400 font-mono">NEW MEMBERS ONLY</span>
-                </div>
-                <h3 className="text-xl md:text-2xl font-black text-stone-900 leading-tight">
-                  첫 와펜 디자인을 위한 3,000원 체험 지원 쿠폰
-                </h3>
-                <p className="text-xs text-stone-500 font-semibold leading-relaxed">
-                  att.에서 처음으로 나만의 와펜 조합을 디자인하는 크리에이터분들을 위해 준비했습니다.<br />
-                  아래 쿠폰을 다운로드하고 첫 커스텀 주문 시 즉시 할인 혜택을 적용해보세요.
-                </p>
-              </div>
-
-              {/* Styled Voucher Display */}
-              <div className="flex flex-col items-center justify-center bg-stone-50 border-2 border-dashed border-stone-300 p-4 min-w-[200px] text-center rounded relative">
-                <span className="text-[10px] font-mono font-black text-[#FF1493] tracking-widest uppercase">WELCOME OFF</span>
-                <p className="text-3xl font-black font-mono text-black mt-1">₩ 3,000</p>
-                <p className="text-[9px] font-bold text-stone-400 mt-1">체험 키트 및 전 상품 적용 (30일 이내)</p>
-
-                <button
-                  onClick={handleDownloadCoupon}
-                  disabled={downloadedCoupon}
-                  className={`w-full cursor-pointer mt-4 py-2 px-4 font-black text-[11px] tracking-widest uppercase flex items-center justify-center gap-1.5 transition-all border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] ${
-                    downloadedCoupon
-                      ? 'bg-stone-100 text-stone-400 border-stone-300 shadow-none cursor-not-allowed'
-                      : 'bg-[#39FF14] text-black hover:bg-black hover:text-[#39FF14]'
-                  }`}
-                >
-                  {downloadedCoupon ? (
-                    <>
-                      <Check className="w-4 h-4 stroke-[2.5]" />
-                      <span>다운로드 완료</span>
-                    </>
-                  ) : (
-                    <>
-                      <Ticket className="w-4 h-4" />
-                      <span>쿠폰 받기</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* EVENT 2: CUSTOM EMBROIDERY PATCH DRAWING (Raffle Submit Form) */}
+          {/* EVENT 1: CUSTOM EMBROIDERY PATCH DRAWING (Raffle Submit Form) */}
           <div className="bg-white border-2 border-black p-6 md:p-8 shadow-[4px_4px_0px_rgba(0,0,0,1)] rounded-lg">
             <div className="space-y-4 border-b border-stone-150 pb-5 mb-6 text-left">
               <div className="flex items-center gap-2">
                 <span className="bg-black text-[#39FF14] text-[9.5px] font-mono font-bold px-2 py-0.5 uppercase tracking-wider">
-                  EVENT 02
+                  EVENT 01
                 </span>
                 <span className="text-[11px] font-bold text-stone-400 font-mono">1:1 CUSTOM RAFFLE</span>
               </div>
               <h3 className="text-xl md:text-2xl font-black text-stone-900 leading-tight">
-                나만의 디자인 와펜 & 자수 패치 무료 체험 응모
+                나만의 디자인 와펜 & 자수 패치 무료 체험 Event
               </h3>
               <p className="text-xs text-stone-500 font-semibold leading-relaxed">
                 여러분이 직접 고른 배경 컬러와 캐릭터 데코, 문구 조합으로 세상에 단 하나뿐인 와펜을 디자인해 보세요!<br />
