@@ -20,14 +20,8 @@ export default function Footer({ onNavigate }: FooterProps) {
           <div className="flex flex-col space-y-4">
             <h4 className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">CONNECT WITH US</h4>
             <div className="flex flex-col space-y-2.5 font-bold text-stone-300">
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
-                <span>Facebook</span>
-              </a>
               <a href="https://www.instagram.com/att_attached/" target="_blank" rel="noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
                 <span>Instagram</span>
-              </a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
-                <span>Youtube</span>
               </a>
             </div>
           </div>
@@ -47,17 +41,13 @@ export default function Footer({ onNavigate }: FooterProps) {
             <h4 className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">CUSTOMER SERVICE</h4>
             <div className="space-y-3 text-stone-300">
               <div>
-                <span className="text-[9px] text-stone-500 block font-bold">TEL</span>
-                <span className="text-[13px] font-bold text-stone-100">1668-3508</span>
-              </div>
-              <div>
                 <span className="text-[9px] text-stone-500 block font-bold">E-MAIL</span>
                 <span className="hover:text-white cursor-pointer break-all font-semibold text-stone-200">help@att-place.co.kr</span>
               </div>
               <div>
                 <span className="text-[9px] text-stone-500 block font-bold">ADDRESS</span>
                 <p className="leading-relaxed text-[11px] font-medium text-stone-400">
-                  04782 서울특별시 성동구 성수일로6길 33 (성수동2가) 아연디지털타워 5층
+                  충청북도 청주시
                 </p>
               </div>
             </div>
@@ -75,11 +65,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               </div>
               <div>
                 <span className="text-[9px] text-stone-500 block font-bold">REPRESENTATIVE</span>
-                <span className="font-semibold text-stone-400">대표이사 : 홍길동</span>
-              </div>
-              <div>
-                <span className="text-[9px] text-stone-500 block font-bold">REGISTRATION NO.</span>
-                <span className="font-semibold text-stone-400">201-86-20597</span>
+                <span className="font-semibold text-stone-400">대표이사 : 이솔</span>
               </div>
             </div>
           </div>

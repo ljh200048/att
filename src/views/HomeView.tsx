@@ -268,9 +268,7 @@ export default function HomeView({
 
         {/* Floating Vertical Social links on bottom-left */}
         <div className={`absolute left-6 md:left-10 bottom-8 z-20 hidden md:flex flex-col space-y-3 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${isDarkBg ? 'text-stone-400' : 'text-stone-500'}`}>
-          <a href="https://facebook.com" target="_blank" rel="noreferrer" className={`transition-colors rotate-90 origin-left mt-8 block ${isDarkBg ? 'hover:text-white' : 'hover:text-black'}`}>facebook</a>
           <a href="https://www.instagram.com/att_attached/" target="_blank" rel="noreferrer" className={`transition-colors rotate-90 origin-left mt-10 block ${isDarkBg ? 'hover:text-white' : 'hover:text-black'}`}>instagram</a>
-          <a href="https://youtube.com" target="_blank" rel="noreferrer" className={`transition-colors rotate-90 origin-left mt-8 block font-semibold ${isDarkBg ? 'hover:text-white' : 'hover:text-black'}`}>youtube</a>
         </div>
 
         {/* Floating Large Title Text over Slider (Image 1) */}
