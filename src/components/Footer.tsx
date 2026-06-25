@@ -42,12 +42,12 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div className="space-y-3 text-stone-300">
               <div>
                 <span className="text-[9px] text-stone-500 block font-bold">E-MAIL</span>
-                <span className="hover:text-white cursor-pointer break-all font-semibold text-stone-200">help@att-place.co.kr</span>
+                <span className="hover:text-white cursor-pointer break-all font-semibold text-stone-200">dlthf4841@naver.com</span>
               </div>
               <div>
                 <span className="text-[9px] text-stone-500 block font-bold">ADDRESS</span>
                 <p className="leading-relaxed text-[11px] font-medium text-stone-400">
-                  충청북도 청주시
+                  충청북도 청주시 흥덕구 봉명동
                 </p>
               </div>
             </div>
