@@ -675,7 +675,7 @@ export default function App() {
         return <IntroView />;
       
       case 'event':
-        return <EventView />;
+        return <EventView currentUser={currentUser} />;
       
       case 'inquiry':
         return (
