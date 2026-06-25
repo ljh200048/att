@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { Shield, Plus, Edit, Trash2, Check, RefreshCw, Smartphone, Heart, MessageSquare, Award, Eye, Trash, Upload, Image } from 'lucide-react';
 import { Product, Order, CustomOrder, Inquiry, Review, OrderStatus, User } from '../types';
 import KeyringPreview from '../components/KeyringPreview';
@@ -75,6 +75,47 @@ export default function AdminView({
 
   // Tabs: 'catalog' | 'orders' | 'customs' | 'inquiries' | 'reviews'
   const [adminTab, setAdminTab] = useState<'catalog' | 'orders' | 'customs' | 'inquiries' | 'reviews'>('orders');
+
+  // Background Image customization states (saves on button press)
+  const [localSlide1Bg, setLocalSlide1Bg] = useState<string>(slide1BgImage);
+  const [localSlide2Bg, setLocalSlide2Bg] = useState<string>(slide2BgImage);
+  const [localAboutBg, setLocalAboutBg] = useState<string>(aboutBgImage);
+  const [localCustomBannerBg, setLocalCustomBannerBg] = useState<string>(customBannerBgImage);
+  const [localRecruitBg, setLocalRecruitBg] = useState<string>(recruitBgImage);
+  const [showSavedMsg, setShowSavedMsg] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLocalSlide1Bg(slide1BgImage);
+  }, [slide1BgImage]);
+
+  useEffect(() => {
+    setLocalSlide2Bg(slide2BgImage);
+  }, [slide2BgImage]);
+
+  useEffect(() => {
+    setLocalAboutBg(aboutBgImage);
+  }, [aboutBgImage]);
+
+  useEffect(() => {
+    setLocalCustomBannerBg(customBannerBgImage);
+  }, [customBannerBgImage]);
+
+  useEffect(() => {
+    setLocalRecruitBg(recruitBgImage);
+  }, [recruitBgImage]);
+
+  const handleSaveAllBackgrounds = () => {
+    onUpdateSlide1BgImage?.(localSlide1Bg);
+    onUpdateSlide2BgImage?.(localSlide2Bg);
+    onUpdateAboutBgImage?.(localAboutBg);
+    onUpdateCustomBannerBgImage?.(localCustomBannerBg);
+    onUpdateRecruitBgImage?.(localRecruitBg);
+    
+    setShowSavedMsg(true);
+    setTimeout(() => {
+      setShowSavedMsg(false);
+    }, 4000);
+  };
 
   // Product CRUD states
   const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -247,7 +288,7 @@ export default function AdminView({
                 </span>
                 <h3 className="text-sm font-black text-stone-900 mt-1">🎨 메인 홈화면 모든 영역 배경 이미지 커스텀 관리</h3>
                 <p className="text-[11px] text-stone-500 font-semibold leading-relaxed">
-                  원하는 이미지 파일을 업로드하여 홈화면의 주요 영역 배경을 자유롭게 교체하고 실시간으로 반영할 수 있습니다.
+                  원하는 이미지 파일을 업로드하여 홈화면의 주요 영역 배경을 자유롭게 교체할 수 있습니다. <strong>변경 후 아래 [홈화면 배경 일괄 저장하기] 버튼을 꼭 클릭하셔야 영구 저장됩니다.</strong>
                 </p>
               </div>
 
@@ -266,12 +307,12 @@ export default function AdminView({
                   </div>
 
                   <div className="flex items-center gap-3 mt-1">
-                    {slide1BgImage ? (
+                    {localSlide1Bg ? (
                       <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
-                        <img src={slide1BgImage} alt="SLIDE 1 BG" className="w-full h-full object-cover" />
+                        <img src={localSlide1Bg} alt="SLIDE 1 BG" className="w-full h-full object-cover" />
                         <button 
                           type="button"
-                          onClick={() => onUpdateSlide1BgImage?.('')}
+                          onClick={() => setLocalSlide1Bg('')}
                           className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
                         >
                           <Trash className="w-2.5 h-2.5" />
@@ -295,7 +336,7 @@ export default function AdminView({
                             const r = new FileReader();
                             r.onloadend = async () => {
                               const compressed = await compressImage(r.result as string);
-                              onUpdateSlide1BgImage?.(compressed);
+                              setLocalSlide1Bg(compressed);
                             };
                             r.readAsDataURL(file);
                           }
@@ -307,10 +348,10 @@ export default function AdminView({
                       >
                         업로드
                       </label>
-                      {slide1BgImage && (
+                      {localSlide1Bg && (
                         <button 
                           type="button"
-                          onClick={() => onUpdateSlide1BgImage?.('')}
+                          onClick={() => setLocalSlide1Bg('')}
                           className="text-[9px] text-rose-500 font-bold hover:underline text-center"
                         >
                           기본 복원
@@ -333,12 +374,12 @@ export default function AdminView({
                   </div>
 
                   <div className="flex items-center gap-3 mt-1">
-                    {slide2BgImage ? (
+                    {localSlide2Bg ? (
                       <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
-                        <img src={slide2BgImage} alt="SLIDE 2 BG" className="w-full h-full object-cover" />
+                        <img src={localSlide2Bg} alt="SLIDE 2 BG" className="w-full h-full object-cover" />
                         <button 
                           type="button"
-                          onClick={() => onUpdateSlide2BgImage?.('')}
+                          onClick={() => setLocalSlide2Bg('')}
                           className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
                         >
                           <Trash className="w-2.5 h-2.5" />
@@ -362,7 +403,7 @@ export default function AdminView({
                             const r = new FileReader();
                             r.onloadend = async () => {
                               const compressed = await compressImage(r.result as string);
-                              onUpdateSlide2BgImage?.(compressed);
+                              setLocalSlide2Bg(compressed);
                             };
                             r.readAsDataURL(file);
                           }
@@ -374,10 +415,10 @@ export default function AdminView({
                       >
                         업로드
                       </label>
-                      {slide2BgImage && (
+                      {localSlide2Bg && (
                         <button 
                           type="button"
-                          onClick={() => onUpdateSlide2BgImage?.('')}
+                          onClick={() => setLocalSlide2Bg('')}
                           className="text-[9px] text-rose-500 font-bold hover:underline text-center"
                         >
                           기본 복원
@@ -400,12 +441,12 @@ export default function AdminView({
                   </div>
 
                   <div className="flex items-center gap-3 mt-1">
-                    {aboutBgImage ? (
+                    {localAboutBg ? (
                       <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
-                        <img src={aboutBgImage} alt="ABOUT BG" className="w-full h-full object-cover" />
+                        <img src={localAboutBg} alt="ABOUT BG" className="w-full h-full object-cover" />
                         <button 
                           type="button"
-                          onClick={() => onUpdateAboutBgImage?.('')}
+                          onClick={() => setLocalAboutBg('')}
                           className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
                         >
                           <Trash className="w-2.5 h-2.5" />
@@ -429,7 +470,7 @@ export default function AdminView({
                             const r = new FileReader();
                             r.onloadend = async () => {
                               const compressed = await compressImage(r.result as string);
-                              onUpdateAboutBgImage?.(compressed);
+                              setLocalAboutBg(compressed);
                             };
                             r.readAsDataURL(file);
                           }
@@ -441,10 +482,10 @@ export default function AdminView({
                       >
                         업로드
                       </label>
-                      {aboutBgImage && (
+                      {localAboutBg && (
                         <button 
                           type="button"
-                          onClick={() => onUpdateAboutBgImage?.('')}
+                          onClick={() => setLocalAboutBg('')}
                           className="text-[9px] text-rose-500 font-bold hover:underline text-center"
                         >
                           기본 복원
@@ -467,12 +508,12 @@ export default function AdminView({
                   </div>
 
                   <div className="flex items-center gap-3 mt-1">
-                    {customBannerBgImage ? (
+                    {localCustomBannerBg ? (
                       <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
-                        <img src={customBannerBgImage} alt="CUSTOM BANNER BG" className="w-full h-full object-cover" />
+                        <img src={localCustomBannerBg} alt="CUSTOM BANNER BG" className="w-full h-full object-cover" />
                         <button 
                           type="button"
-                          onClick={() => onUpdateCustomBannerBgImage?.('')}
+                          onClick={() => setLocalCustomBannerBg('')}
                           className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
                         >
                           <Trash className="w-2.5 h-2.5" />
@@ -496,7 +537,7 @@ export default function AdminView({
                             const r = new FileReader();
                             r.onloadend = async () => {
                               const compressed = await compressImage(r.result as string);
-                              onUpdateCustomBannerBgImage?.(compressed);
+                              setLocalCustomBannerBg(compressed);
                             };
                             r.readAsDataURL(file);
                           }
@@ -508,10 +549,10 @@ export default function AdminView({
                       >
                         업로드
                       </label>
-                      {customBannerBgImage && (
+                      {localCustomBannerBg && (
                         <button 
                           type="button"
-                          onClick={() => onUpdateCustomBannerBgImage?.('')}
+                          onClick={() => setLocalCustomBannerBg('')}
                           className="text-[9px] text-rose-500 font-bold hover:underline text-center"
                         >
                           기본 복원
@@ -534,12 +575,12 @@ export default function AdminView({
                   </div>
 
                   <div className="flex items-center gap-3 mt-1">
-                    {recruitBgImage ? (
+                    {localRecruitBg ? (
                       <div className="relative w-12 h-12 rounded overflow-hidden border border-stone-250 bg-stone-50 shrink-0">
-                        <img src={recruitBgImage} alt="RECRUIT BG" className="w-full h-full object-cover" />
+                        <img src={localRecruitBg} alt="RECRUIT BG" className="w-full h-full object-cover" />
                         <button 
                           type="button"
-                          onClick={() => onUpdateRecruitBgImage?.('')}
+                          onClick={() => setLocalRecruitBg('')}
                           className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600 transition shadow cursor-pointer"
                         >
                           <Trash className="w-2.5 h-2.5" />
@@ -563,7 +604,7 @@ export default function AdminView({
                             const r = new FileReader();
                             r.onloadend = async () => {
                               const compressed = await compressImage(r.result as string);
-                              onUpdateRecruitBgImage?.(compressed);
+                              setLocalRecruitBg(compressed);
                             };
                             r.readAsDataURL(file);
                           }
@@ -575,10 +616,10 @@ export default function AdminView({
                       >
                         업로드
                       </label>
-                      {recruitBgImage && (
+                      {localRecruitBg && (
                         <button 
                           type="button"
-                          onClick={() => onUpdateRecruitBgImage?.('')}
+                          onClick={() => setLocalRecruitBg('')}
                           className="text-[9px] text-rose-500 font-bold hover:underline text-center"
                         >
                           기본 복원
@@ -588,6 +629,29 @@ export default function AdminView({
                   </div>
                 </div>
 
+              </div>
+
+              {/* SAVE BUTTON FOR BACKGROUNDS */}
+              <div className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-left">
+                  <p className="text-[11px] text-stone-500 font-bold">
+                    * 업로드하거나 삭제한 임시 배경 변경사항들을 아래 저장 버튼을 클릭하여 스토어 전체에 적용하세요.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 shrink-0">
+                  {showSavedMsg && (
+                    <span className="text-xs text-emerald-600 font-extrabold animate-bounce">
+                      ✨ 저장했습니다.
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={handleSaveAllBackgrounds}
+                    className="cursor-pointer bg-[#39FF14] text-black border-2 border-black font-black text-xs px-6 py-2.5 shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:bg-black hover:text-[#39FF14] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                  >
+                    홈화면 배경 일괄 저장하기
+                  </button>
+                </div>
               </div>
             </div>
 
