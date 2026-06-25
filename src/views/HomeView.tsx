@@ -45,7 +45,7 @@ export default function HomeView({
   // Slide indicator state for Hero section
   const [heroSlide, setHeroSlide] = useState(0);
 
-  const isDarkBg = heroSlide === 1 || (heroSlide === 0 && !!slide1BgImage);
+  const isDarkBg = (heroSlide === 0 && !!slide1BgImage) || (heroSlide === 1 && !!slide2BgImage);
 
   // Hero carousel sliders
   const slides = [
@@ -150,34 +150,13 @@ export default function HomeView({
         <div 
           style={slide2BgImage ? { backgroundImage: `url(${slide2BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
           className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
-            slide2BgImage ? '' : 'bg-neutral-950 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:16px_16px]'
+            slide2BgImage ? '' : 'bg-stone-50'
           }`}
         >
 
-          {/* B&W Street collage/patch graphics fallback when no custom background */}
-          {!slide2BgImage && (
-            <div className="absolute inset-0 pointer-events-none select-none opacity-25 z-0">
-              <div className="absolute -top-10 -left-10 w-96 h-20 bg-white/5 rotate-[35deg] border-y border-white/10" />
-              <div className="absolute -bottom-10 -right-10 w-96 h-24 bg-white/5 rotate-[35deg] border-y border-white/10" />
-              
-              {/* Big bold retro street collage words */}
-              <div className="absolute top-10 left-12 text-white/5 font-sans font-black text-[7vw] tracking-wider uppercase">
-                STREET
-              </div>
-              <div className="absolute bottom-10 left-24 text-white/5 font-sans font-black text-[6vw] tracking-wider uppercase">
-                COLLAGE
-              </div>
-
-              {/* Decorative boxes as raw street sticker bases */}
-              <div className="absolute top-1/4 left-1/4 w-32 h-16 border border-white/10 rotate-[-12deg] bg-white/[0.01]" />
-              <div className="absolute bottom-1/3 left-1/3 w-24 h-24 border border-dashed border-white/10 rotate-[15deg]" />
-              <div className="absolute top-1/3 right-1/4 w-40 h-40 rounded-full border border-dashed border-white/5 animate-[spin_40s_linear_infinite]" />
-            </div>
-          )}
-
           {/* Outline decorative typography in background */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.05]">
-            <span className="font-sans font-black text-[22vw] leading-none tracking-widest text-white/10">CUSTOM</span>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
+            <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide2BgImage ? 'text-white' : 'text-black'}`}>CUSTOM</span>
           </div>
 
           <div className="relative z-10 flex flex-col md:flex-row gap-4 md:gap-6 pr-6 sm:pr-12 md:pr-24 lg:pr-32 xl:pr-48 pl-4 items-center">
