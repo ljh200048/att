@@ -310,7 +310,7 @@ export default function MyPageView({
                       <CreditCard className="w-3.5 h-3.5" />
                       <span>수동 송금 이체 수선안내</span>
                     </p>
-                    <p>• 입금 계좌: 카카오뱅크 3333-01-2345678 (Wacky Willy)</p>
+                    <p>• 입금 계좌: 신한은행 110-456-224877 (이재호)</p>
                     <p>• 예금주명과 주문 수령인이 동일해야 자동 전산 대응 처리됩니다.</p>
                   </div>
 
