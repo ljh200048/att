@@ -349,50 +349,31 @@ export default function HomeView({
       {/* 2. ABOUT SECTION: STREET CULTURE PLAYGROUND (Image 2 & 3) */}
       <section 
         id="about-section" 
-        style={aboutBgImage ? { backgroundImage: `url(${aboutBgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
-        className={`w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-16 py-16 md:py-24 rounded-2xl border-4 border-black shadow-[8px_8px_0px_rgba(0,0,0,1)] text-left relative overflow-hidden transition-all duration-300 ${
-          aboutBgImage ? '' : 'bg-stone-100 bg-[radial-gradient(rgba(0,0,0,0.05)_1px,transparent_1px)] [background-size:20px_20px]'
-        }`}
+        className="w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-16 py-16 md:py-24 rounded-2xl border-4 border-black shadow-[8px_8px_0px_rgba(0,0,0,1)] text-left relative overflow-hidden transition-all duration-300 bg-stone-100"
       >
-        {/* Semi-transparent black overlay for legibility only when background image is present */}
-        {aboutBgImage && (
-          <div className="absolute inset-0 z-0 pointer-events-none bg-black/40 transition-colors" />
-        )}
-
-        {/* Decorative Grid Lines / Cyber Street Elements (when no image, light grid lines) */}
-        {!aboutBgImage && (
-          <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
-            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black to-transparent" />
-            <div className="absolute top-1/4 left-10 w-24 h-24 border border-dashed border-black/30 rounded-full animate-[spin_20s_linear_infinite]" />
-            <div className="absolute bottom-1/4 right-10 w-32 h-32 border border-dashed border-black/30 rounded-full animate-[spin_30s_linear_infinite]" />
-          </div>
-        )}
+        {/* Decorative Grid Lines / Cyber Street Elements (light gray grid lines) */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black to-transparent" />
+          <div className="absolute top-1/4 left-10 w-24 h-24 border border-dashed border-black/30 rounded-full animate-[spin_20s_linear_infinite]" />
+          <div className="absolute bottom-1/4 right-10 w-32 h-32 border border-dashed border-black/30 rounded-full animate-[spin_30s_linear_infinite]" />
+        </div>
 
         {/* Giant Watermark outline typography in background */}
         <div className="absolute bottom-4 right-6 select-none pointer-events-none opacity-[0.03] text-right z-0 hidden md:block">
-          <p className={`font-sans font-black text-[10vw] tracking-tighter leading-none ${aboutBgImage ? 'text-white' : 'text-black'}`}>STREET</p>
-          <p className={`font-sans font-black text-[10vw] tracking-tighter leading-none ${aboutBgImage ? 'text-white' : 'text-black'}`}>PLAYGROUND</p>
+          <p className="font-sans font-black text-[10vw] tracking-tighter leading-none text-black">STREET</p>
+          <p className="font-sans font-black text-[10vw] tracking-tighter leading-none text-black">PLAYGROUND</p>
         </div>
 
-        <div className={`grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 ${aboutBgImage ? 'text-white' : 'text-stone-950'}`}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 text-stone-950">
           
-          {/* Left Text Block with transparent readable dark overlay when background image is present */}
-          <div 
-            className={`lg:col-span-6 space-y-6 transition-all duration-300 rounded-2xl ${
-              aboutBgImage 
-                ? 'bg-black/25 p-6 sm:p-8 backdrop-blur-[2px] border border-white/10 shadow-lg' 
-                : 'p-0 bg-transparent'
-            }`}
-            style={{
-              textShadow: aboutBgImage ? '0 2px 8px rgba(0,0,0,0.5)' : 'none'
-            }}
-          >
+          {/* Left Text Block */}
+          <div className="lg:col-span-6 space-y-6 transition-all duration-300 rounded-2xl p-0 bg-transparent">
             <div className="inline-flex items-center gap-2">
               <span className="bg-[#39FF14] text-black text-[10px] font-mono font-black px-2.5 py-1 uppercase tracking-widest rounded-sm">
                 STREET ARCHIVE
               </span>
-              <span className={`text-[10px] font-mono tracking-[0.2em] font-black uppercase ${aboutBgImage ? 'text-stone-400' : 'text-stone-500'}`}>
+              <span className="text-[10px] font-mono tracking-[0.2em] font-black uppercase text-stone-500">
                 EST. 2026
               </span>
             </div>
@@ -402,7 +383,7 @@ export default function HomeView({
               <span className="text-[#FF1493]">RULE THE STREET!</span>
             </h2>
             
-            <p className={`text-xs sm:text-sm font-semibold leading-relaxed max-w-xl ${aboutBgImage ? 'text-stone-300' : 'text-stone-700'}`}>
+            <p className="text-xs sm:text-sm font-semibold leading-relaxed max-w-xl text-stone-700">
               어태치(att.)는 나만의 서브컬처적 취향과 힙한 영감을 일상 속 의류, 가방, 아웃도어 기물에 거침없이 붙여 표현하는 국내 유일의 1:1 스트릿 커스텀 와펜 플랫폼입니다. 정형화된 일상에 자신만의 아트웍 패치를 더해 룩을 수선해 보세요!
             </p>
             
@@ -420,66 +401,50 @@ export default function HomeView({
           <div className="lg:col-span-6 grid grid-cols-2 gap-4 w-full">
             
             {/* Patch Card 1 */}
-            <div className={`backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md ${
-              aboutBgImage 
-                ? 'bg-stone-900/80 border-stone-850 hover:border-[#39FF14]' 
-                : 'bg-white border-stone-300 hover:border-[#39FF14]'
-            }`}>
+            <div className="backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md bg-white border-stone-300 hover:border-[#39FF14]">
               <div className="flex justify-between items-start">
                 <span className="text-[10px] font-mono text-[#39FF14] font-black bg-[#39FF14]/10 px-2 py-0.5 rounded">01 / STICK</span>
                 <span className="w-2 h-2 rounded-full bg-[#39FF14] group-hover:animate-ping" />
               </div>
               <div>
-                <p className={`text-sm font-black uppercase tracking-wider group-hover:text-[#39FF14] transition-colors ${aboutBgImage ? 'text-white' : 'text-black'}`}>WAPPEN PLAY</p>
-                <p className={`text-[10px] mt-1 font-semibold ${aboutBgImage ? 'text-stone-400' : 'text-stone-500'}`}>의류, 가구 등 어디든 커스텀 부착</p>
+                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#39FF14] transition-colors text-black">WAPPEN PLAY</p>
+                <p className="text-[10px] mt-1 font-semibold text-stone-500">의류, 가구 등 어디든 커스텀 부착</p>
               </div>
             </div>
 
             {/* Patch Card 2 */}
-            <div className={`backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md ${
-              aboutBgImage 
-                ? 'bg-stone-900/80 border-stone-850 hover:border-[#FF1493]' 
-                : 'bg-white border-stone-300 hover:border-[#FF1493]'
-            }`}>
+            <div className="backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md bg-white border-stone-300 hover:border-[#FF1493]">
               <div className="flex justify-between items-start">
                 <span className="text-[10px] font-mono text-[#FF1493] font-black bg-[#FF1493]/10 px-2 py-0.5 rounded">02 / GRAPHIC</span>
                 <span className="w-2 h-2 rounded-full bg-[#FF1493] group-hover:animate-ping" />
               </div>
               <div>
-                <p className={`text-sm font-black uppercase tracking-wider group-hover:text-[#FF1493] transition-colors ${aboutBgImage ? 'text-white' : 'text-black'}`}>HIP DESIGNS</p>
-                <p className={`text-[10px] mt-1 font-semibold ${aboutBgImage ? 'text-stone-400' : 'text-stone-500'}`}>서브컬처 감성의 수제 그래픽 아트</p>
+                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#FF1493] transition-colors text-black">HIP DESIGNS</p>
+                <p className="text-[10px] mt-1 font-semibold text-stone-500">서브컬처 감성의 수제 그래픽 아트</p>
               </div>
             </div>
 
             {/* Patch Card 3 */}
-            <div className={`backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md ${
-              aboutBgImage 
-                ? 'bg-stone-900/80 border-stone-850 hover:border-[#39FF14]' 
-                : 'bg-white border-stone-300 hover:border-[#39FF14]'
-            }`}>
+            <div className="backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md bg-white border-stone-300 hover:border-[#39FF14]">
               <div className="flex justify-between items-start">
                 <span className="text-[10px] font-mono text-[#39FF14] font-black bg-[#39FF14]/10 px-2 py-0.5 rounded">03 / CREATOR</span>
                 <span className="w-2 h-2 rounded-full bg-[#39FF14] group-hover:animate-ping" />
               </div>
               <div>
-                <p className={`text-sm font-black uppercase tracking-wider group-hover:text-[#39FF14] transition-colors ${aboutBgImage ? 'text-white' : 'text-black'}`}>1:1 DIRECT</p>
-                <p className={`text-[10px] mt-1 font-semibold ${aboutBgImage ? 'text-stone-400' : 'text-stone-500'}`}>커스텀 도안과 완벽한 밀착 소통</p>
+                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#39FF14] transition-colors text-black">1:1 DIRECT</p>
+                <p className="text-[10px] mt-1 font-semibold text-stone-500">커스텀 도안과 완벽한 밀착 소통</p>
               </div>
             </div>
 
             {/* Patch Card 4 */}
-            <div className={`backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md ${
-              aboutBgImage 
-                ? 'bg-stone-900/80 border-stone-850 hover:border-[#FF1493]' 
-                : 'bg-white border-stone-300 hover:border-[#FF1493]'
-            }`}>
+            <div className="backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md bg-white border-stone-300 hover:border-[#FF1493]">
               <div className="flex justify-between items-start">
                 <span className="text-[10px] font-mono text-[#FF1493] font-black bg-[#FF1493]/10 px-2 py-0.5 rounded">04 / CREW</span>
                 <span className="w-2 h-2 rounded-full bg-[#FF1493] group-hover:animate-ping" />
               </div>
               <div>
-                <p className={`text-sm font-black uppercase tracking-wider group-hover:text-[#FF1493] transition-colors ${aboutBgImage ? 'text-white' : 'text-black'}`}>att. ARCHIVE</p>
-                <p className={`text-[10px] mt-1 font-semibold ${aboutBgImage ? 'text-stone-400' : 'text-stone-500'}`}>무한한 믹스매치 컬렉션 기획</p>
+                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#FF1493] transition-colors text-black">att. ARCHIVE</p>
+                <p className="text-[10px] mt-1 font-semibold text-stone-500">무한한 믹스매치 컬렉션 기획</p>
               </div>
             </div>
 
