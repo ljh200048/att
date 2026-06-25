@@ -24,6 +24,13 @@ import EventView from './views/EventView';
 import { Product, CartItem, Order, CustomOrder, Inquiry, Review, User, OrderStatus } from './types';
 import { getProducts, DEFAULT_PRODUCTS, saveProducts } from './data/products';
 import { safeLocalStorageSetItem } from './utils';
+import { 
+  seedCollectionIfEmpty, 
+  saveDocToDb, 
+  deleteDocFromDb,
+  fetchSettingsDoc,
+  saveSettingsDoc
+} from './lib/firebaseSync';
 
 // Mock bootstrapped initial states inside LocalStorage
 const MOCK_USER: User = {
@@ -244,6 +251,75 @@ export default function App() {
     return INITIAL_REVIEWS;
   });
 
+  const [isSyncingWithFirebase, setIsSyncingWithFirebase] = useState<boolean>(true);
+
+  // Sync state from Firebase on Mount
+  useEffect(() => {
+    async function initFirebaseSync() {
+      try {
+        setIsSyncingWithFirebase(true);
+
+        // 1. Sync & Seed Products
+        const dbProducts = await seedCollectionIfEmpty('products', DEFAULT_PRODUCTS, 'id');
+        setProducts(dbProducts);
+
+        // 2. Sync & Seed Orders
+        const dbOrders = await seedCollectionIfEmpty('orders', INITIAL_ORDERS, 'id');
+        setOrders(dbOrders);
+
+        // 3. Sync & Seed Custom Orders
+        const dbCustomOrders = await seedCollectionIfEmpty('custom_orders', INITIAL_CUSTOMS, 'id');
+        setCustomOrders(dbCustomOrders);
+
+        // 4. Sync & Seed Inquiries
+        const dbInquiries = await seedCollectionIfEmpty('inquiries', INITIAL_INQUIRIES, 'id');
+        setInquiries(dbInquiries);
+
+        // 5. Sync & Seed Reviews
+        const dbReviews = await seedCollectionIfEmpty('reviews', INITIAL_REVIEWS, 'id');
+        setReviews(dbReviews);
+
+        // 6. Sync background settings
+        const settings = await fetchSettingsDoc('backgrounds');
+        if (settings) {
+          if (settings.aboutBgImage) setAboutBgImage(settings.aboutBgImage);
+          if (settings.slide2BgImage) setSlide2BgImage(settings.slide2BgImage);
+          if (settings.slide1BgImage) setSlide1BgImage(settings.slide1BgImage);
+          if (settings.customBannerBgImage) setCustomBannerBgImage(settings.customBannerBgImage);
+          if (settings.recruitBgImage) setRecruitBgImage(settings.recruitBgImage);
+        } else {
+          // Initialize settings doc in Firestore
+          await saveSettingsDoc('backgrounds', {
+            aboutBgImage: aboutBgImage || '',
+            slide2BgImage: slide2BgImage || '',
+            slide1BgImage: slide1BgImage || '',
+            customBannerBgImage: customBannerBgImage || '',
+            recruitBgImage: recruitBgImage || ''
+          });
+        }
+      } catch (error) {
+        console.error("Firebase sync error during initialization:", error);
+      } finally {
+        setIsSyncingWithFirebase(false);
+      }
+    }
+
+    initFirebaseSync();
+  }, []);
+
+  // Update Settings in Firestore when modified
+  useEffect(() => {
+    if (!isSyncingWithFirebase) {
+      saveSettingsDoc('backgrounds', {
+        aboutBgImage,
+        slide2BgImage,
+        slide1BgImage,
+        customBannerBgImage,
+        recruitBgImage
+      });
+    }
+  }, [aboutBgImage, slide2BgImage, slide1BgImage, customBannerBgImage, recruitBgImage]);
+
   // Sync to localStorage
   useEffect(() => {
     safeLocalStorageSetItem('att_currentUser', JSON.stringify(currentUser));
@@ -362,6 +438,7 @@ export default function App() {
     };
 
     setOrders(prev => [newOrder, ...prev]);
+    saveDocToDb('orders', newOrder.id, newOrder);
   };
 
   // Custom Keyring Order (from real-time builder)
@@ -375,6 +452,7 @@ export default function App() {
     };
 
     setCustomOrders(prev => [newCustom, ...prev]);
+    saveDocToDb('custom_orders', newCustom.id, newCustom);
   };
 
   // Review Operations
@@ -385,10 +463,12 @@ export default function App() {
       date: new Date().toISOString().split('T')[0]
     };
     setReviews(prev => [review, ...prev]);
+    saveDocToDb('reviews', review.id, review);
   };
 
   const handleDeleteReview = (id: string) => {
     setReviews(prev => prev.filter(r => r.id !== id));
+    deleteDocFromDb('reviews', id);
   };
 
   // Support Inquiry
@@ -401,6 +481,7 @@ export default function App() {
     };
 
     setInquiries(prev => [inquiry, ...prev]);
+    saveDocToDb('inquiries', inquiry.id, inquiry);
   };
 
   // Admin Dashboard actions
@@ -413,30 +494,54 @@ export default function App() {
     const updated = [completeProd, ...products];
     setProducts(updated);
     saveProducts(updated);
+    saveDocToDb('products', completeProd.id, completeProd);
   };
 
   const handleUpdateProduct = (updatedProduct: Product) => {
     const updated = products.map(p => p.id === updatedProduct.id ? updatedProduct : p);
     setProducts(updated);
     saveProducts(updated);
+    saveDocToDb('products', updatedProduct.id, updatedProduct);
   };
 
   const handleDeleteProduct = (id: string) => {
     const updated = products.filter(p => p.id !== id);
     setProducts(updated);
     saveProducts(updated);
+    deleteDocFromDb('products', id);
   };
 
   const handleUpdateOrderStatus = (orderId: string, status: OrderStatus, trackingNo?: string) => {
-    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status, trackingNumber: trackingNo || o.trackingNumber } : o));
+    setOrders(prev => prev.map(o => {
+      if (o.id === orderId) {
+        const updated = { ...o, status, trackingNumber: trackingNo || o.trackingNumber };
+        saveDocToDb('orders', orderId, updated);
+        return updated;
+      }
+      return o;
+    }));
   };
 
   const handleUpdateCustomOrderStatus = (customId: string, status: OrderStatus, feedback?: string) => {
-    setCustomOrders(prev => prev.map(c => c.id === customId ? { ...c, status, adminFeedback: feedback || c.adminFeedback } : c));
+    setCustomOrders(prev => prev.map(c => {
+      if (c.id === customId) {
+        const updated = { ...c, status, adminFeedback: feedback || c.adminFeedback };
+        saveDocToDb('custom_orders', customId, updated);
+        return updated;
+      }
+      return c;
+    }));
   };
 
   const handleAnswerInquiry = (inquiryId: string, reply: string) => {
-    setInquiries(prev => prev.map(i => i.id === inquiryId ? { ...i, reply, isAnswered: true } : i));
+    setInquiries(prev => prev.map(i => {
+      if (i.id === inquiryId) {
+        const updated = { ...i, reply, isAnswered: true };
+        saveDocToDb('inquiries', inquiryId, updated);
+        return updated;
+      }
+      return i;
+    }));
   };
 
   // Auth Operations
@@ -595,6 +700,7 @@ export default function App() {
         cartCount={cartItems.reduce((acc, sum) => acc + sum.quantity, 0)}
         currentUser={currentUser}
         onLogout={handleLogout}
+        isSyncingWithFirebase={isSyncingWithFirebase}
       />
 
       {/* Main Container Views Frame */}
