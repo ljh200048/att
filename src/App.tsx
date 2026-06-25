@@ -29,7 +29,8 @@ import {
   saveDocToDb, 
   deleteDocFromDb,
   fetchSettingsDoc,
-  saveSettingsDoc
+  saveSettingsDoc,
+  syncProductsToFirestore
 } from './lib/firebaseSync';
 import { auth, db } from './lib/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
@@ -329,6 +330,16 @@ export default function App() {
           }
           setCurrentUser(profile);
           safeLocalStorageSetItem('att_currentUser', JSON.stringify(profile));
+
+          // Call syncProductsToFirestore securely if this is an admin user
+          const adminEmail = firebaseUser.email;
+          if (adminEmail === 'lch200048@gmail.com' || adminEmail === 'admin@att.com') {
+            try {
+              await syncProductsToFirestore(products);
+            } catch (syncErr) {
+              console.error("Failed to sync products on auth state change:", syncErr);
+            }
+          }
         } catch (error) {
           console.error("Error syncing user profile:", error);
           const fallbackUser: User = {

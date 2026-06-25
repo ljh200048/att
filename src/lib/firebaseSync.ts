@@ -119,6 +119,15 @@ export async function seedCollectionIfEmpty<T>(
       return existing;
     }
 
+    if (collectionName === 'products') {
+      const user = auth.currentUser;
+      const isAdmin = user && (user.email === 'lch200048@gmail.com' || user.email === 'admin@att.com');
+      if (!isAdmin) {
+        console.log(`Skipping products seeding in Firestore for non-admin visitor. Loading locally.`);
+        return defaultItems;
+      }
+    }
+
     console.log(`Seeding collection ${collectionName} with ${defaultItems.length} items...`);
     for (const item of defaultItems) {
       const id = String(item[idField]);
@@ -128,6 +137,28 @@ export async function seedCollectionIfEmpty<T>(
   } catch (error: any) {
     console.error(`Error seeding collection ${collectionName}:`, error);
     return defaultItems;
+  }
+}
+
+/**
+ * Synchronizes/writes products to Firestore (intended to be executed by Admin only)
+ */
+export async function syncProductsToFirestore(products: any[]): Promise<void> {
+  try {
+    const user = auth.currentUser;
+    if (!user || (user.email !== 'lch200048@gmail.com' && user.email !== 'admin@att.com')) {
+      console.warn("Product sync skipped: User is not authorized as Admin.");
+      return;
+    }
+    
+    console.log(`Syncing ${products.length} products to Firestore as admin...`);
+    for (const item of products) {
+      const id = String(item.id);
+      await saveDocToDb('products', id, item);
+    }
+    console.log("Product sync to Firestore completed successfully.");
+  } catch (error: any) {
+    console.error("Error in syncProductsToFirestore:", error);
   }
 }
 
