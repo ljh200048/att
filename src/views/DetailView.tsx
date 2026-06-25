@@ -81,7 +81,7 @@ export default function DetailView({
 
       {/* PURCHASE FLOW ROADMAP (Rule 14 Demonstration) */}
       <div className="bg-black text-[#FFFDF0] p-4 border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] select-none">
-        <p className="text-[10px] font-mono font-black text-brand-lime uppercase tracking-widest text-center md:text-left">
+        <p className="text-[10px] font-mono font-black text-white uppercase tracking-widest text-center md:text-left">
           FLOW DIAGRAM :: att EASY BUY PATH
         </p>
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-y-2 gap-x-2.5 mt-2.5 text-[10px] font-black">
