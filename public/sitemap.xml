@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://attach4.netlify.app/</loc>
+    <loc>http://attach.co.kr/</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://attach4.netlify.app/shop</loc>
+    <loc>http://attach.co.kr/shop</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://attach4.netlify.app/event</loc>
+    <loc>http://attach.co.kr/event</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://attach4.netlify.app/inquiry</loc>
+    <loc>http://attach.co.kr/inquiry</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://attach4.netlify.app/review</loc>
+    <loc>http://attach.co.kr/review</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

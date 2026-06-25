@@ -28,11 +28,11 @@ export default function HomeView({
   products, 
   onNavigate, 
   currentUser, 
-  aboutBgImage, 
-  slide2BgImage,
-  slide1BgImage,
-  customBannerBgImage,
-  recruitBgImage
+  aboutBgImage: propAboutBgImage, 
+  slide2BgImage: propSlide2BgImage,
+  slide1BgImage: propSlide1BgImage,
+  customBannerBgImage: propCustomBannerBgImage,
+  recruitBgImage: propRecruitBgImage
 }: HomeViewProps) {
   
   // Split products for display (Acrylic / Eco keyring list requested in prompt)
@@ -42,10 +42,26 @@ export default function HomeView({
   const firstWappen = wappens[0] || products.find(p => p.id === 'love-everywhere-patch') || products[0];
   const secondWappen = wappens[1] || products.find(p => p.id === 'retro-arcade-wappen') || products[1];
 
+  // Active background images: Use custom uploaded one if available, otherwise fallback to premium default Unsplash images
+  const slide1BgImage = propSlide1BgImage || "https://images.unsplash.com/photo-1513829096999-4978602294fc?q=80&w=1200&auto=format&fit=crop";
+  const slide2BgImage = propSlide2BgImage || "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop";
+  const aboutBgImage = propAboutBgImage || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1200&auto=format&fit=crop";
+  const customBannerBgImage = propCustomBannerBgImage || "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop";
+  const recruitBgImage = propRecruitBgImage || "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop";
+
   // Slide indicator state for Hero section
   const [heroSlide, setHeroSlide] = useState(0);
 
-  const isDarkBg = (heroSlide === 0 && !!slide1BgImage) || (heroSlide === 1 && !!slide2BgImage);
+  // Auto-play interval for hero slides (changes slides automatically every 5 seconds)
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroSlide((prev) => (prev + 1) % 2);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroSlide]);
+
+  // All premium default/custom backgrounds are dark/vibrant street style photography
+  const isDarkBg = true;
 
   // Hero carousel sliders
   const slides = [
@@ -54,10 +70,8 @@ export default function HomeView({
       sub: '놀라움이 가득한 장소, 일상 속 특별한 패션과 취향을 붙이는 룩을 지향합니다.',
       visual: (
         <div 
-          style={slide1BgImage ? { backgroundImage: `url(${slide1BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
-          className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
-            slide1BgImage ? '' : 'bg-stone-50'
-          }`}
+          style={{ backgroundImage: `url(${slide1BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' }}
+          className="absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300"
         >
           {/* Outline decorative typography */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">

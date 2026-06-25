@@ -376,16 +376,20 @@ export default function App() {
 
   // Update Settings in Firestore when modified (Only if user is admin)
   useEffect(() => {
-    if (!isSyncingWithFirebase && currentUser?.role === 'admin') {
-      saveSettingsDoc('backgrounds', {
-        aboutBgImage,
-        slide2BgImage,
-        slide1BgImage,
-        customBannerBgImage,
-        recruitBgImage
-      });
+    if (!isSyncingWithFirebase) {
+      const user = auth.currentUser;
+      const isAdmin = user && (user.email === 'lch200048@gmail.com' || user.email === 'admin@att.com');
+      if (isAdmin) {
+        saveSettingsDoc('backgrounds', {
+          aboutBgImage,
+          slide2BgImage,
+          slide1BgImage,
+          customBannerBgImage,
+          recruitBgImage
+        });
+      }
     }
-  }, [aboutBgImage, slide2BgImage, slide1BgImage, customBannerBgImage, recruitBgImage, isSyncingWithFirebase, currentUser]);
+  }, [aboutBgImage, slide2BgImage, slide1BgImage, customBannerBgImage, recruitBgImage, isSyncingWithFirebase]);
 
   // Sync to localStorage
   useEffect(() => {
