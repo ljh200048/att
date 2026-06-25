@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://attach.co.kr/sitemap.xml
+Sitemap: http://attach.co.kr/sitemap.xml

@@ -42,12 +42,12 @@ export default function HomeView({
   const firstWappen = wappens[0] || products.find(p => p.id === 'love-everywhere-patch') || products[0];
   const secondWappen = wappens[1] || products.find(p => p.id === 'retro-arcade-wappen') || products[1];
 
-  // Active background images: Use custom uploaded one if available, otherwise fallback to premium default Unsplash images
-  const slide1BgImage = propSlide1BgImage || "https://images.unsplash.com/photo-1513829096999-4978602294fc?q=80&w=1200&auto=format&fit=crop";
-  const slide2BgImage = propSlide2BgImage || "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop";
-  const aboutBgImage = propAboutBgImage || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1200&auto=format&fit=crop";
-  const customBannerBgImage = propCustomBannerBgImage || "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop";
-  const recruitBgImage = propRecruitBgImage || "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop";
+  // Active background images: Use custom uploaded one if available, otherwise default to empty (white background) per user request
+  const slide1BgImage = propSlide1BgImage || "";
+  const slide2BgImage = propSlide2BgImage || "";
+  const aboutBgImage = propAboutBgImage || "";
+  const customBannerBgImage = propCustomBannerBgImage || "";
+  const recruitBgImage = propRecruitBgImage || "";
 
   // Slide indicator state for Hero section
   const [heroSlide, setHeroSlide] = useState(0);
@@ -60,8 +60,8 @@ export default function HomeView({
     return () => clearInterval(timer);
   }, [heroSlide]);
 
-  // All premium default/custom backgrounds are dark/vibrant street style photography
-  const isDarkBg = true;
+  // Dynamic check if the active slide has a background image
+  const isDarkBg = (heroSlide === 0 && !!slide1BgImage) || (heroSlide === 1 && !!slide2BgImage);
 
   // Hero carousel sliders
   const slides = [
@@ -70,8 +70,10 @@ export default function HomeView({
       sub: '놀라움이 가득한 장소, 일상 속 특별한 패션과 취향을 붙이는 룩을 지향합니다.',
       visual: (
         <div 
-          style={{ backgroundImage: `url(${slide1BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' }}
-          className="absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300"
+          style={slide1BgImage ? { backgroundImage: `url(${slide1BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
+          className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
+            slide1BgImage ? 'bg-black/30' : 'bg-white bg-[radial-gradient(rgba(0,0,0,0.03)_1px,transparent_1px)] [background-size:20px_20px]'
+          }`}
         >
           {/* Outline decorative typography */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
@@ -164,7 +166,7 @@ export default function HomeView({
         <div 
           style={slide2BgImage ? { backgroundImage: `url(${slide2BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
           className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
-            slide2BgImage ? '' : 'bg-stone-100'
+            slide2BgImage ? 'bg-black/30' : 'bg-white bg-[radial-gradient(rgba(0,0,0,0.03)_1px,transparent_1px)] [background-size:20px_20px]'
           }`}
         >
 
