@@ -7,6 +7,7 @@ import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import { Sparkles, ArrowRight, Upload, Info, CheckCircle2, ShieldQuestion, Heart, Smartphone, Trash } from 'lucide-react';
 import { CustomOrder, CustomKeyringConfig } from '../types';
 import KeyringPreview from '../components/KeyringPreview';
+import { compressImage } from '../utils';
 
 interface CustomOrderViewProps {
   onAddCustomOrder: (order: Omit<CustomOrder, 'id' | 'requestedAt' | 'status' | 'price'>) => void;
@@ -58,8 +59,9 @@ export default function CustomOrderView({
     if (files && files[0]) {
       const file = files[0];
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setReferenceImage(reader.result as string);
+      reader.onloadend = async () => {
+        const compressed = await compressImage(reader.result as string);
+        setReferenceImage(compressed);
       };
       reader.readAsDataURL(file);
     }

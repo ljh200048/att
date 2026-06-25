@@ -7,6 +7,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { Shield, Plus, Edit, Trash2, Check, RefreshCw, Smartphone, Heart, MessageSquare, Award, Eye, Trash, Upload, Image } from 'lucide-react';
 import { Product, Order, CustomOrder, Inquiry, Review, OrderStatus, User } from '../types';
 import KeyringPreview from '../components/KeyringPreview';
+import { compressImage } from '../utils';
 
 interface AdminViewProps {
   products: Product[];
@@ -101,8 +102,9 @@ export default function AdminView({
     const files = e.target.files;
     if (files && files[0]) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setProdImage(reader.result as string);
+      reader.onloadend = async () => {
+        const compressed = await compressImage(reader.result as string);
+        setProdImage(compressed);
       };
       reader.readAsDataURL(files[0]);
     }
@@ -291,7 +293,10 @@ export default function AdminView({
                           const file = e.target.files?.[0];
                           if (file) {
                             const r = new FileReader();
-                            r.onloadend = () => onUpdateSlide1BgImage?.(r.result as string);
+                            r.onloadend = async () => {
+                              const compressed = await compressImage(r.result as string);
+                              onUpdateSlide1BgImage?.(compressed);
+                            };
                             r.readAsDataURL(file);
                           }
                         }}
@@ -355,7 +360,10 @@ export default function AdminView({
                           const file = e.target.files?.[0];
                           if (file) {
                             const r = new FileReader();
-                            r.onloadend = () => onUpdateSlide2BgImage?.(r.result as string);
+                            r.onloadend = async () => {
+                              const compressed = await compressImage(r.result as string);
+                              onUpdateSlide2BgImage?.(compressed);
+                            };
                             r.readAsDataURL(file);
                           }
                         }}
@@ -419,7 +427,10 @@ export default function AdminView({
                           const file = e.target.files?.[0];
                           if (file) {
                             const r = new FileReader();
-                            r.onloadend = () => onUpdateAboutBgImage?.(r.result as string);
+                            r.onloadend = async () => {
+                              const compressed = await compressImage(r.result as string);
+                              onUpdateAboutBgImage?.(compressed);
+                            };
                             r.readAsDataURL(file);
                           }
                         }}
@@ -483,7 +494,10 @@ export default function AdminView({
                           const file = e.target.files?.[0];
                           if (file) {
                             const r = new FileReader();
-                            r.onloadend = () => onUpdateCustomBannerBgImage?.(r.result as string);
+                            r.onloadend = async () => {
+                              const compressed = await compressImage(r.result as string);
+                              onUpdateCustomBannerBgImage?.(compressed);
+                            };
                             r.readAsDataURL(file);
                           }
                         }}
@@ -547,7 +561,10 @@ export default function AdminView({
                           const file = e.target.files?.[0];
                           if (file) {
                             const r = new FileReader();
-                            r.onloadend = () => onUpdateRecruitBgImage?.(r.result as string);
+                            r.onloadend = async () => {
+                              const compressed = await compressImage(r.result as string);
+                              onUpdateRecruitBgImage?.(compressed);
+                            };
                             r.readAsDataURL(file);
                           }
                         }}
@@ -812,10 +829,11 @@ export default function AdminView({
                             const files = e.target.files;
                             if (files && files[0]) {
                               const reader = new FileReader();
-                              reader.onloadend = () => {
+                              reader.onloadend = async () => {
+                                const compressed = await compressImage(reader.result as string);
                                 onUpdateProduct({
                                   ...p,
-                                  images: [reader.result as string]
+                                  images: [compressed]
                                 });
                               };
                               reader.readAsDataURL(files[0]);

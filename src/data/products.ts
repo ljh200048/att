@@ -1,4 +1,5 @@
 import { Product } from '../types';
+import { safeLocalStorageSetItem } from '../utils';
 
 // ==========================================
 // HIGH-FIDELITY PURE SVG DESIGNS (Obeying Rule 8)
@@ -524,14 +525,22 @@ export function getProductPreviewConfig(productId: string, selectColor?: string,
 export function getProducts(): Product[] {
   const stored = localStorage.getItem('att_products3');
   if (!stored) {
-    localStorage.setItem('att_products3', JSON.stringify(DEFAULT_PRODUCTS));
+    safeLocalStorageSetItem('att_products3', JSON.stringify(DEFAULT_PRODUCTS));
     return DEFAULT_PRODUCTS;
   }
   try {
-    const list = JSON.parse(stored);
+    let list = JSON.parse(stored);
+
+    // Filter out any dinosaur keyring product that the user requested to delete
+    const originalLength = list.length;
+    list = list.filter((p: any) => !p.name.includes('공룡') && !p.name.includes('dinosaur'));
+    if (list.length !== originalLength) {
+      safeLocalStorageSetItem('att_products3', JSON.stringify(list));
+    }
+
     // If list does not contain 'pink-heart-keyring', force-refresh to DEFAULT_PRODUCTS!
     if (list.length === 0 || !list.some((p: any) => p.id === 'pink-heart-keyring')) {
-      localStorage.setItem('att_products3', JSON.stringify(DEFAULT_PRODUCTS));
+      safeLocalStorageSetItem('att_products3', JSON.stringify(DEFAULT_PRODUCTS));
       return DEFAULT_PRODUCTS;
     }
 
@@ -546,7 +555,7 @@ export function getProducts(): Product[] {
       return p;
     });
     if (changed) {
-      localStorage.setItem('att_products3', JSON.stringify(updatedList));
+      safeLocalStorageSetItem('att_products3', JSON.stringify(updatedList));
       return updatedList;
     }
 
@@ -557,5 +566,5 @@ export function getProducts(): Product[] {
 }
 
 export function saveProducts(products: Product[]) {
-  localStorage.setItem('att_products3', JSON.stringify(products));
+  safeLocalStorageSetItem('att_products3', JSON.stringify(products));
 }

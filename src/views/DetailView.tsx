@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ShoppingBag, Heart, Check, PlaneTakeoff, RefreshCcw, Info, Star, HelpCircle, Layers, ShieldAlert } from 'lucide-react';
 import { Product, CartItem, User } from '../types';
+import { compressImage } from '../utils';
 
 interface DetailViewProps {
   product: Product;
@@ -149,10 +150,11 @@ export default function DetailView({
                           const files = e.target.files;
                           if (files && files[0]) {
                             const reader = new FileReader();
-                            reader.onloadend = () => {
+                            reader.onloadend = async () => {
+                              const compressed = await compressImage(reader.result as string);
                               onUpdateProduct({
                                 ...product,
-                                images: [reader.result as string]
+                                images: [compressed]
                               });
                               alert('상품 이미지 파일이 성공적으로 교체 저장되었습니다! 🎉');
                             };

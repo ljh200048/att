@@ -23,6 +23,7 @@ import EventView from './views/EventView';
 // Types & Data
 import { Product, CartItem, Order, CustomOrder, Inquiry, Review, User, OrderStatus } from './types';
 import { getProducts, DEFAULT_PRODUCTS, saveProducts } from './data/products';
+import { safeLocalStorageSetItem } from './utils';
 
 // Mock bootstrapped initial states inside LocalStorage
 const MOCK_USER: User = {
@@ -245,47 +246,47 @@ export default function App() {
 
   // Sync to localStorage
   useEffect(() => {
-    localStorage.setItem('att_currentUser', JSON.stringify(currentUser));
+    safeLocalStorageSetItem('att_currentUser', JSON.stringify(currentUser));
   }, [currentUser]);
 
   useEffect(() => {
-    localStorage.setItem('att_cartItems', JSON.stringify(cartItems));
+    safeLocalStorageSetItem('att_cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
   useEffect(() => {
-    localStorage.setItem('att_orders', JSON.stringify(orders));
+    safeLocalStorageSetItem('att_orders', JSON.stringify(orders));
   }, [orders]);
 
   useEffect(() => {
-    localStorage.setItem('att_customOrders', JSON.stringify(customOrders));
+    safeLocalStorageSetItem('att_customOrders', JSON.stringify(customOrders));
   }, [customOrders]);
 
   useEffect(() => {
-    localStorage.setItem('att_inquiries', JSON.stringify(inquiries));
+    safeLocalStorageSetItem('att_inquiries', JSON.stringify(inquiries));
   }, [inquiries]);
 
   useEffect(() => {
-    localStorage.setItem('att_reviews', JSON.stringify(reviews));
+    safeLocalStorageSetItem('att_reviews', JSON.stringify(reviews));
   }, [reviews]);
 
   useEffect(() => {
-    localStorage.setItem('att_aboutBgImage', aboutBgImage);
+    safeLocalStorageSetItem('att_aboutBgImage', aboutBgImage);
   }, [aboutBgImage]);
 
   useEffect(() => {
-    localStorage.setItem('att_slide2BgImage', slide2BgImage);
+    safeLocalStorageSetItem('att_slide2BgImage', slide2BgImage);
   }, [slide2BgImage]);
 
   useEffect(() => {
-    localStorage.setItem('att_slide1BgImage', slide1BgImage);
+    safeLocalStorageSetItem('att_slide1BgImage', slide1BgImage);
   }, [slide1BgImage]);
 
   useEffect(() => {
-    localStorage.setItem('att_customBannerBgImage', customBannerBgImage);
+    safeLocalStorageSetItem('att_customBannerBgImage', customBannerBgImage);
   }, [customBannerBgImage]);
 
   useEffect(() => {
-    localStorage.setItem('att_recruitBgImage', recruitBgImage);
+    safeLocalStorageSetItem('att_recruitBgImage', recruitBgImage);
   }, [recruitBgImage]);
 
   // Unified Navigation Handler (Scroll-To-Top on View shift)
@@ -542,27 +543,27 @@ export default function App() {
             aboutBgImage={aboutBgImage}
             onUpdateAboutBgImage={(url) => {
               setAboutBgImage(url);
-              localStorage.setItem('att_aboutBgImage', url);
+              safeLocalStorageSetItem('att_aboutBgImage', url);
             }}
             slide2BgImage={slide2BgImage}
             onUpdateSlide2BgImage={(url) => {
               setSlide2BgImage(url);
-              localStorage.setItem('att_slide2BgImage', url);
+              safeLocalStorageSetItem('att_slide2BgImage', url);
             }}
             slide1BgImage={slide1BgImage}
             onUpdateSlide1BgImage={(url) => {
               setSlide1BgImage(url);
-              localStorage.setItem('att_slide1BgImage', url);
+              safeLocalStorageSetItem('att_slide1BgImage', url);
             }}
             customBannerBgImage={customBannerBgImage}
             onUpdateCustomBannerBgImage={(url) => {
               setCustomBannerBgImage(url);
-              localStorage.setItem('att_customBannerBgImage', url);
+              safeLocalStorageSetItem('att_customBannerBgImage', url);
             }}
             recruitBgImage={recruitBgImage}
             onUpdateRecruitBgImage={(url) => {
               setRecruitBgImage(url);
-              localStorage.setItem('att_recruitBgImage', url);
+              safeLocalStorageSetItem('att_recruitBgImage', url);
             }}
           />
         );

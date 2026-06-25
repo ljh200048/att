@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Gift, Ticket, Sparkles, Check, Star, Smile, Calendar, MessageSquare, Award, Trash2 } from 'lucide-react';
+import { safeLocalStorageSetItem } from '../utils';
 
 interface EventSubmission {
   id: string;
@@ -71,15 +72,15 @@ export default function EventView() {
 
   // Save states to LocalStorage
   useEffect(() => {
-    localStorage.setItem('att_coupon_downloaded', downloadedCoupon ? 'true' : 'false');
+    safeLocalStorageSetItem('att_coupon_downloaded', downloadedCoupon ? 'true' : 'false');
   }, [downloadedCoupon]);
 
   useEffect(() => {
-    localStorage.setItem('att_event_submissions', JSON.stringify(submissions));
+    safeLocalStorageSetItem('att_event_submissions', JSON.stringify(submissions));
   }, [submissions]);
 
   useEffect(() => {
-    localStorage.setItem('att_event_stamps', JSON.stringify(stamps));
+    safeLocalStorageSetItem('att_event_stamps', JSON.stringify(stamps));
   }, [stamps]);
 
   // Handle Coupon Download
