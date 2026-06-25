@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://att-keyring.com/sitemap.xml
+Sitemap: https://www.att-keyring.com/sitemap.xml
