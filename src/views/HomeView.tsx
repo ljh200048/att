@@ -150,7 +150,7 @@ export default function HomeView({
         <div 
           style={slide2BgImage ? { backgroundImage: `url(${slide2BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
           className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
-            slide2BgImage ? '' : 'bg-stone-50'
+            slide2BgImage ? '' : 'bg-stone-100'
           }`}
         >
 

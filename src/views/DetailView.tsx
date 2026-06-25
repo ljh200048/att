@@ -269,7 +269,7 @@ export default function DetailView({
                   onClick={() => setSelectedColor(color)}
                   className={`cursor-pointer text-xs font-black px-4 py-2.5 rounded-none border-2 transition-all ${
                     selectedColor === color 
-                      ? 'bg-black border-black text-[#FFFDF0] shadow-[2px_2px_0px_rgba(255,14,147,1)]' 
+                      ? 'bg-brand-lime/25 border-black text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]' 
                       : 'bg-white border-stone-200 hover:border-black text-stone-700'
                   }`}
                 >
@@ -292,12 +292,12 @@ export default function DetailView({
                   onClick={() => setSelectedOption(opt)}
                   className={`cursor-pointer w-full text-left font-black text-xs p-3 rounded-none border-2 flex items-center justify-between transition-all ${
                     selectedOption === opt 
-                      ? 'bg-black border-black text-brand-lime shadow-[2px_2px_0px_rgba(0,191,255,1)]' 
+                      ? 'bg-brand-lime/25 border-black text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]' 
                       : 'bg-white border-stone-250 hover:border-black text-stone-700'
                   }`}
                 >
                   <span>{opt}</span>
-                  {selectedOption === opt && <Check className="w-4 h-4 text-brand-lime" />}
+                  {selectedOption === opt && <Check className="w-4 h-4 text-black" />}
                 </button>
               ))}
             </div>

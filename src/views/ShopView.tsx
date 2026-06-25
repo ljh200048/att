@@ -127,7 +127,7 @@ export default function ShopView({ products, onNavigate, category, onSetCategory
               onClick={() => onSetCategory(cat.value)}
               className={`cursor-pointer text-[11px] font-black px-4 py-2 rounded-none border-2 transition-all ${
                 category === cat.value
-                  ? 'bg-black text-brand-lime border-black shadow-[3px_3px_0px_rgba(0,0,0,1)]'
+                  ? 'bg-brand-lime/25 text-black border-black shadow-[3px_3px_0px_rgba(0,0,0,1)]'
                   : 'bg-white text-black border-stone-200 hover:border-black'
               }`}
             >

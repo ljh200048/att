@@ -346,7 +346,7 @@ export default function AdminView({
                       </div>
                     ) : (
                       <div className="w-12 h-12 rounded border border-dashed border-stone-300 bg-stone-50 text-[9px] text-stone-400 font-bold flex items-center justify-center shrink-0">
-                        기본 그래픽
+                        기본 회색
                       </div>
                     )}
 
