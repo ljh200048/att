@@ -208,7 +208,17 @@ export default function App() {
 
   const [orders, setOrders] = useState<Order[]>(() => {
     const saved = localStorage.getItem('att_orders');
-    return saved ? JSON.parse(saved) : INITIAL_ORDERS;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.map((ord: Order) => 
+          ord.recipientName === '김민지' ? { ...ord, recipientName: '홍길동' } : ord
+        );
+      } catch (e) {
+        return INITIAL_ORDERS;
+      }
+    }
+    return INITIAL_ORDERS;
   });
 
   const [customOrders, setCustomOrders] = useState<CustomOrder[]>(() => {

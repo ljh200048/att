@@ -195,6 +195,24 @@ export default function DetailView({
                       </button>
                     </div>
                   </div>
+
+                  {product.images && product.images.length > 0 && (
+                    <div className="pt-1.5 border-t border-dashed border-black/10 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onUpdateProduct({
+                            ...product,
+                            images: []
+                          });
+                          alert('상품 이미지가 성공적으로 삭제되었습니다! ✓');
+                        }}
+                        className="text-red-500 hover:underline text-[10px] font-bold cursor-pointer flex items-center gap-1"
+                      >
+                        <span>이미지 삭제하기 (초기화)</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

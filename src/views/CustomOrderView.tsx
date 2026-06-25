@@ -4,7 +4,7 @@
  */
 
 import { useState, useRef, ChangeEvent, FormEvent } from 'react';
-import { Sparkles, ArrowRight, Upload, Info, CheckCircle2, ShieldQuestion, Heart, Smartphone } from 'lucide-react';
+import { Sparkles, ArrowRight, Upload, Info, CheckCircle2, ShieldQuestion, Heart, Smartphone, Trash } from 'lucide-react';
 import { CustomOrder, CustomKeyringConfig } from '../types';
 import KeyringPreview from '../components/KeyringPreview';
 
@@ -424,30 +424,47 @@ export default function CustomOrderView({
                     onChange={handleImageUpload}
                     className="hidden"
                   />
-                  <div 
-                    onClick={triggerFileSelection}
-                    className="cursor-pointer border-2 border-dashed border-stone-200 hover:border-stone-400 rounded-2xl bg-stone-50 hover:bg-stone-100/30 p-5 text-center flex flex-col items-center justify-center gap-2 transition-all"
-                  >
-                    {referenceImage ? (
-                      <div className="relative">
-                        <img 
-                          src={referenceImage} 
-                          alt="업로드 시안 지석" 
-                          className="w-16 h-16 rounded-lg object-cover border border-stone-200" 
-                        />
-                        <span className="text-[10px] text-[#EEFF00] bg-stone-900 border border-stone-900 px-1 py-0.5 rounded-sm font-bold block mt-1.5 animate-pulse">
-                          이미지 전송 완료! 클릭 시 교체
-                        </span>
+                  <div className="relative">
+                    <div 
+                      onClick={triggerFileSelection}
+                      className="cursor-pointer border-2 border-dashed border-stone-200 hover:border-stone-400 rounded-2xl bg-stone-50 hover:bg-stone-100/30 p-5 text-center flex flex-col items-center justify-center gap-2 transition-all"
+                    >
+                      {referenceImage ? (
+                        <div className="relative flex flex-col items-center">
+                          <img 
+                            src={referenceImage} 
+                            alt="업로드 시안 지석" 
+                            className="w-16 h-16 rounded-lg object-cover border border-stone-200" 
+                          />
+                          <span className="text-[10px] text-[#EEFF00] bg-stone-900 border border-stone-900 px-1 py-0.5 rounded-sm font-bold block mt-1.5 animate-pulse">
+                            이미지 전송 완료! 클릭 시 교체
+                          </span>
+                        </div>
+                      ) : (
+                        <>
+                          <Upload className="w-7 h-7 text-stone-400" />
+                          <span className="text-xs font-bold text-stone-600">컴퓨터 혹은 모바일 기기 내 참고 이미지 보조선 선택</span>
+                          <span className="text-[9px] text-stone-400 leading-normal font-medium leading-relaxed">
+                            원하는 손글씨 모양이나 캡처 도면이 있다면 단원 전송해 주세요.<br />
+                            JPG, PNG 등 일반 파일을 모두 지원합니다.
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    {referenceImage && (
+                      <div className="mt-2 text-center">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setReferenceImage('');
+                          }}
+                          className="bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-md border border-black shadow-[1px_1px_0px_rgba(0,0,0,1)] hover:translate-y-[-1px] transition-all cursor-pointer inline-flex items-center gap-1"
+                        >
+                          <Trash className="w-3 h-3" />
+                          <span>이미지 삭제하기</span>
+                        </button>
                       </div>
-                    ) : (
-                      <>
-                        <Upload className="w-7 h-7 text-stone-400" />
-                        <span className="text-xs font-bold text-stone-600">컴퓨터 혹은 모바일 기기 내 참고 이미지 보조선 선택</span>
-                        <span className="text-[9px] text-stone-400 leading-normal font-medium leading-relaxed">
-                          원하는 손글씨 모양이나 캡처 도면이 있다면 단원 전송해 주세요.<br />
-                          JPG, PNG 등 일반 파일을 모두 지원합니다.
-                        </span>
-                      </>
                     )}
                   </div>
                 </div>

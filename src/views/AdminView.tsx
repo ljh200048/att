@@ -671,9 +671,18 @@ export default function AdminView({
                     />
                   </div>
                   {prodImage && (
-                    <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold">
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                      <span>이미지 소스 캐싱됨</span>
+                    <div className="flex items-center gap-3 text-xs text-emerald-600 font-bold">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                        <span>이미지 소스 캐싱됨</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setProdImage('')}
+                        className="text-rose-500 hover:underline text-[11px] cursor-pointer"
+                      >
+                        이미지 삭제하기
+                      </button>
                     </div>
                   )}
                 </div>
