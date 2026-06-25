@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.attach4.netlify.app/sitemap.xml
+Sitemap: https://attach4.netlify.app/sitemap.xml
