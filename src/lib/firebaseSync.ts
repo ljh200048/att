@@ -67,10 +67,14 @@ export async function fetchCollection<T>(collectionName: string): Promise<T[]> {
     });
     return items;
   } catch (error: any) {
-    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
-      handleFirestoreError(error, OperationType.LIST, collectionName);
+    try {
+      if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+        handleFirestoreError(error, OperationType.LIST, collectionName);
+      }
+      console.error(`Error fetching collection ${collectionName}:`, error);
+    } catch (innerError) {
+      console.warn("Caught Firestore list permission error gracefully:", innerError);
     }
-    console.error(`Error fetching collection ${collectionName}:`, error);
     return [];
   }
 }
@@ -83,10 +87,14 @@ export async function saveDocToDb<T>(collectionName: string, id: string, data: a
     const docRef = doc(db, collectionName, id);
     await setDoc(docRef, data);
   } catch (error: any) {
-    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
-      handleFirestoreError(error, OperationType.WRITE, `${collectionName}/${id}`);
+    try {
+      if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+        handleFirestoreError(error, OperationType.WRITE, `${collectionName}/${id}`);
+      }
+      console.error(`Error saving doc ${id} to ${collectionName}:`, error);
+    } catch (innerError) {
+      console.warn("Caught Firestore write permission error gracefully:", innerError);
     }
-    console.error(`Error saving doc ${id} to ${collectionName}:`, error);
   }
 }
 
@@ -98,10 +106,14 @@ export async function deleteDocFromDb(collectionName: string, id: string): Promi
     const docRef = doc(db, collectionName, id);
     await deleteDoc(docRef);
   } catch (error: any) {
-    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
-      handleFirestoreError(error, OperationType.DELETE, `${collectionName}/${id}`);
+    try {
+      if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+        handleFirestoreError(error, OperationType.DELETE, `${collectionName}/${id}`);
+      }
+      console.error(`Error deleting doc ${id} from ${collectionName}:`, error);
+    } catch (innerError) {
+      console.warn("Caught Firestore delete permission error gracefully:", innerError);
     }
-    console.error(`Error deleting doc ${id} from ${collectionName}:`, error);
   }
 }
 
@@ -119,13 +131,12 @@ export async function seedCollectionIfEmpty<T>(
       return existing;
     }
 
-    if (collectionName === 'products') {
-      const user = auth.currentUser;
-      const isAdmin = user && (user.email === 'lch200048@gmail.com' || user.email === 'admin@att.com');
-      if (!isAdmin) {
-        console.log(`Skipping products seeding in Firestore for non-admin visitor. Loading locally.`);
-        return defaultItems;
-      }
+    // Keep non-logged-in visitors/non-admins read-only. Seeding writes are admin-only.
+    const user = auth.currentUser;
+    const isAdmin = user && (user.email === 'lch200048@gmail.com' || user.email === 'admin@att.com');
+    if (!isAdmin) {
+      console.log(`Skipping seeding of ${collectionName} in Firestore for non-admin visitor. Loading locally.`);
+      return defaultItems;
     }
 
     console.log(`Seeding collection ${collectionName} with ${defaultItems.length} items...`);
@@ -174,10 +185,14 @@ export async function fetchSettingsDoc(settingsId: string): Promise<any> {
     }
     return null;
   } catch (error: any) {
-    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
-      handleFirestoreError(error, OperationType.GET, `settings/${settingsId}`);
+    try {
+      if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+        handleFirestoreError(error, OperationType.GET, `settings/${settingsId}`);
+      }
+      console.error(`Error fetching settings ${settingsId}:`, error);
+    } catch (innerError) {
+      console.warn("Caught Firestore settings get permission error gracefully:", innerError);
     }
-    console.error(`Error fetching settings ${settingsId}:`, error);
     return null;
   }
 }
@@ -190,9 +205,13 @@ export async function saveSettingsDoc(settingsId: string, data: any): Promise<vo
     const docRef = doc(db, 'settings', settingsId);
     await setDoc(docRef, data);
   } catch (error: any) {
-    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
-      handleFirestoreError(error, OperationType.WRITE, `settings/${settingsId}`);
+    try {
+      if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+        handleFirestoreError(error, OperationType.WRITE, `settings/${settingsId}`);
+      }
+      console.error(`Error saving settings ${settingsId}:`, error);
+    } catch (innerError) {
+      console.warn("Caught Firestore settings write permission error gracefully:", innerError);
     }
-    console.error(`Error saving settings ${settingsId}:`, error);
   }
 }

@@ -292,14 +292,18 @@ export default function App() {
           if (settings.customBannerBgImage) setCustomBannerBgImage(settings.customBannerBgImage);
           if (settings.recruitBgImage) setRecruitBgImage(settings.recruitBgImage);
         } else {
-          // Initialize settings doc in Firestore
-          await saveSettingsDoc('backgrounds', {
-            aboutBgImage: aboutBgImage || '',
-            slide2BgImage: slide2BgImage || '',
-            slide1BgImage: slide1BgImage || '',
-            customBannerBgImage: customBannerBgImage || '',
-            recruitBgImage: recruitBgImage || ''
-          });
+          // Initialize settings doc in Firestore (Only if user is admin)
+          const user = auth.currentUser;
+          const isAdmin = user && (user.email === 'lch200048@gmail.com' || user.email === 'admin@att.com');
+          if (isAdmin) {
+            await saveSettingsDoc('backgrounds', {
+              aboutBgImage: aboutBgImage || '',
+              slide2BgImage: slide2BgImage || '',
+              slide1BgImage: slide1BgImage || '',
+              customBannerBgImage: customBannerBgImage || '',
+              recruitBgImage: recruitBgImage || ''
+            });
+          }
         }
       } catch (error) {
         console.error("Firebase sync error during initialization:", error);
@@ -370,18 +374,22 @@ export default function App() {
     };
   }, []);
 
-  // Update Settings in Firestore when modified
+  // Update Settings in Firestore when modified (Only if user is admin)
   useEffect(() => {
     if (!isSyncingWithFirebase) {
-      saveSettingsDoc('backgrounds', {
-        aboutBgImage,
-        slide2BgImage,
-        slide1BgImage,
-        customBannerBgImage,
-        recruitBgImage
-      });
+      const user = auth.currentUser;
+      const isAdmin = user && (user.email === 'lch200048@gmail.com' || user.email === 'admin@att.com');
+      if (isAdmin) {
+        saveSettingsDoc('backgrounds', {
+          aboutBgImage,
+          slide2BgImage,
+          slide1BgImage,
+          customBannerBgImage,
+          recruitBgImage
+        });
+      }
     }
-  }, [aboutBgImage, slide2BgImage, slide1BgImage, customBannerBgImage, recruitBgImage]);
+  }, [aboutBgImage, slide2BgImage, slide1BgImage, customBannerBgImage, recruitBgImage, isSyncingWithFirebase]);
 
   // Sync to localStorage
   useEffect(() => {
