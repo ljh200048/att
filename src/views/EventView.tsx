@@ -12,6 +12,50 @@ interface EventSubmission {
   createdAt: string;
 }
 
+// Helper function to send Telegram notifications
+const sendTelegramNotification = async (sub: EventSubmission) => {
+  const token = (import.meta as any).env.VITE_TELEGRAM_BOT_TOKEN;
+  const chatId = (import.meta as any).env.VITE_TELEGRAM_CHAT_ID;
+
+  if (!token || !chatId) {
+    console.warn('Telegram Bot Token or Chat ID is missing. Please set VITE_TELEGRAM_BOT_TOKEN and VITE_TELEGRAM_CHAT_ID in environment variables.');
+    return;
+  }
+
+  const message = `🔔 [att. 어태치] 새로운 와펜 체험 이벤트 응모!
+
+👤 응모자 정보
+• 이름: ${sub.name}
+• 연락처/인스타ID: ${sub.contact}
+
+🎨 커스텀 와펜 조합
+• 배경 컬러: ${sub.bgColor}
+• 캐릭터/데코: ${sub.deco}
+• 자수 문구: ${sub.wording}
+
+📅 응모 일시: ${new Date().toLocaleString('ko-KR')}`;
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Telegram API responded with status ${response.status}`);
+    }
+    console.log('Telegram message sent successfully!');
+  } catch (err) {
+    console.error('Failed to send Telegram notification:', err);
+  }
+};
+
 export default function EventView() {
   // Event 1: Welcome Coupon State
   const [downloadedCoupon, setDownloadedCoupon] = useState<boolean>(() => {
@@ -63,6 +107,7 @@ export default function EventView() {
   const [formWording, setFormWording] = useState('');
   const [formDeco, setFormDeco] = useState('스타 (Star)');
   const [formSuccess, setFormSuccess] = useState(false);
+  const [formConsent, setFormConsent] = useState(false);
 
   // Event 3: Attendance Stamp State
   const [stamps, setStamps] = useState<string[]>(() => {
@@ -101,6 +146,10 @@ export default function EventView() {
       alert('⚠️ 원하는 문구는 영문 대문자 기준 최대 8자까지만 입력 가능합니다.');
       return;
     }
+    if (!formConsent) {
+      alert('⚠️ 개인정보 수집 및 이용에 동의하셔야 이벤트 응모가 완료됩니다.');
+      return;
+    }
 
     const newSubmission: EventSubmission = {
       id: `sub_${Date.now()}`,
@@ -113,10 +162,12 @@ export default function EventView() {
     };
 
     setSubmissions(prev => [newSubmission, ...prev]);
+    sendTelegramNotification(newSubmission);
     setFormSuccess(true);
     setFormName('');
     setFormContact('');
     setFormWording('');
+    setFormConsent(false);
 
     setTimeout(() => {
       setFormSuccess(false);
@@ -286,6 +337,27 @@ export default function EventView() {
                   <span className="absolute right-3.5 text-[10px] font-mono text-stone-400 font-bold">
                     {formWording.length} / 8
                   </span>
+                </div>
+              </div>
+
+              {/* Privacy Consent Checkbox */}
+              <div className="bg-stone-50 border border-stone-200 p-3.5 rounded space-y-2 mt-4">
+                <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={formConsent}
+                    onChange={(e) => setFormConsent(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 accent-black rounded border-stone-300 text-black cursor-pointer"
+                    required
+                  />
+                  <span className="text-xs font-bold text-stone-700">
+                    [필수] 개인정보 수집 및 이용 동의
+                  </span>
+                </label>
+                <div className="text-[10px] text-stone-400 font-semibold leading-normal pl-6">
+                  수집 항목: 이름, 인스타그램 ID/연락처, 응모 내역<br />
+                  수집 목적: 이벤트 당첨자 선정 및 실물 와펜 제작/리워드 제공<br />
+                  보유 및 이용 기간: 이벤트 당첨자 발표 및 경품 발송 후 30일 이내 지체 없이 파기
                 </div>
               </div>
 
