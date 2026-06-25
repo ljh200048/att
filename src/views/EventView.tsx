@@ -14,12 +14,14 @@ interface EventSubmission {
 
 // Helper function to send Telegram notifications
 const sendTelegramNotification = async (sub: EventSubmission) => {
-  const token = (import.meta as any).env.VITE_TELEGRAM_BOT_TOKEN;
-  const chatId = (import.meta as any).env.VITE_TELEGRAM_CHAT_ID;
+  const localToken = localStorage.getItem('att_telegram_bot_token');
+  const localChatId = localStorage.getItem('att_telegram_chat_id');
+  const token = localToken || (import.meta as any).env.VITE_TELEGRAM_BOT_TOKEN;
+  const chatId = localChatId || (import.meta as any).env.VITE_TELEGRAM_CHAT_ID;
 
   if (!token || !chatId) {
-    console.warn('Telegram Bot Token or Chat ID is missing. Please set VITE_TELEGRAM_BOT_TOKEN and VITE_TELEGRAM_CHAT_ID in environment variables.');
-    return;
+    console.warn('Telegram Bot Token or Chat ID is missing. Please set VITE_TELEGRAM_BOT_TOKEN and VITE_TELEGRAM_CHAT_ID in environment variables or LocalStorage settings.');
+    return { success: false, reason: 'missing_config' };
   }
 
   const message = `🔔 [att. 어태치] 새로운 와펜 체험 이벤트 응모!
@@ -48,11 +50,52 @@ const sendTelegramNotification = async (sub: EventSubmission) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Telegram API responded with status ${response.status}`);
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.description || `HTTP 에러코드 ${response.status}`);
     }
     console.log('Telegram message sent successfully!');
-  } catch (err) {
+    return { success: true };
+  } catch (err: any) {
     console.error('Failed to send Telegram notification:', err);
+    return { success: false, reason: 'api_error', message: err.message };
+  }
+};
+
+// Helper function to send Telegram test message
+const sendTelegramTestMessage = async (customToken?: string, customChatId?: string) => {
+  const localToken = localStorage.getItem('att_telegram_bot_token');
+  const localChatId = localStorage.getItem('att_telegram_chat_id');
+  const token = customToken || localToken || (import.meta as any).env.VITE_TELEGRAM_BOT_TOKEN;
+  const chatId = customChatId || localChatId || (import.meta as any).env.VITE_TELEGRAM_CHAT_ID;
+
+  if (!token || !chatId) {
+    return { success: false, reason: 'missing_config' };
+  }
+
+  const message = `🔔 [att. 어태치] 텔레그램 연동 성공!
+  
+이 메시지가 보이신다면 봇 토큰과 채팅 ID가 정상적으로 연동된 상태입니다.
+테스트 일시: ${new Date().toLocaleString('ko-KR')}`;
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+      }),
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.description || `HTTP 에러코드 ${response.status}`);
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, reason: 'api_error', message: err.message };
   }
 };
 
@@ -109,6 +152,14 @@ export default function EventView() {
   const [formSuccess, setFormSuccess] = useState(false);
   const [formConsent, setFormConsent] = useState(false);
 
+  // Telegram settings states for Developer/Admin Panel
+  const [localToken, setLocalTokenState] = useState(() => localStorage.getItem('att_telegram_bot_token') || '');
+  const [localChatId, setLocalChatIdState] = useState(() => localStorage.getItem('att_telegram_chat_id') || '');
+  const [lastSubmissionStatus, setLastSubmissionStatus] = useState<{ success?: boolean; reason?: string; message?: string } | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const [testResult, setTestResult] = useState<{ success?: boolean; message?: string } | null>(null);
+  const [searchKeyword, setSearchKeyword] = useState('');
+
   // Event 3: Attendance Stamp State
   const [stamps, setStamps] = useState<string[]>(() => {
     const saved = localStorage.getItem('att_event_stamps');
@@ -162,7 +213,13 @@ export default function EventView() {
     };
 
     setSubmissions(prev => [newSubmission, ...prev]);
-    sendTelegramNotification(newSubmission);
+    
+    // Reset status and send notification
+    setLastSubmissionStatus(null);
+    sendTelegramNotification(newSubmission).then((res) => {
+      setLastSubmissionStatus(res);
+    });
+
     setFormSuccess(true);
     setFormName('');
     setFormContact('');
@@ -375,6 +432,24 @@ export default function EventView() {
                   🎉 디자인 제출 완료! 나만의 조합이 성공적으로 응모되었습니다. 선정되신 분께 개별 연락 후 제작에 들어갑니다!
                 </div>
               )}
+
+              {lastSubmissionStatus && !lastSubmissionStatus.success && (
+                <div className="bg-amber-50 border-2 border-amber-500/30 text-amber-900 p-4 text-xs font-semibold mt-4 rounded space-y-2 text-left">
+                  <div className="flex items-center gap-1.5 text-amber-800 font-extrabold">
+                    <span>⚠️ 텔레그램 알림 전송 실패 안내 (관리자 참고용)</span>
+                  </div>
+                  <p className="text-[11px] text-stone-600 leading-relaxed">
+                    디자인 응모는 브라우저(로컬)에 저장되었으나, 텔레그램 연동 정보가 비어 있거나 올바르지 않아 실시간 알림 메시지가 봇으로 전송되지 못했습니다.
+                  </p>
+                  <p className="text-[11px] text-stone-600 leading-relaxed">
+                    {lastSubmissionStatus.reason === 'missing_config' ? (
+                      <span>이유: 봇 토큰(Token) 또는 채팅 ID(Chat ID)가 설정되어 있지 않습니다. 페이지 하단의 <strong>⚙️ 텔레그램 알림 연동 및 관리자 설정</strong> 가이드를 통해 설정해 주세요.</span>
+                    ) : (
+                      <span>에러 메시지: <code className="bg-amber-100 px-1.5 py-0.5 rounded text-amber-950 font-mono font-bold">{lastSubmissionStatus.message}</code></span>
+                    )}
+                  </p>
+                </div>
+              )}
             </form>
           </div>
 
@@ -501,6 +576,386 @@ export default function EventView() {
         </div>
 
       </div>
+
+      {/* 4. Telegram Bot Developer / Admin Configuration Panel */}
+      <section className="bg-stone-50 border-2 border-black p-6 md:p-8 rounded-lg text-left mt-8 shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200 pb-5 mb-5">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="bg-black text-[#39FF14] text-[9.5px] font-mono font-bold px-2 py-0.5 uppercase tracking-wider">
+                ADMIN CONSOLE
+              </span>
+              <span className="text-[11px] font-bold text-stone-505 font-mono">TELEGRAM BOT SYNC</span>
+            </div>
+            <h3 className="text-xl font-black text-stone-900 leading-tight">
+              ⚙️ 텔레그램 알림 연동 및 관리자 설정
+            </h3>
+            <p className="text-xs text-stone-500 font-semibold leading-relaxed">
+              고객들의 응모 현황을 실시간으로 텔레그램 메신저로 받아볼 수 있는 연동 설정 창입니다.
+            </p>
+          </div>
+          
+          <button
+            type="button"
+            onClick={() => setShowSettings(!showSettings)}
+            className="self-start sm:self-center bg-black hover:bg-stone-800 text-white font-black text-[11px] px-4 py-2 uppercase tracking-wider transition-all border border-black rounded shadow-[2px_2px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+          >
+            {showSettings ? '설정창 접기 ▲' : '설정창 열기 ▼'}
+          </button>
+        </div>
+
+        {showSettings && (
+          <div className="space-y-6">
+            {/* Real-time Connection Status Indicators */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-white border border-stone-200 p-4 rounded flex items-center justify-between">
+                <div>
+                  <div className="text-[10px] font-bold text-stone-400 uppercase">연동 상태 (STATUS)</div>
+                  <div className="text-sm font-black text-stone-800 mt-1 flex items-center gap-1.5">
+                    {localToken && localChatId ? (
+                      <>
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                        <span className="text-emerald-700 font-bold">브라우저(로컬) 연동 활성화</span>
+                      </>
+                    ) : (import.meta as any).env.VITE_TELEGRAM_BOT_TOKEN && (import.meta as any).env.VITE_TELEGRAM_CHAT_ID ? (
+                      <>
+                        <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse inline-block" />
+                        <span className="text-blue-700 font-bold">환경 변수(ENV) 연동 활성화</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
+                        <span className="text-rose-700 font-bold">연동되지 않음</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white border border-stone-200 p-4 rounded flex items-center justify-between">
+                <div>
+                  <div className="text-[10px] font-bold text-stone-400 uppercase">연동 우선순위</div>
+                  <p className="text-[11px] text-stone-505 font-semibold leading-relaxed mt-1">
+                    로컬 브라우저 입력값 (우선) &gt; 배포 환경 변수 (ENV) 순서로 적용됩니다.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Config Form */}
+            <div className="bg-white border border-stone-200 p-5 rounded space-y-4">
+              <h4 className="text-xs font-black text-stone-800 uppercase tracking-wider">
+                🔑 실시간 브라우저 연동 키 입력
+              </h4>
+              <p className="text-[11px] text-stone-500 font-medium -mt-2 leading-relaxed">
+                이 브라우저에 연동 키를 즉시 저장하여 테스트할 수 있습니다. (Netlify 설정 없이도 즉시 작동)
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1">Telegram Bot Token</label>
+                  <input
+                    type="password"
+                    value={localToken}
+                    onChange={(e) => setLocalTokenState(e.target.value)}
+                    placeholder="예: 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ"
+                    className="w-full bg-stone-50 border border-stone-300 px-3.5 py-2.5 text-xs font-mono font-bold text-black outline-none focus:border-black rounded"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1">Telegram Chat ID</label>
+                  <input
+                    type="text"
+                    value={localChatId}
+                    onChange={(e) => setLocalChatIdState(e.target.value)}
+                    placeholder="예: 987654321 또는 그룹채팅 ID (-100123...)"
+                    className="w-full bg-stone-50 border border-stone-300 px-3.5 py-2.5 text-xs font-mono font-bold text-black outline-none focus:border-black rounded"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    localStorage.setItem('att_telegram_bot_token', localToken.trim());
+                    localStorage.setItem('att_telegram_chat_id', localChatId.trim());
+                    alert('💾 브라우저에 텔레그램 연동 정보가 성공적으로 임시 저장되었습니다!');
+                    window.location.reload();
+                  }}
+                  className="bg-black hover:bg-stone-800 text-white font-black text-xs px-4 py-2.5 uppercase tracking-wider transition-all border border-black rounded shadow-[2px_2px_0px_rgba(0,0,0,1)] cursor-pointer"
+                >
+                  기기에 설정 저장하기
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm('🔄 로컬에 저장된 설정을 초기화하고 기본 환경변수(ENV) 값으로 복구하시겠습니까?')) {
+                      localStorage.removeItem('att_telegram_bot_token');
+                      localStorage.removeItem('att_telegram_chat_id');
+                      setLocalTokenState('');
+                      setLocalChatIdState('');
+                      alert('🔄 로컬 설정이 성공적으로 초기화되었습니다!');
+                      window.location.reload();
+                    }
+                  }}
+                  className="bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs px-4 py-2.5 border border-stone-300 rounded cursor-pointer"
+                >
+                  설정 초기화 (기본값)
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const tokenToUse = localToken.trim() || (import.meta as any).env.VITE_TELEGRAM_BOT_TOKEN;
+                    const chatIdToUse = localChatId.trim() || (import.meta as any).env.VITE_TELEGRAM_CHAT_ID;
+                    
+                    if (!tokenToUse || !chatIdToUse) {
+                      alert('⚠️ 토큰이나 채팅 ID가 비어 있어 테스트를 진행할 수 없습니다.');
+                      return;
+                    }
+
+                    setTestResult({ message: '테스트 알림 메시지를 전송 중...' });
+                    const res = await sendTelegramTestMessage(tokenToUse, chatIdToUse);
+                    if (res.success) {
+                      setTestResult({ success: true, message: '🎉 성공! 입력하신 텔레그램 방으로 테스트 알림이 발송되었습니다. 메신저를 확인해 보세요!' });
+                    } else {
+                      setTestResult({ success: false, message: `❌ 전송 실패! 사유: ${res.message || '알 수 없는 오류'}` });
+                    }
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-black text-xs px-4 py-2.5 uppercase tracking-wider transition-all rounded shadow-[2px_2px_0px_rgba(0,0,0,0.15)] cursor-pointer"
+                >
+                  ⚡ 연동 테스트 메시지 전송
+                </button>
+              </div>
+
+              {testResult && (
+                <div className={`p-3.5 rounded text-xs font-bold ${
+                  testResult.success === true ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' :
+                  testResult.success === false ? 'bg-rose-50 border border-rose-200 text-rose-800' :
+                  'bg-stone-100 border border-stone-200 text-stone-600'
+                }`}>
+                  {testResult.message}
+                </div>
+              )}
+            </div>
+
+            {/* 📋 와펜 체험 이벤트 응모 명단 관리 대시보드 */}
+            <div className="bg-white border border-stone-200 p-5 rounded space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 pb-3">
+                <div>
+                  <h4 className="text-sm font-black text-stone-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>📋 와펜 체험 이벤트 실시간 응모 현황</span>
+                    <span className="bg-rose-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-mono">
+                      {submissions.length}건
+                    </span>
+                  </h4>
+                  <p className="text-[11px] text-stone-500 font-medium leading-relaxed">
+                    사용자가 웹사이트에서 응모한 디자인 명단입니다. (브라우저 로컬 저장소 기준)
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (submissions.length === 0) {
+                        alert('⚠️ 내보낼 응모 내역이 없습니다.');
+                        return;
+                      }
+                      const headers = ['이름', '연락처/SNS', '배경색', '문구', '장식(데코)', '응모일'];
+                      const rows = submissions.map(s => [
+                        s.name,
+                        s.contact,
+                        s.bgColor,
+                        s.wording,
+                        s.deco,
+                        s.createdAt
+                      ]);
+                      const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.map(val => `"${val.replace(/"/g, '""')}"`).join(','))].join('\n');
+                      
+                      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                      const url = URL.createObjectURL(blob);
+                      const link = document.createElement('a');
+                      link.setAttribute('href', url);
+                      link.setAttribute('download', `att_event_submissions_${new Date().toISOString().split('T')[0]}.csv`);
+                      link.style.visibility = 'hidden';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                      alert('💾 엑셀(Excel)에서 바로 쓸 수 있는 CSV 파일로 다운로드되었습니다!');
+                    }}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold px-3 py-1.5 rounded flex items-center gap-1 transition-all shadow-[1px_1px_0px_rgba(0,0,0,0.1)] cursor-pointer"
+                  >
+                    📥 엑셀(CSV) 다운로드
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (window.confirm('⚠️ 정말로 모든 응모 내역을 삭제하고 초기화하시겠습니까?\n(기본 제공되는 예시 데이터 3건을 제외한 모든 입력 정보가 완전히 지워집니다.)')) {
+                        setSubmissions([]);
+                        alert('🔄 응모 명단이 초기화되었습니다!');
+                      }
+                    }}
+                    className="bg-stone-100 hover:bg-stone-200 text-stone-600 text-[11px] font-bold px-3 py-1.5 rounded transition-all cursor-pointer"
+                  >
+                    🗑️ 전체 초기화
+                  </button>
+                </div>
+              </div>
+
+              {/* 검색 필터 */}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="🔍 이름, 연락처/SNS, 문구 등으로 검색..."
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                  className="w-full bg-stone-50 border border-stone-200 px-3 py-2 text-xs font-semibold text-black outline-none focus:border-black rounded"
+                />
+                {searchKeyword && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchKeyword('')}
+                    className="bg-stone-100 hover:bg-stone-200 text-xs text-stone-600 px-3 py-2 rounded font-bold"
+                  >
+                    지우기
+                  </button>
+                )}
+              </div>
+
+              {/* 테이블 목록 */}
+              <div className="border border-stone-200 rounded overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-xs">
+                    <thead>
+                      <tr className="bg-stone-100 border-b border-stone-200 font-bold text-stone-700">
+                        <th className="p-3">응모일</th>
+                        <th className="p-3">이름</th>
+                        <th className="p-3">연락처/SNS</th>
+                        <th className="p-3">키링 디자인 설정 (배경색 / 문구 / 데코)</th>
+                        <th className="p-3 text-center">동작</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-stone-100 font-medium text-stone-600">
+                      {submissions.filter(s => {
+                        if (!searchKeyword.trim()) return true;
+                        const kw = searchKeyword.toLowerCase();
+                        return (
+                          s.name.toLowerCase().includes(kw) ||
+                          s.contact.toLowerCase().includes(kw) ||
+                          s.bgColor.toLowerCase().includes(kw) ||
+                          s.wording.toLowerCase().includes(kw) ||
+                          s.deco.toLowerCase().includes(kw)
+                        );
+                      }).length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="p-8 text-center text-stone-400 font-semibold bg-stone-50/50">
+                            📪 검색 조건에 맞는 응모 내역이 없습니다.
+                          </td>
+                        </tr>
+                      ) : (
+                        submissions
+                          .filter(s => {
+                            if (!searchKeyword.trim()) return true;
+                            const kw = searchKeyword.toLowerCase();
+                            return (
+                              s.name.toLowerCase().includes(kw) ||
+                              s.contact.toLowerCase().includes(kw) ||
+                              s.bgColor.toLowerCase().includes(kw) ||
+                              s.wording.toLowerCase().includes(kw) ||
+                              s.deco.toLowerCase().includes(kw)
+                            );
+                          })
+                          .map((sub) => (
+                            <tr key={sub.id} className="hover:bg-stone-50/80 transition-colors">
+                              <td className="p-3 font-mono text-[11px] whitespace-nowrap">{sub.createdAt}</td>
+                              <td className="p-3 font-extrabold text-stone-900 whitespace-nowrap">{sub.name}</td>
+                              <td className="p-3 font-mono text-stone-800 whitespace-nowrap">{sub.contact}</td>
+                              <td className="p-3 space-y-1">
+                                <div className="flex flex-wrap items-center gap-1.5">
+                                  <span className="bg-stone-100 border border-stone-200 text-stone-800 px-1.5 py-0.5 rounded text-[10px] font-bold">
+                                    🎨 {sub.bgColor}
+                                  </span>
+                                  <span className="bg-black text-[#39FF14] px-2 py-0.5 rounded text-[10px] font-mono font-black tracking-wider">
+                                    🔤 {sub.wording}
+                                  </span>
+                                  <span className="bg-rose-50 border border-rose-100 text-rose-700 px-1.5 py-0.5 rounded text-[10px] font-bold">
+                                    🎀 {sub.deco}
+                                  </span>
+                                </div>
+                              </td>
+                              <td className="p-3 text-center whitespace-nowrap">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (window.confirm(`⚠️ [${sub.name}] 고객님의 응모 건을 삭제하시겠습니까?`)) {
+                                      handleDeleteSubmission(sub.id);
+                                    }
+                                  }}
+                                  className="text-rose-600 hover:text-rose-800 font-extrabold text-[11px] px-2.5 py-1 hover:bg-rose-50 rounded transition-all cursor-pointer"
+                                >
+                                  삭제
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* Korean Guides */}
+            <div className="bg-stone-100 border border-stone-200 p-5 rounded space-y-4">
+              <h4 className="text-xs font-black text-stone-800 uppercase tracking-wider">
+                📖 쉽고 빠른 텔레그램 연동 3단계 가이드 (How-to Guide)
+              </h4>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-stone-600 leading-relaxed font-semibold">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-black text-[#39FF14] flex items-center justify-center font-mono font-black text-[10px]">1</span>
+                    <span className="font-extrabold text-stone-900">텔레그램 봇 만들기</span>
+                  </div>
+                  <ol className="list-decimal pl-5 space-y-1 font-medium text-stone-500">
+                    <li>텔레그램 앱에서 <span className="text-stone-800 font-extrabold">@BotFather</span> 검색하기</li>
+                    <li>채팅방에 <code className="bg-stone-200 px-1 py-0.5 rounded font-bold text-stone-800">/newbot</code> 입력하기</li>
+                    <li>봇의 이름과 아이디 입력 후 발급되는 <span className="text-blue-600 font-bold">HTTP API Token</span> 복사해서 위에 입력하기</li>
+                  </ol>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-black text-[#39FF14] flex items-center justify-center font-mono font-black text-[10px]">2</span>
+                    <span className="font-extrabold text-stone-900">내 채팅 ID(Chat ID) 찾기</span>
+                  </div>
+                  <ol className="list-decimal pl-5 space-y-1 font-medium text-stone-500">
+                    <li>내가 만든 봇 채팅방에 들어가서 <span className="text-stone-800 font-extrabold">/start</span> 버튼 누르기 (★필수!)</li>
+                    <li>텔레그램 검색창에 <span className="text-stone-800 font-extrabold">@GetMyChatID_Bot</span> 검색하기</li>
+                    <li>이 봇과의 채팅방에서 발급되는 <span className="text-blue-600 font-bold">Your Chat ID</span> 숫자형 ID 복사해서 위에 입력하기</li>
+                  </ol>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-black text-[#39FF14] flex items-center justify-center font-mono font-black text-[10px]">3</span>
+                    <span className="font-extrabold text-stone-900">Netlify에 영구 설정하기</span>
+                  </div>
+                  <p className="font-medium text-stone-500 leading-relaxed pl-7">
+                    브라우저에 저장하면 내 폰/컴퓨터에서만 작동합니다. 다른 모든 사용자들의 응모 현황까지 알림을 받으시려면 Netlify 배포 환경 변수에 설정하셔야 합니다:
+                  </p>
+                  <ol className="list-decimal pl-12 space-y-1 font-medium text-stone-500">
+                    <li>Netlify 사이트 대시보드 &gt; Site Settings</li>
+                    <li>Environment Variables 메뉴로 가기</li>
+                    <li><span className="text-stone-800 font-bold font-mono">VITE_TELEGRAM_BOT_TOKEN</span> 과 <span className="text-stone-800 font-bold font-mono">VITE_TELEGRAM_CHAT_ID</span> 변수를 추가하고 값을 붙여넣기</li>
+                    <li>사이트를 <span className="text-[#FF1493] font-bold">Clear cache & deploy</span>로 재배포하기</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
 
     </div>
   );
