@@ -1,8 +1,149 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    
+    // Global safety net: default-deny catch-all
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-+ ]+$');
+    }
+    
+    function incoming() {
+      return request.resource.data;
+    }
+    
+    function existing() {
+      return resource.data;
+    }
+    
+    // Validate Product
+    function isValidProduct(p) {
+      return p.id is string && p.id.size() <= 100
+        && p.name is string && p.name.size() <= 100
+        && p.price is number && p.price >= 0.0
+        && p.description is string && p.description.size() <= 4000
+        && p.category is string && (p.category == 'keyring' || p.category == 'wappen')
+        && p.colors is list && p.colors.size() <= 40
+        && p.options is list && p.options.size() <= 40
+        && p.size is string && p.size.size() <= 100
+        && p.material is string && p.material.size() <= 200
+        && p.leadTime is string && p.leadTime.size() <= 200
+        && p.shippingFee is number && p.shippingFee >= 0.0
+        && p.rating is number
+        && p.reviewCount is number;
+    }
+    
+    // Validate Order
+    function isValidOrder(o) {
+      return o.id is string && o.id.size() <= 100
+        && o.userId is string && o.userId.size() <= 100
+        && o.userName is string && o.userName.size() <= 100
+        && o.phone is string && o.phone.size() <= 100
+        && o.email is string && o.email.size() <= 200
+        && o.items is list && o.items.size() <= 100
+        && o.totalPrice is number && o.totalPrice >= 0.0
+        && o.paymentMethod is string
+        && o.recipientName is string && o.recipientName.size() <= 100
+        && o.deliveryAddress is string && o.deliveryAddress.size() <= 1000
+        && o.status is string
+        && o.createdAt is string;
+    }
+    
+    // Validate Custom Order
+    function isValidCustomOrder(c) {
+      return c.id is string && c.id.size() <= 100
+        && c.userId is string && c.userId.size() <= 100
+        && c.name is string && c.name.size() <= 100
+        && c.phone is string && c.phone.size() <= 100
+        && c.email is string && c.email.size() <= 200
+        && c.config is map
+        && c.quantity is number && c.quantity > 0.0
+        && c.status is string
+        && c.requestedAt is string
+        && c.price is number && c.price >= 0.0;
+    }
+    
+    // Validate Review
+    function isValidReview(r) {
+      return r.id is string && r.id.size() <= 100
+        && r.userName is string && r.userName.size() <= 100
+        && r.productName is string && r.productName.size() <= 300
+        && r.rating is number && r.rating >= 1.0 && r.rating <= 5.0
+        && r.content is string && r.content.size() <= 2000
+        && r.date is string;
+    }
+    
+    // Validate Inquiry
+    function isValidInquiry(i) {
+      return i.id is string && i.id.size() <= 100
+        && i.userName is string && i.userName.size() <= 100
+        && i.phone is string && i.phone.size() <= 100
+        && i.email is string && i.email.size() <= 200
+        && i.inquiryType is string
+        && i.content is string && i.content.size() <= 4000
+        && i.requestedAt is string
+        && i.isAnswered is bool;
+    }
+    
+    // Validate Settings
+    function isValidSettings(s) {
+      return s.keys().hasAll(['aboutBgImage', 'slide2BgImage', 'slide1BgImage', 'customBannerBgImage', 'recruitBgImage']);
+    }
+
+    // Validate User Profile
+    function isValidUser(u) {
+      return u.id is string && u.id.size() <= 100
+        && u.email is string && u.email.size() <= 200
+        && u.name is string && u.name.size() <= 100
+        && (!u.keys().contains('instagramId') || u.instagramId == null || (u.instagramId is string && u.instagramId.size() <= 100))
+        && u.role is string && (u.role == 'admin' || u.role == 'customer');
+    }
+
+    // Rules for each collection
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isValidId(userId) && isValidUser(incoming());
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isValidId(productId) && isValidProduct(incoming());
+    }
+
+    match /orders/{orderId} {
+      allow read: if true;
+      allow create: if isValidId(orderId) && isValidOrder(incoming());
+      allow update: if isValidId(orderId) && isValidOrder(incoming());
+      allow delete: if true;
+    }
+
+    match /custom_orders/{customId} {
+      allow read: if true;
+      allow create: if isValidId(customId) && isValidCustomOrder(incoming());
+      allow update: if isValidId(customId) && isValidCustomOrder(incoming());
+      allow delete: if true;
+    }
+
+    match /inquiries/{inquiryId} {
+      allow read: if true;
+      allow create: if isValidId(inquiryId) && isValidInquiry(incoming());
+      allow update: if isValidId(inquiryId) && isValidInquiry(incoming());
+      allow delete: if true;
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isValidId(reviewId) && isValidReview(incoming());
+      allow delete: if true;
+    }
+
+    match /settings/{settingsId} {
+      allow read: if true;
+      allow write: if isValidId(settingsId) && isValidSettings(incoming());
     }
   }
 }

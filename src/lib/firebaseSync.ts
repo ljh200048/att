@@ -6,7 +6,54 @@ import {
   deleteDoc, 
   getDoc 
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { db, auth } from './firebase';
+
+export enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+export interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId?: string | null;
+    email?: string | null;
+    emailVerified?: boolean | null;
+    isAnonymous?: boolean | null;
+    tenantId?: string | null;
+    providerInfo?: {
+      providerId?: string | null;
+      email?: string | null;
+    }[];
+  };
+}
+
+function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid || null,
+      email: auth.currentUser?.email || null,
+      emailVerified: auth.currentUser?.emailVerified || null,
+      isAnonymous: auth.currentUser?.isAnonymous || null,
+      tenantId: auth.currentUser?.tenantId || null,
+      providerInfo: auth.currentUser?.providerData?.map(provider => ({
+        providerId: provider.providerId,
+        email: provider.email,
+      })) || []
+    },
+    operationType,
+    path
+  };
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
+}
 
 /**
  * Fetches all documents from a Firestore collection
@@ -19,7 +66,10 @@ export async function fetchCollection<T>(collectionName: string): Promise<T[]> {
       items.push({ ...docSnap.data() } as T);
     });
     return items;
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+      handleFirestoreError(error, OperationType.LIST, collectionName);
+    }
     console.error(`Error fetching collection ${collectionName}:`, error);
     return [];
   }
@@ -32,7 +82,10 @@ export async function saveDocToDb<T>(collectionName: string, id: string, data: a
   try {
     const docRef = doc(db, collectionName, id);
     await setDoc(docRef, data);
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+      handleFirestoreError(error, OperationType.WRITE, `${collectionName}/${id}`);
+    }
     console.error(`Error saving doc ${id} to ${collectionName}:`, error);
   }
 }
@@ -44,7 +97,10 @@ export async function deleteDocFromDb(collectionName: string, id: string): Promi
   try {
     const docRef = doc(db, collectionName, id);
     await deleteDoc(docRef);
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+      handleFirestoreError(error, OperationType.DELETE, `${collectionName}/${id}`);
+    }
     console.error(`Error deleting doc ${id} from ${collectionName}:`, error);
   }
 }
@@ -69,7 +125,7 @@ export async function seedCollectionIfEmpty<T>(
       await saveDocToDb(collectionName, id, item);
     }
     return defaultItems;
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error seeding collection ${collectionName}:`, error);
     return defaultItems;
   }
@@ -86,7 +142,10 @@ export async function fetchSettingsDoc(settingsId: string): Promise<any> {
       return docSnap.data();
     }
     return null;
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+      handleFirestoreError(error, OperationType.GET, `settings/${settingsId}`);
+    }
     console.error(`Error fetching settings ${settingsId}:`, error);
     return null;
   }
@@ -99,7 +158,10 @@ export async function saveSettingsDoc(settingsId: string, data: any): Promise<vo
   try {
     const docRef = doc(db, 'settings', settingsId);
     await setDoc(docRef, data);
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.code === 'permission-denied' || error?.message?.includes('permission')) {
+      handleFirestoreError(error, OperationType.WRITE, `settings/${settingsId}`);
+    }
     console.error(`Error saving settings ${settingsId}:`, error);
   }
 }

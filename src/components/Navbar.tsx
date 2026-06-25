@@ -42,13 +42,6 @@ export default function Navbar({
       <div className="w-full bg-stone-50 border-b border-stone-100 py-1.5 px-6 flex items-center justify-between text-[11px] text-stone-500 tracking-wider">
         <div className="flex items-center gap-4">
           <span className="font-semibold text-stone-600">NO.1 FASHION & LIFESTYLE SELECT SHOP</span>
-          <span className="text-stone-200">|</span>
-          <span className="flex items-center gap-1.5 font-semibold text-[10px]">
-            <span className={`w-2 h-2 rounded-full ${isSyncingWithFirebase ? 'bg-amber-400 animate-pulse' : 'bg-emerald-500'}`} />
-            <span className="text-stone-500 font-medium">
-              {isSyncingWithFirebase ? 'Firebase 클라우드 연동 중...' : 'Firebase 실시간 연동 완료'}
-            </span>
-          </span>
         </div>
 
         <div className="flex items-center gap-5">

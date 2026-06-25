@@ -31,6 +31,9 @@ import {
   fetchSettingsDoc,
   saveSettingsDoc
 } from './lib/firebaseSync';
+import { auth, db } from './lib/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 // Mock bootstrapped initial states inside LocalStorage
 const MOCK_USER: User = {
@@ -202,7 +205,7 @@ export default function App() {
   // Shared Data States
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
     const saved = localStorage.getItem('att_currentUser');
-    return saved ? JSON.parse(saved) : MOCK_USER; // Default mockup user pre-logged to make UX instant and neat
+    return saved ? JSON.parse(saved) : null;
   });
 
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
@@ -305,6 +308,55 @@ export default function App() {
     }
 
     initFirebaseSync();
+
+    // 7. Subscribe to real-time Firebase Auth changes
+    const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          const userDocRef = doc(db, 'users', firebaseUser.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          let profile: User;
+          if (userDocSnap.exists()) {
+            profile = userDocSnap.data() as User;
+          } else {
+            profile = {
+              id: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || '고객님',
+              role: (firebaseUser.email === 'admin@att.com' || firebaseUser.email === 'lch200048@gmail.com') ? 'admin' : 'customer'
+            };
+            await setDoc(userDocRef, profile);
+          }
+          setCurrentUser(profile);
+          safeLocalStorageSetItem('att_currentUser', JSON.stringify(profile));
+        } catch (error) {
+          console.error("Error syncing user profile:", error);
+          const fallbackUser: User = {
+            id: firebaseUser.uid,
+            email: firebaseUser.email || '',
+            name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || '고객님',
+            role: (firebaseUser.email === 'admin@att.com' || firebaseUser.email === 'lch200048@gmail.com') ? 'admin' : 'customer'
+          };
+          setCurrentUser(fallbackUser);
+          safeLocalStorageSetItem('att_currentUser', JSON.stringify(fallbackUser));
+        }
+      } else {
+        const isLocalAdmin = localStorage.getItem('att_is_local_admin') === 'true';
+        if (isLocalAdmin) {
+          const saved = localStorage.getItem('att_currentUser');
+          if (saved) {
+            setCurrentUser(JSON.parse(saved));
+            return;
+          }
+        }
+        setCurrentUser(null);
+        localStorage.removeItem('att_currentUser');
+      }
+    });
+
+    return () => {
+      unsubscribeAuth();
+    };
   }, []);
 
   // Update Settings in Firestore when modified
@@ -549,11 +601,17 @@ export default function App() {
     setCurrentUser(user);
   };
 
-  const handleLogout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem('att_currentUser');
-    alert('안전하게 로그아웃 되었습니다.');
-    setCurrentView('home');
+  const handleLogout = async () => {
+    try {
+      localStorage.removeItem('att_is_local_admin');
+      localStorage.removeItem('att_currentUser');
+      setCurrentUser(null);
+      await signOut(auth);
+      alert('안전하게 로그아웃 되었습니다.');
+      setCurrentView('home');
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   // Render match pages based on view state
