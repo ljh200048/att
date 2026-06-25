@@ -286,8 +286,8 @@ export default function EventView({ currentUser }: EventViewProps) {
       
       {/* 1. Header Section */}
       <section className="text-center max-w-2xl mx-auto flex flex-col items-center gap-4 mt-6">
-        <span className="flex items-center gap-1.5 bg-black text-[#39FF14] border border-black px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] shadow-sm">
-          <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+        <span className="flex items-center gap-1.5 bg-black text-white border border-black px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] shadow-sm">
+          <Sparkles className="w-3.5 h-3.5 text-[#39FF14] animate-pulse" />
           <span>att. WAPPEN EXPERIENCE</span>
         </span>
         <h1 className="font-sans text-3xl md:text-5xl text-black font-extrabold tracking-tight mt-1 leading-tight uppercase">

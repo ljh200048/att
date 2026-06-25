@@ -130,7 +130,7 @@ export default function AdminView({
         size: prodSize,
         material: prodMaterial,
         leadTime: prodLeadTime,
-        images: prodImage ? [prodImage] : editingProduct.images
+        images: prodImage ? [prodImage] : []
       });
       setEditingProduct(null);
     } else {
@@ -677,7 +677,7 @@ export default function AdminView({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
                   <div className="flex flex-col gap-1">
                     <label className="text-[11px] font-semibold">상품 실물 촬영 업로드 (선택, 우선순위 적용)</label>
                     <input 
@@ -687,19 +687,27 @@ export default function AdminView({
                       className="text-xs" 
                     />
                   </div>
-                  {prodImage && (
-                    <div className="flex items-center gap-3 text-xs text-emerald-600 font-bold">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                        <span>이미지 소스 캐싱됨</span>
+                  {prodImage ? (
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src={prodImage} 
+                        alt="Product preview" 
+                        className="w-12 h-12 rounded object-cover border border-stone-250 bg-stone-50" 
+                      />
+                      <div className="flex flex-col gap-0.5 text-left">
+                        <span className="text-[10px] text-emerald-600 font-bold">이미지 캐싱됨</span>
+                        <button
+                          type="button"
+                          onClick={() => setProdImage('')}
+                          className="text-rose-500 hover:underline text-[10px] font-bold text-left cursor-pointer"
+                        >
+                          이미지 제거하기
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => setProdImage('')}
-                        className="text-rose-500 hover:underline text-[11px] cursor-pointer"
-                      >
-                        이미지 삭제하기
-                      </button>
+                    </div>
+                  ) : (
+                    <div className="text-[10px] text-stone-400 font-semibold italic text-left">
+                      이미지 없음 (기본 브랜드 로고 대체)
                     </div>
                   )}
                 </div>
