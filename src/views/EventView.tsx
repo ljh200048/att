@@ -300,71 +300,10 @@ export default function EventView() {
 
               {formSuccess && (
                 <div className="bg-[#39FF14]/15 border-2 border-dashed border-[#39FF14] text-stone-900 p-3.5 text-xs font-bold text-center mt-4 rounded">
-                  🎉 디자인 제출 완료! 나만의 조합이 아래 '실시간 와펜 체험 참여 보드'에 등록되었습니다. 선정되신 분께 개별 연락 후 제작에 들어갑니다!
+                  🎉 디자인 제출 완료! 나만의 조합이 성공적으로 응모되었습니다. 선정되신 분께 개별 연락 후 제작에 들어갑니다!
                 </div>
               )}
             </form>
-          </div>
-
-          {/* REALTIME EVENT SUBMISSION LIVE BOARD */}
-          <div className="bg-stone-50 border-2 border-black p-6 md:p-8 shadow-[4px_4px_0px_rgba(0,0,0,1)] rounded-lg">
-            <div className="flex items-center justify-between border-b border-stone-200 pb-4 mb-6">
-              <div className="text-left">
-                <span className="text-[10px] font-mono tracking-widest font-black text-stone-400 block uppercase">
-                  REAL-TIME WAPPEN BOARD
-                </span>
-                <h4 className="text-lg font-black text-stone-900">
-                  실시간 와펜 체험 참여 보드
-                </h4>
-              </div>
-              <span className="text-[10px] font-mono bg-black text-white px-2.5 py-1 font-bold rounded">
-                TOTAL: {submissions.length}건
-              </span>
-            </div>
-
-            {/* Submissions List Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {submissions.map((sub) => (
-                <div key={sub.id} className="bg-white border border-stone-200 p-4 rounded-lg flex flex-col justify-between hover:border-stone-400 transition-colors relative group">
-                  {/* Delete button for easy removal/testing */}
-                  <button 
-                    onClick={() => handleDeleteSubmission(sub.id)}
-                    className="absolute top-3 right-3 text-stone-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer p-1"
-                    title="응모 내역 삭제"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[9.5px] font-mono font-bold bg-stone-100 px-2 py-0.5 text-stone-600 rounded">
-                        {sub.createdAt}
-                      </span>
-                      <span className="text-[10px] font-bold text-stone-400 font-mono uppercase mr-4">
-                        {sub.name} 님 ({sub.contact})
-                      </span>
-                    </div>
-
-                    {/* Patch Simulation visualization */}
-                    <div className="flex items-center gap-3 bg-stone-50 border border-stone-150 p-2.5 rounded">
-                      {/* Pseudo patch */}
-                      <div className="w-10 h-10 rounded bg-stone-950 flex flex-col items-center justify-center border border-stone-800 text-white font-mono shadow-sm">
-                        <span className="text-[8px] font-black tracking-tighter scale-[0.8]">{sub.deco.split(' ')[0]}</span>
-                        <span className="text-[9px] font-extrabold text-[#39FF14] tracking-tight">{sub.wording.slice(0, 3)}</span>
-                      </div>
-                      <div className="text-left">
-                        <p className="text-[11px] font-bold text-stone-900">
-                          {sub.wording}
-                        </p>
-                        <p className="text-[9.5px] text-stone-400 font-semibold">
-                          {sub.bgColor} / {sub.deco}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
         </div>
