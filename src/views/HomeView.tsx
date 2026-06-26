@@ -147,7 +147,7 @@ export default function HomeView({
           <div className="lg:col-span-6 space-y-6 transition-all duration-300 rounded-2xl p-0 bg-transparent">
             <div className="inline-flex items-center gap-2">
               <span className="bg-[#39FF14] text-black text-[10px] font-mono font-black px-2.5 py-1 uppercase tracking-widest rounded-sm">
-                STREET ARCHIVE
+                #ATT with
               </span>
               <span className="text-[10px] font-mono tracking-[0.2em] font-black uppercase text-stone-500">
                 EST. 2026
@@ -156,19 +156,25 @@ export default function HomeView({
             
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-[0.01em] uppercase">
               STICK YOUR VIBE,<br />
-              <span className="text-[#FF1493]">RULE THE STREET!</span>
+              <span className="text-[#FF1493]">TAG YOUR ______!!</span>
             </h2>
             
-            <p className="text-xs sm:text-sm font-semibold leading-relaxed max-w-xl text-stone-700">
-              어태치(att.)는 나만의 서브컬처적 취향과 힙한 영감을 일상 속 의류, 가방, 아웃도어 기물에 거침없이 붙여 표현하는 국내 유일의 1:1 스트릿 커스텀 와펜 플랫폼입니다. 정형화된 일상에 자신만의 아트웍 패치를 더해 룩을 수선해 보세요!
-            </p>
+            <div className="text-xs sm:text-sm font-semibold leading-relaxed max-w-xl text-stone-700 space-y-2">
+              <p>
+                나만의 무드, 이름, 문구, 캐릭터, 기억하고 싶은 순간까지<br />
+                당신이 원하는 빈칸을 채워 세상에 하나뿐인 커스텀 포인트를 만들어보세요.
+              </p>
+              <p className="text-stone-500 text-[11px] sm:text-xs">
+                좋아하는 단어, 나만의 캐릭터, 오늘의 기분, 오래 기억하고 싶은 순간까지 당신이 채우는 빈칸이 곧 #ATT의 커스텀이 됩니다.
+              </p>
+            </div>
             
             <div className="pt-2">
               <button 
-                onClick={() => onNavigate('shop')}
-                className="group bg-[#39FF14] text-black hover:bg-white hover:text-black font-black text-xs tracking-widest px-8 py-4 transition-all duration-300 flex items-center gap-2 uppercase border-2 border-black shadow-[4px_4px_0px_rgba(255,20,147,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
+                onClick={() => onNavigate('custom')}
+                className="group bg-[#39FF14] text-black hover:bg-white hover:text-black font-black text-xs tracking-widest px-8 py-4 transition-all duration-300 flex items-center gap-2 uppercase border-2 border-black shadow-[4px_4px_0px_rgba(255,20,147,1)] active:translate-x-1 active:translate-y-1 active:shadow-none cursor-pointer"
               >
-                <span>GET THE PATCHES ↗</span>
+                <span>CHOOSE YOUR VIBE ↗</span>
               </button>
             </div>
           </div>
@@ -179,48 +185,48 @@ export default function HomeView({
             {/* Patch Card 1 */}
             <div className="backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md bg-white border-stone-300 hover:border-[#39FF14]">
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-mono text-[#39FF14] font-black bg-[#39FF14]/10 px-2 py-0.5 rounded">01 / STICK</span>
+                <span className="text-[10px] font-mono text-[#39FF14] font-black bg-[#39FF14]/10 px-2 py-0.5 rounded">01 / TAG YOUR MOOD</span>
                 <span className="w-2 h-2 rounded-full bg-[#39FF14] group-hover:animate-ping" />
               </div>
               <div>
                 <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#39FF14] transition-colors text-black">WAPPEN PLAY</p>
-                <p className="text-[10px] mt-1 font-semibold text-stone-500">의류, 가구 등 어디든 커스텀 부착</p>
+                <p className="text-[10px] mt-1 font-semibold text-stone-500">의류, 키링 등의 커스텀 부착</p>
               </div>
             </div>
 
             {/* Patch Card 2 */}
             <div className="backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md bg-white border-stone-300 hover:border-[#FF1493]">
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-mono text-[#FF1493] font-black bg-[#FF1493]/10 px-2 py-0.5 rounded">02 / GRAPHIC</span>
+                <span className="text-[10px] font-mono text-[#FF1493] font-black bg-[#FF1493]/10 px-2 py-0.5 rounded">02 / TAG YOUR ART</span>
                 <span className="w-2 h-2 rounded-full bg-[#FF1493] group-hover:animate-ping" />
               </div>
               <div>
-                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#FF1493] transition-colors text-black">HIP DESIGNS</p>
-                <p className="text-[10px] mt-1 font-semibold text-stone-500">서브컬처 감성의 수제 그래픽 아트</p>
+                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#FF1493] transition-colors text-black">GRAFIC ART</p>
+                <p className="text-[10px] mt-1 font-semibold text-stone-500">수제 그래픽 아트 키링</p>
               </div>
             </div>
 
             {/* Patch Card 3 */}
             <div className="backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md bg-white border-stone-300 hover:border-[#39FF14]">
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-mono text-[#39FF14] font-black bg-[#39FF14]/10 px-2 py-0.5 rounded">03 / CREATOR</span>
+                <span className="text-[10px] font-mono text-[#39FF14] font-black bg-[#39FF14]/10 px-2 py-0.5 rounded">03 / TAG YOUR THING</span>
                 <span className="w-2 h-2 rounded-full bg-[#39FF14] group-hover:animate-ping" />
               </div>
               <div>
-                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#39FF14] transition-colors text-black">1:1 DIRECT</p>
-                <p className="text-[10px] mt-1 font-semibold text-stone-500">커스텀 도안과 완벽한 밀착 소통</p>
+                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#39FF14] transition-colors text-black">POUCH</p>
+                <p className="text-[10px] mt-1 font-semibold text-stone-500">파우치에 나의 것들을 담기</p>
               </div>
             </div>
 
             {/* Patch Card 4 */}
             <div className="backdrop-blur-xs border-2 p-4 rounded-xl flex flex-col justify-between h-36 transition-all group shadow-md bg-white border-stone-300 hover:border-[#FF1493]">
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-mono text-[#FF1493] font-black bg-[#FF1493]/10 px-2 py-0.5 rounded">04 / CREW</span>
+                <span className="text-[10px] font-mono text-[#FF1493] font-black bg-[#FF1493]/10 px-2 py-0.5 rounded">04 / TAG YOUR ______</span>
                 <span className="w-2 h-2 rounded-full bg-[#FF1493] group-hover:animate-ping" />
               </div>
               <div>
-                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#FF1493] transition-colors text-black">att. ARCHIVE</p>
-                <p className="text-[10px] mt-1 font-semibold text-stone-500">무한한 믹스매치 컬렉션 기획</p>
+                <p className="text-sm font-black uppercase tracking-wider group-hover:text-[#FF1493] transition-colors text-black">BLANK</p>
+                <p className="text-[10px] mt-1 font-semibold text-stone-500">나만의 디자인을 표현하는 커스텀 와펜</p>
               </div>
             </div>
 
