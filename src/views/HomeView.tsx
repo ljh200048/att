@@ -49,64 +49,8 @@ export default function HomeView({
   const customBannerBgImage = propCustomBannerBgImage || "";
   const recruitBgImage = propRecruitBgImage || "";
 
-  // Slide indicator state for Hero section
-  const [heroSlide, setHeroSlide] = useState(0);
-
-  // Auto-play interval for hero slides (changes slides automatically every 5 seconds)
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setHeroSlide((prev) => (prev + 1) % 2);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [heroSlide]);
-
-  // Dynamic check if the active slide has a background image
-  const isDarkBg = (heroSlide === 0 && !!slide1BgImage) || (heroSlide === 1 && !!slide2BgImage);
-
-  // Hero carousel sliders
-  const slides = [
-    {
-      title: 'A PLACE OF att.',
-      sub: '놀라움이 가득한 장소, 일상 속 특별한 패션과 취향을 붙이는 룩을 지향합니다.',
-      visual: (
-        <div 
-          style={slide1BgImage ? { backgroundImage: `url(${slide1BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
-          className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
-            slide1BgImage ? 'bg-black/30' : 'bg-white bg-[radial-gradient(rgba(0,0,0,0.03)_1px,transparent_1px)] [background-size:20px_20px]'
-          }`}
-        >
-          {/* Outline decorative typography */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
-            <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide1BgImage ? 'text-white' : 'text-black'}`}>ATT.</span>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: 'SEASON ESSENTIAL',
-      sub: '트렌디한 감성과 고밀도 가치를 선사하는 독창적인 데일리 패션 라인업',
-      visual: (
-        <div 
-          style={slide2BgImage ? { backgroundImage: `url(${slide2BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
-          className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
-            slide2BgImage ? 'bg-black/30' : 'bg-white bg-[radial-gradient(rgba(0,0,0,0.03)_1px,transparent_1px)] [background-size:20px_20px]'
-          }`}
-        >
-          {/* Outline decorative typography in background */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
-            <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide2BgImage ? 'text-white' : 'text-black'}`}>CUSTOM</span>
-          </div>
-        </div>
-      )
-    }
-  ];
-
-  const handleNextHero = () => {
-    setHeroSlide((prev) => (prev + 1) % slides.length);
-  };
-  const handlePrevHero = () => {
-    setHeroSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  // Check if the hero slide has a background image
+  const isDarkBg = !!slide1BgImage;
 
   return (
     <div id="home-view-container" className="flex flex-col gap-24 md:gap-36 pb-20 select-none bg-white">
@@ -114,16 +58,6 @@ export default function HomeView({
       {/* 1. HERO BANNER: WONDERPLACE LAYOUT (Image 1) */}
       <section id="hero-slider-section" className="w-full relative h-[500px] md:h-[620px] bg-white overflow-hidden border-b border-stone-100">
         
-        {/* Floating Vertical Slide Indicator */}
-        <div className={`absolute left-6 md:left-10 top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col space-y-6 font-mono text-[11px] font-bold transition-colors duration-300 ${isDarkBg ? 'text-stone-400' : 'text-stone-400'}`}>
-          <button onClick={() => setHeroSlide(0)} className={`transition-all text-left flex items-center gap-2 ${heroSlide === 0 ? (isDarkBg ? 'text-white font-extrabold translate-x-1' : 'text-black font-extrabold translate-x-1') : (isDarkBg ? 'hover:text-white text-stone-500' : 'hover:text-black')}`}>
-            <span>— 01</span>
-          </button>
-          <button onClick={() => setHeroSlide(1)} className={`transition-all text-left flex items-center gap-2 ${heroSlide === 1 ? (isDarkBg ? 'text-white font-extrabold translate-x-1' : 'text-black font-extrabold translate-x-1') : (isDarkBg ? 'hover:text-white text-stone-500' : 'hover:text-black')}`}>
-            <span>— 02</span>
-          </button>
-        </div>
-
         {/* Floating Vertical Social links on bottom-left */}
         <div className={`absolute left-6 md:left-10 bottom-8 z-20 hidden md:flex flex-col space-y-3 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${isDarkBg ? 'text-stone-400' : 'text-stone-500'}`}>
           <a href="https://www.instagram.com/att_attached/" target="_blank" rel="noreferrer" className={`transition-colors rotate-90 origin-left mt-10 block ${isDarkBg ? 'hover:text-white' : 'hover:text-black'}`}>instagram</a>
@@ -132,7 +66,7 @@ export default function HomeView({
         {/* Floating Large Title Text over Slider (Image 1) */}
         <div 
           className={`absolute left-6 md:left-32 top-16 md:top-20 z-10 text-left max-w-xl pointer-events-none transition-all duration-300 rounded-xl ${
-            (heroSlide === 1 && slide2BgImage) || (heroSlide === 0 && slide1BgImage)
+            slide1BgImage
               ? 'bg-black/25 p-6 backdrop-blur-[2px] border border-white/10 shadow-lg'
               : 'p-0 bg-transparent'
           } ${
@@ -171,33 +105,16 @@ export default function HomeView({
         </div>
 
         {/* Slide Visual Container */}
-        {slides[heroSlide].visual}
-
-        {/* Slider Controls overlay (Image 1) */}
-        <div className="absolute right-6 md:right-16 top-1/2 -translate-y-1/2 z-20 flex flex-col space-y-4">
-          <button 
-            onClick={handlePrevHero}
-            className="cursor-pointer w-10 h-10 md:w-12 md:h-12 border border-stone-300 bg-white hover:bg-black hover:text-white hover:border-black text-stone-800 flex items-center justify-center transition-all shadow-sm rounded-full"
-          >
-            <ChevronLeft className="w-5 h-5 stroke-[1.5]" />
-          </button>
-          <button 
-            onClick={handleNextHero}
-            className="cursor-pointer w-10 h-10 md:w-12 md:h-12 border border-stone-300 bg-white hover:bg-black hover:text-white hover:border-black text-stone-800 flex items-center justify-center transition-all shadow-sm rounded-full"
-          >
-            <ChevronRight className="w-5 h-5 stroke-[1.5]" />
-          </button>
-        </div>
-
-        {/* Bottom Slide indicator dot line */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setHeroSlide(i)}
-              className={`w-2 h-2 rounded-full transition-all ${heroSlide === i ? 'w-6 bg-black' : 'bg-stone-300 hover:bg-stone-400'}`}
-            />
-          ))}
+        <div 
+          style={slide1BgImage ? { backgroundImage: `url(${slide1BgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
+          className={`absolute inset-0 flex items-center justify-end overflow-hidden transition-all duration-300 ${
+            slide1BgImage ? 'bg-black/30' : 'bg-white bg-[radial-gradient(rgba(0,0,0,0.03)_1px,transparent_1px)] [background-size:20px_20px]'
+          }`}
+        >
+          {/* Outline decorative typography */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
+            <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide1BgImage ? 'text-white' : 'text-black'}`}>ATT.</span>
+          </div>
         </div>
 
       </section>
