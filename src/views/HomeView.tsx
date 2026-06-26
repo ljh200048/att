@@ -79,83 +79,6 @@ export default function HomeView({
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
             <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide1BgImage ? 'text-white' : 'text-black'}`}>ATT.</span>
           </div>
-          
-          {/* Right positioned Wappen Cards Container */}
-          <div className="relative z-10 flex gap-4 md:gap-6 pr-6 sm:pr-12 md:pr-24 lg:pr-32 xl:pr-48 pl-4 max-w-full overflow-x-auto items-center">
-            {/* First Wappen Card */}
-            {firstWappen && (
-              <div 
-                onClick={() => onNavigate('detail', firstWappen.id)}
-                className="cursor-pointer w-40 sm:w-44 md:w-52 bg-white border-2 border-black p-4 relative flex flex-col justify-between rounded-lg shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] hover:shadow-[6px_6px_0px_rgba(0,0,0,1)] transition-all duration-300"
-              >
-                <div>
-                  <span className="bg-[#39FF14] text-black text-[8px] font-mono font-black px-2 py-0.5 tracking-wider uppercase mb-3 inline-block">
-                    {firstWappen.category === 'wappen' ? 'att. WAPPEN' : 'att. SELECTION'}
-                  </span>
-                  
-                  {/* Square Image Area */}
-                  <div className="aspect-square w-full bg-stone-50 border border-stone-200/50 rounded flex items-center justify-center overflow-hidden mb-3 p-1.5">
-                    {firstWappen.images && firstWappen.images[0] ? (
-                      <img 
-                        src={firstWappen.images[0]} 
-                        alt={firstWappen.name} 
-                        className="w-full h-full object-contain pointer-events-none" 
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 bg-stone-200 rounded-full animate-pulse" />
-                    )}
-                  </div>
-                  
-                  <p className="text-[11px] md:text-[12px] font-black text-stone-900 leading-tight line-clamp-2">
-                    {firstWappen.name}
-                  </p>
-                </div>
-                
-                <div className="mt-3 pt-2 border-t border-stone-100 flex items-center justify-between">
-                  <span className="text-[9px] font-bold text-stone-400 font-mono">1:1 CUSTOM</span>
-                  <span className="text-[10px] font-black text-[#FF1493]">VIEW ↗</span>
-                </div>
-              </div>
-            )}
-
-            {/* Second Wappen Card - hidden on tiny mobile, shown on sm+ */}
-            {secondWappen && (
-              <div 
-                onClick={() => onNavigate('detail', secondWappen.id)}
-                className="hidden sm:flex cursor-pointer w-40 sm:w-44 md:w-52 bg-white border-2 border-black p-4 relative flex-col justify-between rounded-lg shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] hover:shadow-[6px_6px_0px_rgba(0,0,0,1)] transition-all duration-300"
-              >
-                <div>
-                  <span className="bg-black text-[#39FF14] text-[8px] font-mono font-black px-2 py-0.5 tracking-wider uppercase mb-3 inline-block">
-                    {secondWappen.category === 'wappen' ? 'att. WAPPEN' : 'att. SELECTION'}
-                  </span>
-                  
-                  {/* Square Image Area */}
-                  <div className="aspect-square w-full bg-stone-50 border border-stone-200/50 rounded flex items-center justify-center overflow-hidden mb-3 p-1.5">
-                    {secondWappen.images && secondWappen.images[0] ? (
-                      <img 
-                        src={secondWappen.images[0]} 
-                        alt={secondWappen.name} 
-                        className="w-full h-full object-contain pointer-events-none" 
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 bg-stone-200 rounded-full animate-pulse" />
-                    )}
-                  </div>
-                  
-                  <p className="text-[11px] md:text-[12px] font-black text-stone-900 leading-tight line-clamp-2">
-                    {secondWappen.name}
-                  </p>
-                </div>
-                
-                <div className="mt-3 pt-2 border-t border-stone-100 flex items-center justify-between">
-                  <span className="text-[9px] font-bold text-stone-400 font-mono">1:1 CUSTOM</span>
-                  <span className="text-[10px] font-black text-[#FF1493]">VIEW ↗</span>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       )
     },
@@ -169,74 +92,9 @@ export default function HomeView({
             slide2BgImage ? 'bg-black/30' : 'bg-white bg-[radial-gradient(rgba(0,0,0,0.03)_1px,transparent_1px)] [background-size:20px_20px]'
           }`}
         >
-
           {/* Outline decorative typography in background */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
             <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide2BgImage ? 'text-white' : 'text-black'}`}>CUSTOM</span>
-          </div>
-
-          <div className="relative z-10 flex flex-col md:flex-row gap-4 md:gap-6 pr-6 sm:pr-12 md:pr-24 lg:pr-32 xl:pr-48 pl-4 items-center">
-            
-            {/* Promotion & Action card */}
-            <div className="w-64 sm:w-72 bg-white border-2 border-black p-5 relative flex flex-col justify-between rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] text-left">
-              <div>
-                <span className="bg-[#FF1493] text-white text-[9px] font-mono font-black px-2 py-0.5 tracking-wider uppercase mb-3 inline-block">
-                  WAPPEN EXPERIENCE
-                </span>
-                
-                <h3 className="text-xl font-black text-stone-900 leading-tight uppercase">
-                  WAPPEN CUSTOM LOOK
-                </h3>
-                
-                <p className="text-[11px] font-semibold text-stone-500 mt-2 leading-relaxed">
-                  나만의 스트릿 무드를 담은 특별한 커스텀 패치! 새로 론칭된 다양한 그래픽 와펜들을 직접 매치해보고 나만의 룩을 창조해보세요.
-                </p>
-              </div>
-
-              <div className="mt-5">
-                <button 
-                  onClick={() => onNavigate('shop', undefined, 'wappen')}
-                  className="w-full bg-black text-[#39FF14] hover:bg-[#39FF14] hover:text-black font-black text-xs py-3 px-4 border-2 border-black tracking-widest text-center transition-all duration-300 shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none uppercase cursor-pointer"
-                >
-                  체험 이벤트 보기
-                </button>
-              </div>
-            </div>
-
-            {/* Wappen Cards Showcase with Square Images, NO prices, only names/categories */}
-            <div className="hidden lg:flex flex-col gap-3">
-              {wappens.slice(0, 2).map((wappen) => (
-                <div 
-                  key={wappen.id}
-                  onClick={() => onNavigate('detail', wappen.id)}
-                  className="cursor-pointer w-48 bg-[#FFFDF0] border-2 border-black p-3 rounded-lg shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-3"
-                >
-                  {/* Square Image Area */}
-                  <div className="w-14 h-14 bg-white border border-stone-200 rounded flex items-center justify-center overflow-hidden shrink-0 p-1">
-                    {wappen.images && wappen.images[0] ? (
-                      <img 
-                        src={wappen.images[0]} 
-                        alt={wappen.name} 
-                        className="w-full h-full object-contain pointer-events-none" 
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="w-6 h-6 bg-stone-200 rounded-full" />
-                    )}
-                  </div>
-                  
-                  <div className="min-w-0">
-                    <span className="text-[8px] bg-[#39FF14] text-black font-mono font-black px-1.5 py-0.5 tracking-wider uppercase inline-block mb-1">
-                      {wappen.category.toUpperCase()}
-                    </span>
-                    <p className="text-[10px] md:text-[11px] font-black text-stone-900 leading-tight truncate">
-                      {wappen.name}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
           </div>
         </div>
       )
