@@ -562,15 +562,15 @@ export default function AdminView({
                   </div>
                 </div>
 
-                {/* 5. RECRUIT BG */}
+                {/* 5. CUSTOM ORDER BG */}
                 <div className="bg-white border border-stone-200 rounded-lg p-3 flex flex-col justify-between gap-3 text-left">
                   <div>
                     <span className="text-[8px] bg-black text-[#39FF14] px-1.5 py-0.5 font-mono font-bold tracking-wider rounded uppercase">
-                      RECRUIT BG
+                      CUSTOM ORDER BG
                     </span>
-                    <h4 className="text-xs font-black text-stone-900 mt-1">인재 채용 / RECRUIT 섹션 배경</h4>
+                    <h4 className="text-xs font-black text-stone-900 mt-1">커스텀 오더 / CUSTOM ORDER 섹션 배경</h4>
                     <p className="text-[10px] text-stone-400 font-semibold leading-normal mt-0.5">
-                      협업 제안 및 브랜드 가치 소개 채용 섹션 배경입니다.
+                      1:1 커스텀 오더 안내 섹션의 전경 배경입니다.
                     </p>
                   </div>
 

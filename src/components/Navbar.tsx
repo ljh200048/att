@@ -29,7 +29,7 @@ export default function Navbar({
 
   const menuItems = [
     { en: 'About Us', kr: '회사소개', view: 'home', scrollTarget: 'about-section' },
-    { en: 'RECRUIT', kr: '인재채용', view: 'home', scrollTarget: 'recruit-section' },
+    { en: 'ORDER', kr: '오더', view: 'custom' },
     { en: 'SHOP', kr: '스토어', view: 'shop', category: 'all' },
     { en: 'EVENT', kr: '와펜 체험 이벤트', view: 'event' },
     { en: 'CONTACT', kr: '고객지원', view: 'inquiry' },

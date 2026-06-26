@@ -295,9 +295,9 @@ export default function HomeView({
 
       </section>
 
-      {/* 5. RECRUIT SECTION (Interactive Careers Module matching Image 1 menu) */}
+      {/* 5. ORDER SECTION */}
       <section 
-        id="recruit-section" 
+        id="custom-order-section" 
         style={recruitBgImage ? { backgroundImage: `url(${recruitBgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
         className={`w-full max-w-7xl mx-auto px-6 md:px-12 text-left py-16 rounded-xl relative overflow-hidden transition-all duration-300 ${
           recruitBgImage ? 'border-2 border-black shadow-[6px_6px_0px_rgba(0,0,0,1)]' : 'bg-stone-50 border border-stone-200'
@@ -310,35 +310,34 @@ export default function HomeView({
           <span className={`text-[10px] font-mono tracking-[0.3em] font-black block uppercase ${
             recruitBgImage ? 'text-[#39FF14]' : 'text-stone-400'
           }`}>
-            RECRUIT
+            ORDER
           </span>
           <h2 className={`text-3xl md:text-5xl font-black tracking-tight uppercase leading-none ${
             recruitBgImage ? 'text-white' : 'text-stone-900'
           }`}>
-            GO FORWARD WITH #ATT
+            custom with #Att
           </h2>
           <p className={`text-xs sm:text-sm font-semibold leading-relaxed ${
             recruitBgImage ? 'text-stone-200' : 'text-stone-600'
           }`}>
-            att.(어태치)는 새로운 시각으로 트렌드를 제안하며 지속 가능한 패션 가치를 탐구하는 라이프스타일 셀렉샵입니다. 
-            우리와 함께 창의적인 영감을 나눌 열정 가득한 인재들을 언제나 기다리고 있습니다.
+            <span className="block font-black text-sm mb-2 uppercase tracking-wider">att service</span>
+            어태치는 새로운 시각으로 트랜드를 제안하는 브랜드입니다.<br />
+            어태치 사이트를 통해 문의해주시거나 인스타그램 문의를 통해 개인 맞춤형 디자인을 요청하세요.
           </p>
-
+ 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 text-xs font-bold text-stone-800 max-w-2xl mx-auto w-full">
-            <a 
-              href="mailto:collaboration@att-wappen.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className={`border p-5 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-lg block group text-center md:text-left ${
+            <div 
+              onClick={() => onNavigate('custom')}
+              className={`border p-5 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-lg block group text-center md:text-left cursor-pointer ${
                 recruitBgImage ? 'bg-black/60 border-stone-700 text-white hover:border-white' : 'bg-white border-stone-200 text-stone-850 hover:border-black'
               }`}
             >
               <Sparkles className={`w-5 h-5 mb-2 group-hover:text-black transition-colors mx-auto md:mx-0 ${
                 recruitBgImage ? 'text-stone-400 group-hover:text-[#39FF14]' : 'text-stone-500'
               }`} />
-              <p className={`font-bold group-hover:text-black transition-colors ${recruitBgImage ? 'text-[#39FF14]' : 'text-stone-900'}`}>MARKETING CREW</p>
-              <p className={`text-[10px] mt-1 font-semibold ${recruitBgImage ? 'text-stone-300' : 'text-stone-400'}`}>브랜드 협업 제안 문의하기 ↗</p>
-            </a>
+              <p className={`font-bold group-hover:text-black transition-colors ${recruitBgImage ? 'text-[#39FF14]' : 'text-stone-900'}`}>사이트 문의</p>
+              <p className={`text-[10px] mt-1 font-semibold ${recruitBgImage ? 'text-stone-300' : 'text-stone-400'}`}>나만의 커스텀 오더 신청하기 ↗</p>
+            </div>
             <a 
               href="https://www.instagram.com/att_attached?igsh=MTNnczE4a25rdzlweg==" 
               target="_blank" 
@@ -350,8 +349,8 @@ export default function HomeView({
               <MapPin className={`w-5 h-5 mb-2 group-hover:text-black transition-colors mx-auto md:mx-0 ${
                 recruitBgImage ? 'text-stone-400 group-hover:text-[#39FF14]' : 'text-stone-500'
               }`} />
-              <p className={`font-bold group-hover:text-black transition-colors ${recruitBgImage ? 'text-[#39FF14]' : 'text-stone-900'}`}>RETAIL STORE</p>
-              <p className={`text-[10px] mt-1 font-semibold ${recruitBgImage ? 'text-stone-300' : 'text-stone-400'}`}>att 인스타그램 ↗</p>
+              <p className={`font-bold group-hover:text-black transition-colors ${recruitBgImage ? 'text-[#39FF14]' : 'text-stone-900'}`}>인스타그램 문의</p>
+              <p className={`text-[10px] mt-1 font-semibold ${recruitBgImage ? 'text-stone-300' : 'text-stone-400'}`}>실시간 인스타 시안 상담하기 ↗</p>
             </a>
           </div>
         </div>
