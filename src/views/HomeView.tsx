@@ -99,7 +99,10 @@ export default function HomeView({
             <p className={`text-[11px] leading-relaxed font-semibold mt-2 transition-colors ${
               isDarkBg ? 'text-stone-300' : 'text-stone-500'
             }`}>
-              att.(어태치)는 놀라움이 가득한 장소 라는 슬로건으로 다양한 패션+라이프를 제안하며 차별화된 룩과 독창적 정체성을 지향하는 패션 편집 플랫폼입니다.
+              가방, 파우치, 모자, 키링 위에<br />
+              귀여운 취향, 키치한 감성, 나만의 문구와 무드를 더하는 곳<br />
+              내 물건을 더 나답게 만드는 작은 커스텀<br />
+              당신의 취향을 붙이다 #ATT
             </p>
           </div>
         </div>
