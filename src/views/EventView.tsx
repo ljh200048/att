@@ -25,15 +25,14 @@ const sendTelegramNotification = async (sub: EventSubmission) => {
     return { success: false, reason: 'missing_config' };
   }
 
-  const message = `🔔 [att. 어태치] 새로운 와펜 체험 이벤트 응모!
+  const message = `🔔 [att. 어태치] 새로운 무료체험단 이벤트 응모!
 
 👤 응모자 정보
 • 이름: ${sub.name}
-• 연락처/인스타ID: ${sub.contact}
+• 인스타그램 연락처: ${sub.contact}
 
-🎨 커스텀 와펜 조합
-• 배경 컬러: ${sub.bgColor}
-• 캐릭터/데코: ${sub.deco}
+🎨 신청 정보
+• 신청하고싶은 도구: ${sub.bgColor}
 • 자수 문구: ${sub.wording}
 
 📅 응모 일시: ${new Date().toLocaleString('ko-KR')}`;
@@ -124,27 +123,27 @@ export default function EventView({ currentUser }: EventViewProps) {
         id: 'sub_1',
         name: '김은수',
         contact: '@eunsoo_oo',
-        bgColor: '패션 네온 라임',
+        bgColor: '키링(소)',
         wording: 'CHILL',
-        deco: '불꽃 (Flame)',
+        deco: '기본',
         createdAt: '2026-06-24'
       },
       {
         id: 'sub_2',
         name: '이지훈',
         contact: '010-3344-****',
-        bgColor: '미니멀 솔리드 블랙',
+        bgColor: '파우치',
         wording: 'YOUTH',
-        deco: '스마일 (Smile)',
+        deco: '기본',
         createdAt: '2026-06-23'
       },
       {
         id: 'sub_3',
         name: '최소연',
         contact: '@ssoy_att',
-        bgColor: '스위트 하트 핑크',
+        bgColor: '의류',
         wording: 'LUCKY',
-        deco: '스타 (Star)',
+        deco: '기본',
         createdAt: '2026-06-23'
       }
     ];
@@ -153,9 +152,9 @@ export default function EventView({ currentUser }: EventViewProps) {
   // Raffle Form State
   const [formName, setFormName] = useState('');
   const [formContact, setFormContact] = useState('');
-  const [formBgColor, setFormBgColor] = useState('미니멀 솔리드 블랙');
+  const [formBgColor, setFormBgColor] = useState('키링(소)');
   const [formWording, setFormWording] = useState('');
-  const [formDeco, setFormDeco] = useState('스타 (Star)');
+  const [formDeco, setFormDeco] = useState('기본');
   const [formSuccess, setFormSuccess] = useState(false);
   const [formConsent, setFormConsent] = useState(false);
 
@@ -317,7 +316,7 @@ export default function EventView({ currentUser }: EventViewProps) {
                 <span className="text-[11px] font-bold text-stone-400 font-mono">1:1 CUSTOM RAFFLE</span>
               </div>
               <h3 className="text-xl md:text-2xl font-black text-stone-900 leading-tight">
-                나만의 디자인 와펜 & 자수 패치 무료 체험 Event
+                나만의 커스텀 디자인 무료체험단 EVENT
               </h3>
               <p className="text-xs text-stone-500 font-semibold leading-relaxed">
                 여러분이 직접 고른 배경 컬러와 캐릭터 데코, 문구 조합으로 세상에 단 하나뿐인 와펜을 디자인해 보세요!<br />
@@ -329,7 +328,7 @@ export default function EventView({ currentUser }: EventViewProps) {
             <form onSubmit={handleRaffleSubmit} className="space-y-4 text-left">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">이름 (NAME)</label>
+                  <label className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">이름</label>
                   <input
                     type="text"
                     value={formName}
@@ -340,7 +339,7 @@ export default function EventView({ currentUser }: EventViewProps) {
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">인스타그램 ID 또는 연락처</label>
+                  <label className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">인스타그램 연락처</label>
                   <input
                     type="text"
                     value={formContact}
@@ -352,36 +351,20 @@ export default function EventView({ currentUser }: EventViewProps) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">체험하고 싶은 와펜 배경 컬러</label>
-                  <select
-                    value={formBgColor}
-                    onChange={(e) => setFormBgColor(e.target.value)}
-                    className="w-full cursor-pointer bg-stone-50 border border-stone-300 px-3.5 py-2.5 text-xs font-bold text-black outline-none focus:border-black rounded"
-                  >
-                    <option value="미니멀 솔리드 블랙">미니멀 솔리드 블랙</option>
-                    <option value="패션 네온 라임">패션 네온 라임</option>
-                    <option value="스위트 하트 핑크">스위트 하트 핑크</option>
-                    <option value="오션 딥 블루">오션 딥 블루</option>
-                    <option value="앤틱 빈티지 베이지">앤틱 빈티지 베이지</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">매칭할 와펜 캐릭터/데코 선택</label>
-                  <select
-                    value={formDeco}
-                    onChange={(e) => setFormDeco(e.target.value)}
-                    className="w-full cursor-pointer bg-stone-50 border border-stone-300 px-3.5 py-2.5 text-xs font-bold text-black outline-none focus:border-black rounded"
-                  >
-                    <option value="스타 (Star)">스타 (Star)</option>
-                    <option value="하트 (Heart)">하트 (Heart)</option>
-                    <option value="스마일 (Smile)">스마일 (Smile)</option>
-                    <option value="불꽃 (Flame)">불꽃 (Flame)</option>
-                    <option value="데이지 꽃 (Flower)">데이지 꽃 (Flower)</option>
-                    <option value="체리 (Cherry)">체리 (Cherry)</option>
-                  </select>
-                </div>
+              <div>
+                <label className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">신청하고싶은 도구</label>
+                <select
+                  value={formBgColor}
+                  onChange={(e) => setFormBgColor(e.target.value)}
+                  className="w-full cursor-pointer bg-stone-50 border border-stone-300 px-3.5 py-2.5 text-xs font-bold text-black outline-none focus:border-black rounded"
+                >
+                  <option value="키링(소)">키링(소)</option>
+                  <option value="키링(대)">키링(대)</option>
+                  <option value="파우치">파우치</option>
+                  <option value="카드지갑">카드지갑</option>
+                  <option value="컵홀더">컵홀더</option>
+                  <option value="의류">의류</option>
+                </select>
               </div>
 
               <div>
@@ -769,13 +752,12 @@ export default function EventView({ currentUser }: EventViewProps) {
                           alert('⚠️ 내보낼 응모 내역이 없습니다.');
                           return;
                         }
-                        const headers = ['이름', '연락처/SNS', '배경색', '문구', '장식(데코)', '응모일'];
+                        const headers = ['이름', '인스타그램 연락처', '신청 도구', '문구', '응모일'];
                         const rows = submissions.map(s => [
                           s.name,
                           s.contact,
                           s.bgColor,
                           s.wording,
-                          s.deco,
                           s.createdAt
                         ]);
                         const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.map(val => `"${val.replace(/"/g, '""')}"`).join(','))].join('\n');
@@ -838,8 +820,8 @@ export default function EventView({ currentUser }: EventViewProps) {
                         <tr className="bg-stone-100 border-b border-stone-200 font-bold text-stone-700">
                           <th className="p-3">응모일</th>
                           <th className="p-3">이름</th>
-                          <th className="p-3">연락처/SNS</th>
-                          <th className="p-3">키링 디자인 설정 (배경색 / 문구 / 데코)</th>
+                          <th className="p-3">인스타그램 연락처</th>
+                          <th className="p-3">신청 정보 (도구 / 자수 문구)</th>
                           <th className="p-3 text-center">동작</th>
                         </tr>
                       </thead>
@@ -851,8 +833,7 @@ export default function EventView({ currentUser }: EventViewProps) {
                             s.name.toLowerCase().includes(kw) ||
                             s.contact.toLowerCase().includes(kw) ||
                             s.bgColor.toLowerCase().includes(kw) ||
-                            s.wording.toLowerCase().includes(kw) ||
-                            s.deco.toLowerCase().includes(kw)
+                            s.wording.toLowerCase().includes(kw)
                           );
                         }).length === 0 ? (
                           <tr>
@@ -869,8 +850,7 @@ export default function EventView({ currentUser }: EventViewProps) {
                                 s.name.toLowerCase().includes(kw) ||
                                 s.contact.toLowerCase().includes(kw) ||
                                 s.bgColor.toLowerCase().includes(kw) ||
-                                s.wording.toLowerCase().includes(kw) ||
-                                s.deco.toLowerCase().includes(kw)
+                                s.wording.toLowerCase()
                               );
                             })
                             .map((sub) => (
@@ -881,13 +861,10 @@ export default function EventView({ currentUser }: EventViewProps) {
                                 <td className="p-3 space-y-1">
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="bg-stone-100 border border-stone-200 text-stone-800 px-1.5 py-0.5 rounded text-[10px] font-bold">
-                                      🎨 {sub.bgColor}
+                                      🛠️ {sub.bgColor}
                                     </span>
                                     <span className="bg-black text-[#39FF14] px-2 py-0.5 rounded text-[10px] font-mono font-black tracking-wider">
                                       🔤 {sub.wording}
-                                    </span>
-                                    <span className="bg-rose-50 border border-rose-100 text-rose-700 px-1.5 py-0.5 rounded text-[10px] font-bold">
-                                      🎀 {sub.deco}
                                     </span>
                                   </div>
                                 </td>

@@ -163,10 +163,10 @@ export default function CustomOrderView({
         </section>
       ) : (
         /* Side by Side Split interactive form page */
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Panel: Real-time updated preview card */}
-          <div className="lg:col-span-4 flex flex-col gap-3 sticky top-[72px] lg:top-28 z-30 h-fit self-start w-full bg-brand-cream/95 lg:bg-transparent p-3 lg:p-0 rounded-2xl border border-stone-200/60 lg:border-none shadow-md lg:shadow-none backdrop-blur-md lg:backdrop-blur-none">
+          <div className="lg:col-span-4 flex flex-col gap-3 sticky top-[144px] lg:top-28 z-30 h-fit self-start w-full bg-brand-cream/95 lg:bg-transparent p-3 lg:p-0 rounded-2xl border border-stone-200/60 lg:border-none shadow-md lg:shadow-none backdrop-blur-md lg:backdrop-blur-none">
             <h2 className="text-xs font-black text-stone-900 uppercase tracking-widest flex items-center gap-1">
               <Heart className="w-4 h-4 text-rose-500 fill-rose-500" />
               <span>실시간 빌딩 가상 시안</span>
