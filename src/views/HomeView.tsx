@@ -266,32 +266,7 @@ export default function HomeView({
           ))}
         </div>
 
-        {/* 1:1 Custom Request Banner */}
-        <div 
-          style={customBannerBgImage ? { backgroundImage: `url(${customBannerBgImage})`, backgroundPosition: 'center', backgroundSize: 'cover' } : {}}
-          className={`mt-12 p-8 text-center flex flex-col md:flex-row items-center justify-between gap-6 rounded-lg relative overflow-hidden transition-all duration-300 ${
-            customBannerBgImage ? 'border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)]' : 'bg-stone-50 border border-stone-200'
-          }`}
-        >
-          {customBannerBgImage && (
-            <div className="absolute inset-0 bg-black/60 z-0 pointer-events-none" />
-          )}
-          <div className="text-left space-y-1 relative z-10">
-            <span className={`text-[8px] font-mono font-bold px-2 py-0.5 rounded uppercase tracking-widest ${
-              customBannerBgImage ? 'bg-[#39FF14] text-black font-black' : 'bg-black text-white'
-            }`}>att. SERVICE</span>
-            <h4 className={`text-base font-extrabold mt-1 ${customBannerBgImage ? 'text-white' : 'text-stone-900'}`}>1:1 맞춤형 나만의 아크릴 굿즈 제작 서비스</h4>
-            <p className={`text-[11px] font-medium ${customBannerBgImage ? 'text-stone-200' : 'text-stone-500'}`}>인스타그램 가이드 상담을 통해 동아리나 개인 특별 각인 맞춤형 디자인을 요청하세요.</p>
-          </div>
-          <button 
-            onClick={() => onNavigate('custom')}
-            className={`font-bold text-xs tracking-widest px-6 py-3.5 transition-all uppercase whitespace-nowrap relative z-10 border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer ${
-              customBannerBgImage ? 'bg-[#39FF14] text-black hover:bg-white hover:text-black' : 'bg-black text-white hover:bg-stone-800'
-            }`}
-          >
-            커스텀 오더 신청하기 —
-          </button>
-        </div>
+
 
       </section>
 
