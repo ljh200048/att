@@ -59,8 +59,8 @@ export default function HomeView({
       <section id="hero-slider-section" className="w-full relative h-[500px] md:h-[620px] bg-white overflow-hidden border-b border-stone-100">
         
         {/* Floating Vertical Social links on bottom-left */}
-        <div className={`absolute left-6 md:left-10 bottom-8 z-20 hidden md:flex flex-col space-y-3 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${isDarkBg ? 'text-stone-400' : 'text-stone-500'}`}>
-          <a href="https://www.instagram.com/att_attached/" target="_blank" rel="noreferrer" className={`transition-colors rotate-90 origin-left mt-10 block ${isDarkBg ? 'hover:text-white' : 'hover:text-black'}`}>instagram</a>
+        <div className={`absolute left-6 md:left-10 bottom-24 z-20 hidden md:flex flex-col space-y-3 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${isDarkBg ? 'text-stone-400' : 'text-stone-500'}`}>
+          <a href="https://www.instagram.com/att_attached/" target="_blank" rel="noreferrer" className={`transition-colors rotate-90 origin-left mt-2 block ${isDarkBg ? 'hover:text-white' : 'hover:text-black'}`}>instagram</a>
         </div>
 
         {/* Floating Large Title Text over Slider (Image 1) */}
