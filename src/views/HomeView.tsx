@@ -84,7 +84,7 @@ export default function HomeView({
               커스텀 패치 편집샵
             </span>
             <span className="tracking-[0.1em] font-black text-2xl md:text-3xl mt-1 block">
-              ATT.
+              #ATT
             </span>
           </h1>
 
@@ -113,7 +113,7 @@ export default function HomeView({
         >
           {/* Outline decorative typography */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
-            <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide1BgImage ? 'text-white' : 'text-black'}`}>ATT.</span>
+            <span className={`font-sans font-black text-[22vw] leading-none tracking-widest ${slide1BgImage ? 'text-white' : 'text-black'}`}>#ATT</span>
           </div>
         </div>
 
@@ -312,7 +312,7 @@ export default function HomeView({
           <h2 className={`text-3xl md:text-5xl font-black tracking-tight uppercase leading-none ${
             recruitBgImage ? 'text-white' : 'text-stone-900'
           }`}>
-            GO FORWARD WITH ATT.
+            GO FORWARD WITH #ATT
           </h2>
           <p className={`text-xs sm:text-sm font-semibold leading-relaxed ${
             recruitBgImage ? 'text-stone-200' : 'text-stone-600'
