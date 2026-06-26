@@ -166,7 +166,7 @@ export default function CustomOrderView({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Panel: Real-time updated preview card */}
-          <div className="lg:col-span-4 flex flex-col gap-3 sticky top-24">
+          <div className="lg:col-span-4 flex flex-col gap-3 sticky top-[72px] lg:top-28 z-30 h-fit self-start w-full bg-brand-cream/95 lg:bg-transparent p-3 lg:p-0 rounded-2xl border border-stone-200/60 lg:border-none shadow-md lg:shadow-none backdrop-blur-md lg:backdrop-blur-none">
             <h2 className="text-xs font-black text-stone-900 uppercase tracking-widest flex items-center gap-1">
               <Heart className="w-4 h-4 text-rose-500 fill-rose-500" />
               <span>실시간 빌딩 가상 시안</span>
@@ -178,12 +178,12 @@ export default function CustomOrderView({
               charmType={charmType}
               hasGlitter={hasGlitter}
               customImageRef={referenceImage || undefined}
-              className="h-[360px] bg-white border-4 shadow-xs border-stone-900"
+              className="h-[200px] sm:h-[280px] lg:h-[360px] bg-white border-4 shadow-xs border-stone-900 w-full transition-all duration-300"
               interactive={true}
             />
             
-            {/* Custom info alert box */}
-            <div className="bg-stone-50 p-4 border border-stone-200 rounded-xl flex gap-2.5 text-xs text-stone-500 leading-relaxed font-semibold">
+            {/* Custom info alert box - Hidden on extra small mobile screens to save vertical space, shown on md and lg */}
+            <div className="hidden sm:flex bg-stone-50 p-4 border border-stone-200 rounded-xl gap-2.5 text-xs text-stone-500 leading-relaxed font-semibold">
               <Info className="w-5 h-5 text-stone-900 flex-none" />
               <p>
                 선택하신 고밀도 면 원단 자수 스트랩, 정교한 와펜 패치 및 사틴 이니셜 자수가 실시간 업데이트 배합 시뮬레이팅됩니다. 실제 제작 수공예품 역시 이 시안을 골자로 전문가가 정성 들여 직조 배포합니다.
